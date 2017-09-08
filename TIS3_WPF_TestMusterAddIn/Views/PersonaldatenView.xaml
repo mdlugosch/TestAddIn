@@ -1,0 +1,82 @@
+﻿<base:TIS3ActiveView
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.PersonaldatenView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="665">
+    <!-- *** Suchmaske: Personaldaten *** -->
+    <Border Margin="5" Padding="5"
+                          BorderBrush="Black" BorderThickness="1,1,1,1" 
+                          CornerRadius="3" VerticalAlignment="Top">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Menuzeile Personaldaten -->
+            <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
+                <MenuItem Name="mnu_Personal_Suchen" Header="_Suchen" />
+                <MenuItem Name="mnu_Personal_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+                <MenuItem Name="mnu_Personal_Export" Header="_Exportieren" />
+                <MenuItem Name="mnu_Personal_Drucken" Header="_Drucken" />
+            </Menu>
+
+            <!-- *** Suchkriterien-Abschnitt 1:  Personendaten *** -->
+            <StackPanel  Margin="10 0 0 10" Grid.Row="1" Grid.Column="0" MinWidth="200">
+                <Label Content="Name"/>
+                <TextBox Name="tbx_Personal_Name" />
+                <Label Content="Vorname"/>
+                <TextBox Name="tbx_Personal_Vorname" />
+                <Label Content="Firma"/>
+                <TextBox Name="tbx_Personal_Firma" />             
+                <Label Content="Einsatzgebiet"/>
+                <ComboBox Name="cbx_Personal_Einsatzgebiet" />
+            </StackPanel>
+            
+            <!-- *** Suchkriterien-Abschnitt 2:  Personendaten *** -->
+            <StackPanel Margin="10 0 0 10" Grid.Row="1" Grid.Column="1" MinWidth="200">
+                <Label Content="Thema"/>
+                <ComboBox Name="cbx_Personal_Thema" />
+                <Label Content="Bildungsträger"/>
+                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Bildungstraeger" ItemsSource="{Binding Cbx_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Label Content="Team"/>
+                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Team" ItemsSource="{Binding Cbx_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Label Content="Abteilung"/>
+                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Abteilung" ItemsSource="{Binding Cbx_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+            </StackPanel>
+
+            <!-- *** Suchkriterien-Abschnitt: Statusprüfung *** -->
+            <Grid Margin="10 0 0 10" Grid.Row="1" Grid.Column="2" MinWidth="250">
+                <!-- Aufteilung Statusprüfung -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <!-- Platzierung Labels/Checkboxes Statusprüfung-->
+                <Label Content="Selbstständigenstatus ist gegeben" Grid.Column="0" Grid.Row="0" />
+                <CheckBox Name="chkbx_Status_Selbstaendig" VerticalAlignment="Center"  Grid.Column="1"  Grid.Row="0" />
+                <Label Content="Weiterverfolgung ist erforderlich" Grid.Column="0"  Grid.Row="1" />
+                <CheckBox  Name="chkbx_Status_Verfolgen" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="1" />
+                <Label Content="Offizielle Statusprüfung erforderlich" Grid.Column="0"  Grid.Row="2" />
+                <CheckBox  Name="chkbx_Status_Pruefen" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="2" />
+                <Label Content="Einsatz als Honorarkraft bedenklich" Grid.Column="0"  Grid.Row="3" />
+                <CheckBox  Name="chkbx_Status_bedenklich" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="3" />
+            </Grid>
+        </Grid>
+    </Border>
+</base:TIS3ActiveView>

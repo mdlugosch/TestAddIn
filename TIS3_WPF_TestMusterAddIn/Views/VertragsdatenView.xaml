@@ -1,0 +1,79 @@
+﻿<base:TIS3ActiveView
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.VertragsdatenView"
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="645">
+    <!-- *** Suchmaske: Vertragsdaten *** -->
+    <Border Margin="5" Padding="5"
+                          BorderBrush="Black" BorderThickness="1,1,1,1" 
+                          CornerRadius="3" VerticalAlignment="Top">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <!-- Menuzeile Vertagdaten -->
+            <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
+                <MenuItem Name="mnu_Vertag_Suchen" Header="_Suchen" />
+                <MenuItem Name="mnu_Vertag_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+                <MenuItem Name="mnu_Vertag_Export" Header="_Exportieren" />
+                <MenuItem Name="mnu_Vertag_Drucken" Header="_Drucken" />
+            </Menu>
+            <!-- Suchmaske Vertragsdaten: Spalte 1 -->
+            <StackPanel Grid.Row="1" Grid.Column="0" MinWidth="200">
+                <Label Content="Name"/>
+                <TextBox Name="tbx_Vertag_Name" />
+                <Label Content="Vorname"/>
+                <TextBox Name="tbx_Vertag_Vorname" />
+                <Label Content="Firma"/>
+                <TextBox Name="tbx_Vertag_Firma" />
+                <Label Content="Nr." />
+                <TextBox Name="tbx_Vertag_Nummer" /> 
+            </StackPanel>
+            <!-- Suchmaske Vertragsdaten: Spalte 2 -->
+            <StackPanel Margin="10 0 0 10" Grid.Row="1"  Grid.Column="1" MinWidth="200">
+                <Label Content="Datum" />
+                <TextBox Name="tbx_Vertag_Datum" />
+                <Label Content="Auftrag" />
+                <TextBox Name="tbx_Vertag_Auftrag" />
+                <Label Content="Bildungsträger" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Vertag_Bildungstraeger" ItemsSource="{Binding Cbx_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Label Content="Kostenstelle" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Vertag_Kostenstelle" ItemsSource="{Binding Cbx_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />                
+            </StackPanel>
+            <!-- Suchmaske Vertragsdaten: Spalte 3 -->
+            <StackPanel Margin="10 0 0 10" Grid.Row="1"  Grid.Column="2" MinWidth="200">
+                <Label Content="Abteilung" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Vertag_Abteilung" ItemsSource="{Binding Cbx_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Label Content="Thema" />
+                <ComboBox Name="cbx_Vertag_Thema" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="noch nicht gedruckt" />
+                    <CheckBox Name="chkbx_Vertrag_Gedruckt" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" />
+                    <Label Grid.Column="0" Grid.Row="1" Content="noch nicht komplett ausgezahlt" />
+                    <CheckBox Name="chkbx_Vertrag_Ausgezahlt" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" />
+                    <Label Grid.Column="0" Grid.Row="2" Content="400 Basis" />
+                    <CheckBox Name="chkbx_Vertrag_400" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
+</base:TIS3ActiveView>
