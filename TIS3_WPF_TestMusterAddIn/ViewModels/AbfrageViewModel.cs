@@ -26,7 +26,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public IRegionManager regionManager;
 
         [Import(typeof(RegionNames))]
-        RegionNames regionNames=new RegionNames();
+        RegionNames regionNames;
 
         public RelayCommand OpenPersonalSuche { get; set; }
         public RelayCommand OpenVertragsSuche { get; set; }

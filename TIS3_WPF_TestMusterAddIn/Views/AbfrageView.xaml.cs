@@ -33,7 +33,6 @@ namespace TIS3_WPF_TestMusterAddIn.Views
         {
             regionNames.SearchRegion="SearchMaskRegion" + ++idNr;
             InitializeComponent();
-            if (String.IsNullOrWhiteSpace(regionNames.SearchRegion)) MessageBox.Show("Boom");
             RegionManager.SetRegionName(SearchMask, regionNames.SearchRegion);
         }
 
