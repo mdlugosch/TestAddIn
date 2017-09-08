@@ -8,11 +8,25 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 {
     public class RegionNames
     {
-        private string searchRegion = "SearchMaskRegion";
-        private string resultRegion = "SearchResultRegion";
+        private static int idNr = 0;
+
+        private string searchRegion; //+ (idNr++).ToString();
+        private string resultRegion = "SearchResultRegion"; //+ (idNr++).ToString();
+
+       
+        public RegionNames()
+        {
+            searchRegion = "SearchMaskRegion" + idNr;
+            //idNr++;
+            //string test = (idNr++).ToString();
+
+      
+            //searchRegion = "SearchMaskRegion" + test;
+            //resultRegion = String.Format("SearchResultRegion{0}",test);
+        }
 
         public string SearchRegion { get { return searchRegion; } set { searchRegion = value; } }
-        public string ResultRegion { get { return resultRegion; } set { searchRegion = value; } }
+        public string ResultRegion { get { return resultRegion; } set { resultRegion = value; } }
 
     }
 }

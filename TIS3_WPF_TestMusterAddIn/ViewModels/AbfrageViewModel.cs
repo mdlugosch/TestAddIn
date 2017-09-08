@@ -25,9 +25,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         [Import(AllowRecomposition = false)]
         public IRegionManager regionManager;
 
-        [Import(typeof(RegionNames))]
+        [Import]
         RegionNames regionNames;
-
+ 
         public RelayCommand OpenPersonalSuche { get; set; }
         public RelayCommand OpenVertragsSuche { get; set; }
         public RelayCommand OpenZahlungsanweisungsSuche { get; set; }
@@ -52,6 +52,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         public override void OnImportsSatisfied()
         {
+            regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+            MessageBox.Show(regionNames.SearchRegion);
+            //MessageBox.Show((regionManager.Regions.ContainsRegionWithName("SearchMaskRegion")).ToString());
            regionManager.RegisterViewWithRegion(regionNames.SearchRegion, () => GetStartView("PersonaldatenView"));
         }
 
