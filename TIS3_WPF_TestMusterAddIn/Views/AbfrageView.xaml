@@ -3,13 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:markex="clr-namespace:BFZ_Common_Lib.MarkupExtensions;assembly=BFZ_Common_Lib"
              xmlns:prism="http://www.codeplex.com/prism"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.AbfrageView"
              mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="800" VerticalAlignment="Top">
-    <Grid>
+    <Grid x:Name="MainGrid">
         <!-- Aufteilung AbfrageView -->
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -21,13 +23,13 @@
             <MenuItem Name="mnu_Zahlungsanweisung" Header="Zahlungsanweisung" Command="{Binding OpenZahlungsanweisungsSuche}"/>
             <MenuItem Name="mnu_Bewertungsbgen" Header="Bewertungsbogen" Command="{Binding OpenBewertungsSuche}"/>
         </Menu>
-   
-        <ContentControl x:Name="SearchMask"
+
+        <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding ViewPanel}"
                 Grid.Row="1" Margin="5,0,5,5" 
                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
-        <!--
-        <ContentControl prism:RegionManager.RegionName="SearchResultRegion" 
-                Grid.Row="2" Margin="5,0,5,5" 
-                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>-->
+
+        <ContentControl x:Name="ResultMask" 
+                Grid.Row="2" Margin="5,0,5,5"
+                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
     </Grid>
 </base:TIS3ActiveView>

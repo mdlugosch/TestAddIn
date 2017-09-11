@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Practices.Prism.Regions;
-using TIS3_WPF_TestMusterAddIn.Infrastructure;
 using TIS3_Base;
 using Microsoft.Practices.ServiceLocation;
 
@@ -26,23 +25,11 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     [Export("AbfrageView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class AbfrageView : TIS3_Base.TIS3ActiveView
     {
-        [Import(AllowRecomposition = false)]
-        public IRegionManager regionManager;
-
-       [Export]
-       RegionNames regionNames = new RegionNames();
+       public Guid InstanceID { get; private set; }  
 
         public AbfrageView()
         {     
             InitializeComponent();
-            RegionManager.SetRegionName(SearchMask, regionNames.SearchRegion);
         }
-
-        private object GetStartView(string viewName)
-        {
-            var startView = (TIS3ViewBase)ServiceLocator.Current.GetInstance<object>(viewName);
-            return startView;
-        }
-
     }
 }

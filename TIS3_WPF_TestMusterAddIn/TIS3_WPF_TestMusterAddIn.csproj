@@ -139,7 +139,6 @@
   <ItemGroup>
     <Compile Include="Commands\OpenHonorarkraefteAppCommand.cs" />
     <Compile Include="Commands\OpenTestMusterAppCommand.cs" />
-    <Compile Include="Infrastructure\RegionNames.cs" />
     <Compile Include="MenuItems\OpenTestMusterAppMenuItem.cs" />
     <Compile Include="MenuItems\TestMusterRootMenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -225,6 +224,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Infrastructure\" />
     <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
