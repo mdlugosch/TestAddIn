@@ -55,7 +55,7 @@
                 <Label Content="Abteilung" />
                 <Syncfusion:ComboBoxAdv  Name="cbx_Vertag_Abteilung" ItemsSource="{Binding Cbx_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
                 <Label Content="Thema" />
-                <ComboBox Name="cbx_Vertag_Thema" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Vertag_Thema" ItemsSource="{Binding Cbx_Vertag_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />

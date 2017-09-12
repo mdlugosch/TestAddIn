@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TIS3_Base;
 using TIS3_LookupBL;
+using TIS3_WPF_TestMusterAddIn.Infrastructure;
+using WinTIS30db_entwModel.Honorarkraefte;
 using WinTIS30db_entwModel.Lookup;
 
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
@@ -14,9 +16,13 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
     [NotifyPropertyChanged]
     class VertragsdatenViewModel : TIS3ActiveViewModel
     {
+        // Data Access Object für Honorarkraefte Tabellen
+        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+
         public LookupCollectionBO Cbx_Teams { get; set; }
         public LookupCollectionBO Cbx_Abteilung { get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Bildungstraeger { get; set; }
+        public ObservableCollection<wt2_konst_honorarkraft_thema> Cbx_Vertag_Thema { get; set; }
         public override void Init()
         {
             InitComboBoxes();
@@ -27,12 +33,14 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Cbx_Teams = new LookupCollectionBO();
             Cbx_Abteilung = new LookupCollectionBO();
             Cbx_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
+            Cbx_Vertag_Thema = new ObservableCollection<wt2_konst_honorarkraft_thema>();
 
             LookupRepository LookRepo = new LookupRepository();
 
             Cbx_Teams = LookRepo.GetTeams(true, "", true);
             Cbx_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Bildungstraeger = LookRepo.GetBildungstraeger(true);
+            Cbx_Vertag_Thema = hDAO.HoleThema(false);
         }
     }
 }

@@ -24,7 +24,7 @@
             <MenuItem Name="mnu_Bewertungsbgen" Header="Bewertungsbogen" Command="{Binding OpenBewertungsSuche}"/>
         </Menu>
 
-        <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding ViewPanel}"
+        <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding SearchPanel}"
                 Grid.Row="1" Margin="5,0,5,5" 
                 HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
 

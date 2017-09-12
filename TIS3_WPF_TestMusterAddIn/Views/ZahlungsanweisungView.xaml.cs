@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TIS3_WPF_TestMusterAddIn.ViewModels;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
@@ -25,6 +26,7 @@ namespace TIS3_WPF_TestMusterAddIn.Views
         public ZahlungsanweisungView()
         {
             InitializeComponent();
+            this.DataContext = new ZahlungsanweisungViewModel();
         }
     }
 }

@@ -49,17 +49,17 @@
                 <Label Content="Auftrag" />
                 <TextBox Name="tbx_Zahlung_Auftrag" />
                 <Label Content="Bildungsträger" />
-                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Bildungstraeger" ItemsSource="{Binding Cbx_Bildungstraeger}" DisplayMemberPath="Name1" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Bildungstraeger" ItemsSource="{Binding Cbx_Zahlung_Bildungstraeger}" DisplayMemberPath="Name1" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
                 <Label Content="Kostenstelle" />
-                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Kostenstelle" ItemsSource="{Binding Cbx_Teams}" DisplayMemberPath="Bezeichnung" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />   
+                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Kostenstelle" ItemsSource="{Binding Cbx_Zahlung_Teams}" DisplayMemberPath="Bezeichnung" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />   
             </StackPanel>
 
             <!-- Suchmaske Zahlungsanweisung: Spalte 3 -->
             <StackPanel Grid.Row="1" Margin="10 0 0 10" Grid.Column="2" MinWidth="200">
                 <Label Content="Abteilung" />
-                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Abteilung" ItemsSource="{Binding Cbx_Abteilung}" DisplayMemberPath="Bezeichnung" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Abteilung" ItemsSource="{Binding Cbx_Zahlung_Abteilung}" DisplayMemberPath="Bezeichnung" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
                 <Label Content="Thema" />
-                <ComboBox Name="cbx_Zahlung_Thema" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Thema" ItemsSource="{Binding Cbx_Zahlung_Thema}" DisplayMemberPath="khkth_bezeichnung" Height="25" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>

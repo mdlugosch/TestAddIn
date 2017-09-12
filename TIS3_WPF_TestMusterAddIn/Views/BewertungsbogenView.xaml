@@ -37,12 +37,12 @@
                 <Label Content="Firma"/>
                 <TextBox Name="tbx_Bewertung_Firma" HorizontalAlignment="Left" Width="200" />
                 <Label Content="Bildungsträger"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Bewertung_Bildungstraeger" ItemsSource="{Binding Cbx_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Bewertung_Bildungstraeger" ItemsSource="{Binding Cbx_Bewertung_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
             </StackPanel>
             <!-- Bewertungsbogen: rechte Hälfte/ Zeile 1 -->
             <StackPanel  Margin="10 0 0 10" Grid.Column="1" Grid.Row="1">
                 <Label Content="Abteilung"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Bewertung_Abteilung" ItemsSource="{Binding Cbx_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" Width="200" HorizontalAlignment="Left" />
+                <Syncfusion:ComboBoxAdv  Name="cbx_Bewertung_Abteilung" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" Width="200" HorizontalAlignment="Left" />
                 <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
@@ -54,7 +54,7 @@
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0" Name="chkbx_Bewertung_Erforderlich" VerticalAlignment="Center" />
                         <Label Grid.Column="1" Content="Bewertung erforderlich für dieses Jahr" />
-                        <ComboBox Grid.Column="3" Margin="50 0 0 0" Name="cbx_Bewertung_Jahr" />
+                        <Syncfusion:ComboBoxAdv  Grid.Column="3" Margin="50 0 0 0" Name="cbx_Bewertung_Jahr" IsEnabled="{Binding ElementName=chkbx_Bewertung_Erforderlich, Path=IsChecked}" ItemsSource="{Binding Cbx_Bewertung_Jahr}" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" Width="100" HorizontalAlignment="Left" />
                     </Grid>
                 </Border>
                 <!-- Bewertungsbogen: Terminfelder  -->
