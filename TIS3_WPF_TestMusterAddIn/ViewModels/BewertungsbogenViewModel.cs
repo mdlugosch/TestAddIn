@@ -1,4 +1,5 @@
-﻿using PostSharp.Patterns.Model;
+﻿using Microsoft.Practices.Prism.Regions;
+using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ using WinTIS30db_entwModel.Lookup;
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
     [NotifyPropertyChanged]
-    class BewertungsbogenViewModel : TIS3ActiveViewModel
+    class BewertungsbogenViewModel : TIS3ActiveViewModel, INavigationAware
     {
         public LookupCollectionBO Cbx_Bewertung_Abteilung { get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Bewertung_Bildungstraeger { get; set; }
@@ -52,6 +53,17 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             }
 
             return result;
+        }
+
+        /*
+         * IsNavigationTarget gibt zurück ob eine View den Request behandeln kann.
+         * Sollen die Werte in den Properties des ViewModels bestehen bleiben bzw.
+         * der Inhalt der View(Benutzereingaben) beim zurückkehren zu dieser View
+         * wieder angezeigt werden muss diese Methode true zurückgeben.
+         */
+        bool INavigationAware.IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
         }
     }
 }

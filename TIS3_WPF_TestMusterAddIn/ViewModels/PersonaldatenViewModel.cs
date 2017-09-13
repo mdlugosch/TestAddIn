@@ -1,4 +1,5 @@
 ﻿using BFZ_Common_Lib.MVVM;
+using Microsoft.Practices.Prism.Regions;
 using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using WinTIS30db_entwModel.Lookup;
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
     [NotifyPropertyChanged]
-    class PersonaldatenViewModel : TIS3ActiveViewModel
+    public class PersonaldatenViewModel : TIS3ActiveViewModel, INavigationAware
     {
         // Data Access Object für Honorarkraefte Tabellen
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
@@ -76,6 +77,17 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 + Chkbx_Status_Verfolgen + " / " 
                 + Chkbx_Status_Pruefen + " / " 
                 + Chkbx_Status_bedenklich);
+        }
+
+        /*
+         * IsNavigationTarget gibt zurück ob eine View den Request behandeln kann.
+         * Sollen die Werte in den Properties des ViewModels bestehen bleiben bzw.
+         * der Inhalt der View(Benutzereingaben) beim zurückkehren zu dieser View
+         * wieder angezeigt werden muss diese Methode true zurückgeben.
+         */
+        bool INavigationAware.IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
         }
     }
 }

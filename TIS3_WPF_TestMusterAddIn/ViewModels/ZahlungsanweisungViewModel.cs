@@ -1,4 +1,5 @@
-﻿using PostSharp.Patterns.Model;
+﻿using Microsoft.Practices.Prism.Regions;
+using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,7 +15,7 @@ using WinTIS30db_entwModel.Lookup;
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
     [NotifyPropertyChanged]
-    class ZahlungsanweisungViewModel : TIS3ActiveViewModel
+    class ZahlungsanweisungViewModel : TIS3ActiveViewModel, INavigationAware
     {
         // Data Access Object für Honorarkraefte Tabellen
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
@@ -41,6 +42,17 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Cbx_Zahlung_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Zahlung_Bildungstraeger = LookRepo.GetBildungstraeger(true);
             Cbx_Zahlung_Thema = hDAO.HoleThema(false);
+        }
+
+        /*
+         * IsNavigationTarget gibt zurück ob eine View den Request behandeln kann.
+         * Sollen die Werte in den Properties des ViewModels bestehen bleiben bzw.
+         * der Inhalt der View(Benutzereingaben) beim zurückkehren zu dieser View
+         * wieder angezeigt werden muss diese Methode true zurückgeben.
+         */
+        bool INavigationAware.IsNavigationTarget(NavigationContext navigationContext)
+        {
+            return true;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Prism.Regions;
+﻿using CompositionPoints;
+using Microsoft.Practices.Prism;
+using Microsoft.Practices.Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TIS3_WPF_TestMusterAddIn.Infrastructure;
 using TIS3_WPF_TestMusterAddIn.ViewModels;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
@@ -23,7 +26,8 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// </summary>
     [Export("PersonaldatenView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class PersonaldatenView : TIS3_Base.TIS3ActiveView
-    {
+
+    {      
         public PersonaldatenView()
         {
             InitializeComponent();

@@ -14,6 +14,7 @@ using System.Windows;
 using TIS3_Base;
 using TIS3_Base.Services;
 using TIS3_LookupBL;
+using TIS3_WPF_TestMusterAddIn.Infrastructure;
 using TIS3_WPF_TestMusterAddIn.Views;
 using WinTIS30db_entwModel.Lookup;
 
@@ -77,6 +78,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         private static Uri BewertungsbogenViewUri = new Uri("/BewertungsbogenView", UriKind.Relative);
 # endregion
 
+
 # region Init() - Ausführung wenn Klasse Instanziiert wird
         public override void Init()
         {
@@ -110,6 +112,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
    
             return startView;
         }
+
 # endregion
 
 # region Methoden der Menu Commands
@@ -120,7 +123,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
          */
         public void LadePersonaldatenView() 
         {
-
             this.regionManager.RequestNavigate(SearchPanel, PersonaldatenViewUri);
         }
 
@@ -139,6 +141,5 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             this.regionManager.RequestNavigate(SearchPanel, BewertungsbogenViewUri);
         }
 # endregion
-
     }
 }
