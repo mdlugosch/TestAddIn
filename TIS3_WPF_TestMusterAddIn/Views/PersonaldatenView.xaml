@@ -6,77 +6,100 @@
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.PersonaldatenView"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="665">
+             d:DesignHeight="350" d:DesignWidth="670">
+    
     <!-- *** Suchmaske: Personaldaten *** -->
     <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
 
             <!-- Menuzeile Personaldaten -->
-            <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
-                <MenuItem Name="mnu_Personal_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
-                <MenuItem Name="mnu_Personal_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
-                <MenuItem Name="mnu_Personal_Export" Header="_Exportieren" />
-                <MenuItem Name="mnu_Personal_Drucken" Header="_Drucken" />
-            </Menu>
+        <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
+            <MenuItem Name="mnu_Personal_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
+            <MenuItem Name="mnu_Personal_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+            <MenuItem Name="mnu_Personal_Export" Header="_Exportieren" />
+            <MenuItem Name="mnu_Personal_Drucken" Header="_Drucken" />
+        </Menu>
 
-            <!-- *** Suchkriterien-Abschnitt 1:  Personendaten *** -->
-            <StackPanel  Margin="10 0 0 10" Grid.Row="1" Grid.Column="0" MinWidth="200">
-                <Label Content="Name"/>
-                <TextBox Name="tbx_Personal_Name" Text="{Binding Path=Tbx_Personal_Name,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  />
-                <Label Content="Vorname"/>
-                <TextBox Name="tbx_Personal_Vorname" Text="{Binding Path=Tbx_Personal_Vorname,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <Label Content="Firma"/>
-                <TextBox Name="tbx_Personal_Firma" Text="{Binding Path=Tbx_Personal_Firma,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />             
-                <Label Content="Einsatzgebiet"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Einsatzgebiet" ItemsSource="{Binding Cbx_Personal_Einsatzgebiet}" DisplayMemberPath="khke_bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" /> 
-            </StackPanel>
-            
-            <!-- *** Suchkriterien-Abschnitt 2:  Personendaten *** -->
-            <StackPanel Margin="10 0 0 10" Grid.Row="1" Grid.Column="1" MinWidth="200">
-                <Label Content="Thema"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Thema" ItemsSource="{Binding Cbx_Personal_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
-                <Label Content="Bildungsträger"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Bildungstraeger" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
-                <Label Content="Team"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Team" ItemsSource="{Binding Cbx_Personal_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
-                <Label Content="Abteilung"/>
-                <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Abteilung" ItemsSource="{Binding Cbx_Personal_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="0" Syncfusion:SkinStorage.VisualStyle="Metro" />
-            </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <!-- *** Suchkriterien-Abschnitt: Statusprüfung *** -->
-            <Grid Margin="10 0 0 10" Grid.Row="1" Grid.Column="2" MinWidth="250">
-                <!-- Aufteilung Statusprüfung -->
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <!-- Platzierung Labels/Checkboxes Statusprüfung-->
-                <Label Content="Selbstständigenstatus ist gegeben" Grid.Column="0" Grid.Row="0" />
-                <CheckBox Name="chkbx_Status_Selbstaendig" IsChecked="{Binding Path=Chkbx_Status_Selbstaendig,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"  Grid.Column="1"  Grid.Row="0" />
-                <Label Content="Weiterverfolgung ist erforderlich" Grid.Column="0"  Grid.Row="1" />
-                <CheckBox  Name="chkbx_Status_Verfolgen" IsChecked="{Binding Path=Chkbx_Status_Verfolgen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="1" />
-                <Label Content="Offizielle Statusprüfung erforderlich" Grid.Column="0"  Grid.Row="2" />
-                <CheckBox  Name="chkbx_Status_Pruefen" IsChecked="{Binding Path=Chkbx_Status_Pruefen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="2" />
-                <Label Content="Einsatz als Honorarkraft bedenklich" Grid.Column="0"  Grid.Row="3" />
-                <CheckBox  Name="chkbx_Status_bedenklich" IsChecked="{Binding Path=Chkbx_Status_bedenklich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="3" />
-            </Grid>
+                    <!-- *** Suchkriterien-Abschnitt 1:  Personendaten *** -->
+                    <StackPanel  Margin="10 0 0 10" Grid.Row="1" Grid.Column="0" MinWidth="200">
+                        <Label Content="Name"/>
+                        <TextBox Name="tbx_Personal_Name" Text="{Binding Path=Tbx_Personal_Name,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxWidth="200"  />
+                        <Label Content="Vorname"/>
+                        <TextBox Name="tbx_Personal_Vorname" Text="{Binding Path=Tbx_Personal_Vorname,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                        <Label Content="Firma"/>
+                        <TextBox Name="tbx_Personal_Firma" Text="{Binding Path=Tbx_Personal_Firma,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                        <Label Content="Einsatzgebiet"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Einsatzgebiet" ItemsSource="{Binding Cbx_Personal_Einsatzgebiet}" DisplayMemberPath="khke_bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Einsatzgebiet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                    </StackPanel>
+
+                    <!-- *** Suchkriterien-Abschnitt 2:  Personendaten *** -->
+                    <StackPanel Margin="10 0 0 10" Grid.Row="1" Grid.Column="1" MinWidth="200">
+                        <Label Content="Thema"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Thema" ItemsSource="{Binding Cbx_Personal_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" MaxWidth="200" />
+                        <Label Content="Bildungsträger"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Bildungstraeger" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="{Binding SelectedItem_Personal_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                        <Label Content="Team"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Team" ItemsSource="{Binding Cbx_Personal_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                        <Label Content="Abteilung"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Abteilung" ItemsSource="{Binding Cbx_Personal_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                    </StackPanel>
+
+                    <!-- *** Suchkriterien-Abschnitt: Statusprüfung *** -->
+                    <Grid Margin="10 0 0 10" Grid.Row="1" Grid.Column="2" MinWidth="250">
+                        <!-- Aufteilung Statusprüfung -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Platzierung Labels/Checkboxes Statusprüfung-->
+                        <Label Content="Selbstständigenstatus ist gegeben" Grid.Column="0" Grid.Row="0" />
+                        <CheckBox Name="chkbx_Status_Selbstaendig" IsChecked="{Binding Path=Chkbx_Status_Selbstaendig,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"  Grid.Column="1"  Grid.Row="0" />
+                        <Label Content="Weiterverfolgung ist erforderlich" Grid.Column="0"  Grid.Row="1" />
+                        <CheckBox  Name="chkbx_Status_Verfolgen" IsChecked="{Binding Path=Chkbx_Status_Verfolgen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="1" />
+                        <Label Content="Offizielle Statusprüfung erforderlich" Grid.Column="0"  Grid.Row="2" />
+                        <CheckBox  Name="chkbx_Status_Pruefen" IsChecked="{Binding Path=Chkbx_Status_Pruefen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="2" />
+                        <Label Content="Einsatz als Honorarkraft bedenklich" Grid.Column="0"  Grid.Row="3" />
+                        <CheckBox  Name="chkbx_Status_bedenklich" IsChecked="{Binding Path=Chkbx_Status_bedenklich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="3" />
+                    </Grid>
+                </Grid>
+            <!-- Ergebnisbereich -->
+            <Syncfusion:SfDataGrid Grid.Row="1" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"  HorizontalAlignment="Stretch"
+                                   AllowSorting="True" Margin="5" Height="auto">
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
         </Grid>
+    </Grid>
     </Border>
 </base:TIS3ActiveView>

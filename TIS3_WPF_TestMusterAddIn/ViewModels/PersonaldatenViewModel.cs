@@ -21,9 +21,16 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
     [NotifyPropertyChanged]
     public class PersonaldatenViewModel : TIS3ActiveViewModel, INavigationAware
     {
-        // Data Access Object für Honorarkraefte Tabellen
+        # region Data Access Objecte für Honorarkraefte Tabellen
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+        LookupRepository LookRepo = new LookupRepository();
+        # endregion
 
+        # region Testdaten
+        public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
+        # endregion
+
+        # region Elemente der Personaldaten-Suchmaske
         public String Tbx_Personal_Name{ get; set; }
         public String Tbx_Personal_Vorname{ get; set; }
         public String Tbx_Personal_Firma{ get; set; }
@@ -31,41 +38,90 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public bool Chkbx_Status_Verfolgen{ get; set; }
         public bool Chkbx_Status_Pruefen{ get; set; }
         public bool Chkbx_Status_bedenklich { get; set; }
+        # endregion
 
+        # region Comboboxen und zugehörige Combobox-Selection-Properties
+        // Die Combobox-Selection-Properties ermöglichen das festhalten/steuern der Combobox-Selection
+        public int SelectedItem_Personal_Teams { get; set; }
+        public LookupCollectionBO Cbx_Personal_Teams { get; set; }
+        public int SelectedItem_Personal_Abteilung { get; set; }
+        public LookupCollectionBO Cbx_Personal_Abteilung { get; set; }
+        public int SelectedItem_Personal_Einsatzgebiet { get; set; }
+        public ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> Cbx_Personal_Einsatzgebiet { get; set; }
+        public int SelectedItem_Personal_Bildungstraeger { get; set; }
+        public ObservableCollection<Bildungstraeger> Cbx_Personal_Bildungstraeger { get; set; }
+        public int SelectedItem_Personal_Thema { get; set; }
+        public ObservableCollection<wt2_konst_honorarkraft_thema> Cbx_Personal_Thema { get; set; }
+        # endregion
+
+        # region MenuCommands der Personaldaten-Suchmaske
         public RelayCommand ResetCommand { get; set; }
         public RelayCommand SearchCommand { get; set; }
-        public LookupCollectionBO Cbx_Personal_Teams { get; set; }
-        public LookupCollectionBO Cbx_Personal_Abteilung { get; set; }
-        public ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> Cbx_Personal_Einsatzgebiet { get; set; }
-        public ObservableCollection<Bildungstraeger> Cbx_Personal_Bildungstraeger { get; set; }
-        public ObservableCollection<wt2_konst_honorarkraft_thema> Cbx_Personal_Thema { get; set; }
+        # endregion
+
+        # region Initialisierung PersonaldatenViewModel
         public override void Init()
         {
+            # region Testdaten initializieren
+            HonorarListe = hDAO.LoadTestdata();
+            # endregion
+
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
             InitComboBoxes();
         }
+        # endregion
 
+        # region allgemeine Service-Methoden
         public void InitComboBoxes()
         {
+            # region Combobox-Properties deklarieren
             Cbx_Personal_Teams = new LookupCollectionBO();
             Cbx_Personal_Abteilung = new LookupCollectionBO();
             Cbx_Personal_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
             Cbx_Personal_Einsatzgebiet = new ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet>();
             Cbx_Personal_Thema = new ObservableCollection<wt2_konst_honorarkraft_thema>();
+            # endregion
 
-            LookupRepository LookRepo = new LookupRepository();
-
+            # region Daten in Comboboxen laden
             Cbx_Personal_Teams = LookRepo.GetTeams(true, "", true);
             Cbx_Personal_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Personal_Bildungstraeger = LookRepo.GetBildungstraeger(true);
             Cbx_Personal_Einsatzgebiet = hDAO.HoleEinsatzgebiete(true);
             Cbx_Personal_Thema = hDAO.HoleThema(false);
+            # endregion
+
+            // Comboboxen zum Programmstart auf ersten Eintrag stellen
+            ResetComboBoxes();
+        }    
+
+        public void ResetComboBoxes()
+        {
+            # region Comboboxen auf den ersten Eintrag stellen
+            SelectedItem_Personal_Teams = 0;
+            SelectedItem_Personal_Abteilung = 0;
+            SelectedItem_Personal_Einsatzgebiet = 0;
+            SelectedItem_Personal_Bildungstraeger = 0;
+            SelectedItem_Personal_Thema = 0;
+            # endregion
         }
-  
+        # endregion
+
+        # region zu Command gehörige Methoden
         public void Reset()
         {
-            MessageBox.Show("It works");
+            # region Comboboxen wieder auf ersten Eintrag stellen
+            ResetComboBoxes();
+            # endregion
+            # region Restliche Maskenelemente zurücksetzen
+            Tbx_Personal_Name = "";
+            Tbx_Personal_Vorname = "";
+            Tbx_Personal_Firma = "";
+            Chkbx_Status_Selbstaendig = false;
+            Chkbx_Status_Verfolgen = false;
+            Chkbx_Status_Pruefen = false;
+            Chkbx_Status_bedenklich = false;
+            # endregion
         }
 
         public void Search()
@@ -78,7 +134,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 + Chkbx_Status_Pruefen + " / " 
                 + Chkbx_Status_bedenklich);
         }
+        # endregion
 
+        # region Prism-Navigation-Einstellungen
         /*
          * IsNavigationTarget gibt zurück ob eine View den Request behandeln kann.
          * Sollen die Werte in den Properties des ViewModels bestehen bleiben bzw.
@@ -89,5 +147,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         {
             return true;
         }
+        # endregion
     }
 }

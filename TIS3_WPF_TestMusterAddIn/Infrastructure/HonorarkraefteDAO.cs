@@ -16,7 +16,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
         // Datenbank-Context für die Honorarkräfte-Tabellen
         protected WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities context;
-
+                                                  
         // Alle Elemente sollen die Inhalte über die selbe Klasse bzw. den selben Context beziehen
         public static HonorarkraefteDAO DAOFactory()
         {
@@ -77,5 +77,17 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
             return new ObservableCollection<wt2_konst_honorarkraft_thema>(query);
         }
+
+# region Testdaten generieren
+        public ObservableCollection<wt2_honorarkraft> LoadTestdata()
+        {
+                var query =
+                (from row in context.wt2_honorarkraft
+                 where row.hk_nachname != "" && row.hk_vorname != ""
+                 orderby row.hk_nachname
+                 select row).ToList();
+                return new ObservableCollection<wt2_honorarkraft>(query);   
+        }
+# endregion
     }
 }
