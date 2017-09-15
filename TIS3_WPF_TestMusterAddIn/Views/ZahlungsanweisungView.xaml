@@ -8,37 +8,33 @@
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="670">
     <!-- *** Suchmaske: Zahlungsanweisungen *** -->
-    <Grid>
-
+    <Border Margin="5" Padding="5"
+                          BorderBrush="Black" BorderThickness="1,1,1,1" 
+                          CornerRadius="3" VerticalAlignment="Top">
+        <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="22" />
+            <RowDefinition Height="210" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Margin="5" Padding="5"
-                          BorderBrush="Black" BorderThickness="1,1,1,1" 
-                          CornerRadius="3" VerticalAlignment="Top">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <!-- Menuzeile Zahlungsanweisung -->
+            <Menu Grid.Row="0" IsMainMenu="True">
+                <MenuItem Name="mnu_Zahlung_Suchen" Header="_Suchen" Command="{Binding SearchCommand}"/>
+                <MenuItem Name="mnu_Zahlung_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+                <MenuItem Name="mnu_Zahlung_Export" Header="_Exportieren" />
+                <MenuItem Name="mnu_Zahlung_Drucken" Header="_Drucken" />
+            </Menu>
+
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <!-- Menuzeile Zahlungsanweisung -->
-                <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
-                    <MenuItem Name="mnu_Zahlung_Suchen" Header="_Suchen" Command="{Binding SearchCommand}"/>
-                    <MenuItem Name="mnu_Zahlung_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
-                    <MenuItem Name="mnu_Zahlung_Export" Header="_Exportieren" />
-                    <MenuItem Name="mnu_Zahlung_Drucken" Header="_Drucken" />
-                </Menu>
-
                 <!-- Suchmaske Zahlungsanweisung: Spalte 1 -->
-                <StackPanel Grid.Row="1" Grid.Column="0" MinWidth="200">
+                <StackPanel Grid.Column="0" MinWidth="200">
                     <Label Content="Name"/>
                     <TextBox Name="tbx_Zahlung_Name" Text="{Binding Path=Tbx_Zahlung_Name,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
                     <Label Content="Vorname"/>
@@ -50,7 +46,7 @@
                 </StackPanel>
 
                 <!-- Suchmaske Zahlungsanweisung: Spalte 2 -->
-                <StackPanel Grid.Row="1" Margin="10 0 0 10" Grid.Column="1" MinWidth="200">
+                <StackPanel Margin="10 0 0 10" Grid.Column="1" MinWidth="200">
                     <Label Content="Datum" />
                     <TextBox Name="tbx_Zahlung_Datum" Text="{Binding Path=Tbx_Zahlung_Datum,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
                     <Label Content="Auftrag" />
@@ -62,7 +58,7 @@
                 </StackPanel>
 
                 <!-- Suchmaske Zahlungsanweisung: Spalte 3 -->
-                <StackPanel Grid.Row="1" Margin="10 0 0 10" Grid.Column="2" MinWidth="200">
+                <StackPanel Margin="10 0 0 10" Grid.Column="2" MinWidth="200">
                     <Label Content="Abteilung" />
                     <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Abteilung" ItemsSource="{Binding Cbx_Zahlung_Abteilung}" DisplayMemberPath="Bezeichnung" Height="25" SelectedIndex="{Binding SelectedItem_Zahlung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
                     <Label Content="Thema" />
@@ -77,10 +73,9 @@
                     </Grid>
                 </StackPanel>
             </Grid>
-        </Border>
         <!-- Ergebnisbereich -->
-        <Syncfusion:SfDataGrid Grid.Row="1" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"  HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch" Height="300" AllowSorting="True" Margin="5">
+        <Syncfusion:SfDataGrid Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
+                                   AllowSorting="True" Margin="5">
             <Syncfusion:SfDataGrid.Columns>
                 <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
                 <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
@@ -88,4 +83,5 @@
             </Syncfusion:SfDataGrid.Columns>
         </Syncfusion:SfDataGrid>
     </Grid>
+    </Border>
 </base:TIS3ActiveView>

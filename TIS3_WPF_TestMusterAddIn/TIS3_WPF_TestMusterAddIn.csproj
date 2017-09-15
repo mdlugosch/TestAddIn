@@ -106,6 +106,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Syncfusion.SfGrid.WPF, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="Syncfusion.Shared.Wpf, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
@@ -139,6 +140,8 @@
   <ItemGroup>
     <Compile Include="Commands\OpenHonorarkraefteAppCommand.cs" />
     <Compile Include="Commands\OpenTestMusterAppCommand.cs" />
+    <Compile Include="Infrastructure\DummyData.cs" />
+    <Compile Include="Infrastructure\DummyList.cs" />
     <Compile Include="Infrastructure\HonorarkraefteDAO.cs" />
     <Compile Include="MenuItems\OpenTestMusterAppMenuItem.cs" />
     <Compile Include="MenuItems\TestMusterRootMenuItem.cs" />

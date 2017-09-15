@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Microsoft.Practices.Prism.Regions;
 using TIS3_Base;
 using Microsoft.Practices.ServiceLocation;
+using TIS3_WPF_TestMusterAddIn.Infrastructure;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
 {

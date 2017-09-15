@@ -5,37 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.PersonaldatenView"
-             mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="670">
-    
+             mc:Ignorable="d">
+
     <!-- *** Suchmaske: Personaldaten *** -->
     <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="22" />
+                <RowDefinition Height="210" />
                 <RowDefinition Height="*" />
+                <!--<RowDefinition Height="20" />-->
             </Grid.RowDefinitions>
 
             <!-- Menuzeile Personaldaten -->
-        <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
-            <MenuItem Name="mnu_Personal_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
-            <MenuItem Name="mnu_Personal_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
-            <MenuItem Name="mnu_Personal_Export" Header="_Exportieren" />
-            <MenuItem Name="mnu_Personal_Drucken" Header="_Drucken" />
-        </Menu>
+            <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
+                <MenuItem Name="mnu_Personal_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
+                <MenuItem Name="mnu_Personal_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+                <MenuItem Name="mnu_Personal_Export" Header="_Exportieren" />
+                <MenuItem Name="mnu_Personal_Drucken" Header="_Drucken" />
+            </Menu>
 
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -43,7 +36,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- *** Suchkriterien-Abschnitt 1:  Personendaten *** -->
-                    <StackPanel  Margin="10 0 0 10" Grid.Row="1" Grid.Column="0" MinWidth="200">
+                    <StackPanel  Margin="10 0 0 10" Grid.Column="0" MinWidth="200">
                         <Label Content="Name"/>
                         <TextBox Name="tbx_Personal_Name" Text="{Binding Path=Tbx_Personal_Name,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MaxWidth="200"  />
                         <Label Content="Vorname"/>
@@ -55,7 +48,7 @@
                     </StackPanel>
 
                     <!-- *** Suchkriterien-Abschnitt 2:  Personendaten *** -->
-                    <StackPanel Margin="10 0 0 10" Grid.Row="1" Grid.Column="1" MinWidth="200">
+                    <StackPanel Margin="10 0 0 10" Grid.Column="1" MinWidth="200">
                         <Label Content="Thema"/>
                         <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Thema" ItemsSource="{Binding Cbx_Personal_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" MaxWidth="200" />
                         <Label Content="Bildungsträger"/>
@@ -67,7 +60,7 @@
                     </StackPanel>
 
                     <!-- *** Suchkriterien-Abschnitt: Statusprüfung *** -->
-                    <Grid Margin="10 0 0 10" Grid.Row="1" Grid.Column="2" MinWidth="250">
+                    <Grid Margin="10 0 0 10" Grid.Column="2" MinWidth="250">
                         <!-- Aufteilung Statusprüfung -->
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -79,6 +72,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
+
                         <!-- Platzierung Labels/Checkboxes Statusprüfung-->
                         <Label Content="Selbstständigenstatus ist gegeben" Grid.Column="0" Grid.Row="0" />
                         <CheckBox Name="chkbx_Status_Selbstaendig" IsChecked="{Binding Path=Chkbx_Status_Selbstaendig,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"  Grid.Column="1"  Grid.Row="0" />
@@ -90,9 +84,10 @@
                         <CheckBox  Name="chkbx_Status_bedenklich" IsChecked="{Binding Path=Chkbx_Status_bedenklich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1"  Grid.Row="3" />
                     </Grid>
                 </Grid>
+            </Grid>
             <!-- Ergebnisbereich -->
-            <Syncfusion:SfDataGrid Grid.Row="1" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"  HorizontalAlignment="Stretch"
-                                   AllowSorting="True" Margin="5" Height="auto">
+            <Syncfusion:SfDataGrid Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
+                                   AllowSorting="True">
                 <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
@@ -100,6 +95,5 @@
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
         </Grid>
-    </Grid>
     </Border>
 </base:TIS3ActiveView>

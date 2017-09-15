@@ -5,64 +5,62 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.VertragsdatenView"
-             mc:Ignorable="d" 
-             d:DesignHeight="350" d:DesignWidth="670">
+             mc:Ignorable="d">
     <!-- *** Suchmaske: Vertragsdaten *** -->
-    <Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Border Margin="5" Padding="5"
+    <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="22" />
+                <RowDefinition Height="210" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Menuzeile Vertagdaten -->
+            <Menu Grid.Row="0" Grid.ColumnSpan="3" IsMainMenu="True">
+                <MenuItem Name="mnu_Vertag_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
+                <MenuItem Name="mnu_Vertag_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+                <MenuItem Name="mnu_Vertag_Export" Header="_Exportieren" />
+                <MenuItem Name="mnu_Vertag_Drucken" Header="_Drucken" />
+            </Menu>
+
+            <Grid Grid.Row="1">
+
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <!-- Menuzeile Vertagdaten -->
-                <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
-                    <MenuItem Name="mnu_Vertag_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
-                    <MenuItem Name="mnu_Vertag_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
-                    <MenuItem Name="mnu_Vertag_Export" Header="_Exportieren" />
-                    <MenuItem Name="mnu_Vertag_Drucken" Header="_Drucken" />
-                </Menu>
+
                 <!-- Suchmaske Vertragsdaten: Spalte 1 -->
-                <StackPanel Grid.Row="1" Grid.Column="0" MinWidth="200">
+                <StackPanel Margin="10 0 0 10" Grid.Column="0" MinWidth="200">
                     <Label Content="Name"/>
-                    <TextBox Name="tbx_Vertrag_Name" Text="{Binding Path=Tbx_Vertrag_Name,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <TextBox Name="tbx_Vertrag_Name" Text="{Binding Path=Tbx_Vertrag_Name,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Width="200"/>
                     <Label Content="Vorname"/>
-                    <TextBox Name="tbx_Vertrag_Vorname" Text="{Binding Path=Tbx_Vertrag_Vorname,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <TextBox Name="tbx_Vertrag_Vorname" Text="{Binding Path=Tbx_Vertrag_Vorname,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Width="200"/>
                     <Label Content="Firma"/>
-                    <TextBox Name="tbx_Vertrag_Firma" Text="{Binding Path=Tbx_Vertrag_Firma,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <TextBox Name="tbx_Vertrag_Firma" Text="{Binding Path=Tbx_Vertrag_Firma,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Width="200"/>
                     <Label Content="Nr." />
-                    <TextBox Name="tbx_Vertrag_Nummer" Text="{Binding Path=Tbx_Vertrag_Nummer,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <TextBox Name="tbx_Vertrag_Nummer" Text="{Binding Path=Tbx_Vertrag_Nummer,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Width="200"/>
                 </StackPanel>
                 <!-- Suchmaske Vertragsdaten: Spalte 2 -->
-                <StackPanel Margin="10 0 0 10" Grid.Row="1"  Grid.Column="1" MinWidth="200">
+                <StackPanel Margin="10 0 0 10" Grid.Column="1" MinWidth="200">
                     <Label Content="Datum" />
-                    <TextBox Name="tbx_Vertrag_Datum" Text="{Binding Path=Tbx_Vertrag_Datum,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <TextBox Name="tbx_Vertrag_Datum" Text="{Binding Path=Tbx_Vertrag_Datum,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Width="200"/>
                     <Label Content="Auftrag" />
-                    <TextBox Name="tbx_Vertrag_Auftrag" Text="{Binding Path=Tbx_Vertrag_Auftrag,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <TextBox Name="tbx_Vertrag_Auftrag" Text="{Binding Path=Tbx_Vertrag_Auftrag,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Width="200"/>
                     <Label Content="Bildungsträger" />
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Bildungstraeger" ItemsSource="{Binding Cbx_Vertrag_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="{Binding SelectedItem_Vertrag_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Bildungstraeger" ItemsSource="{Binding Cbx_Vertrag_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="{Binding SelectedItem_Vertrag_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
                     <Label Content="Kostenstelle" />
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Kostenstelle" ItemsSource="{Binding Cbx_Vertrag_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Kostenstelle" ItemsSource="{Binding Cbx_Vertrag_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
                 </StackPanel>
                 <!-- Suchmaske Vertragsdaten: Spalte 3 -->
-                <StackPanel Margin="10 0 0 10" Grid.Row="1"  Grid.Column="2" MinWidth="200">
+                <StackPanel Margin="10 0 0 10" Grid.Column="2" MinWidth="200">
                     <Label Content="Abteilung" />
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Abteilung" ItemsSource="{Binding Cbx_Vertrag_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Abteilung" ItemsSource="{Binding Cbx_Vertrag_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
                     <Label Content="Thema" />
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Thema" ItemsSource="{Binding Cbx_Vertrag_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Thema" ItemsSource="{Binding Cbx_Vertrag_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -82,15 +80,15 @@
                     </Grid>
                 </StackPanel>
             </Grid>
-        </Border>
-        <!-- Ergebnisbereich -->
-        <Syncfusion:SfDataGrid Grid.Row="1" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"  HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch" Height="300" AllowSorting="True" Margin="5">
-            <Syncfusion:SfDataGrid.Columns>
-                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
-                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
-            </Syncfusion:SfDataGrid.Columns>
-        </Syncfusion:SfDataGrid>
-    </Grid>
+            <!-- Ergebnisbereich -->
+            <Syncfusion:SfDataGrid Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
+                                   AllowSorting="True" Margin="5">
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
+        </Grid>
+    </Border>
 </base:TIS3ActiveView>
