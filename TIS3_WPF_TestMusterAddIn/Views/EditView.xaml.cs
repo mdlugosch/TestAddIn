@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,26 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Practices.Prism.Regions;
-using TIS3_Base;
-using Microsoft.Practices.ServiceLocation;
-using TIS3_WPF_TestMusterAddIn.Infrastructure;
-using System.ComponentModel;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
     /// <summary>
-    /// Interaktionslogik für AbfrageView.xaml
+    /// Interaktionslogik für EditView.xaml
     /// </summary>
-
-    [Export("AbfrageView"), PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class AbfrageView : TIS3_Base.TIS3ActiveView
+    public partial class EditView : UserControl
     {
-       public Guid InstanceID { get; private set; }  
-
-        public AbfrageView()
+        public EditView()
         {
             InitializeComponent();
-        }      
+        }
     }
 }

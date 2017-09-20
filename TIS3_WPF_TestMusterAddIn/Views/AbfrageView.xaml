@@ -20,7 +20,7 @@
             <MenuItem Name="mnu_Personaldaten" Header="Personaldaten" Command="{Binding OpenPersonalSuche}"/>
             <MenuItem Name="mnu_Vertragsdaten" Header="Vertragsdaten" Command="{Binding OpenVertragsSuche}"/>
             <MenuItem Name="mnu_Zahlungsanweisung" Header="Zahlungsanweisung" Command="{Binding OpenZahlungsanweisungsSuche}"/>
-            <MenuItem Name="mnu_Bewertungsbgen" Header="Bewertungsbogen" Command="{Binding OpenBewertungsSuche}"/>
+            <MenuItem Name="mnu_Bewertungsbogen" Header="Bewertungsbogen" Command="{Binding OpenBewertungsSuche}"/>
         </Menu>
 
         <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding SearchPanel}"

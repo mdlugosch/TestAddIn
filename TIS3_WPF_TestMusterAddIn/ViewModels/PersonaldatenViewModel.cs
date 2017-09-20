@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         # region Testdaten
         public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
+        public wt2_honorarkraft SelectedHonorar { get; set; } 
         # endregion
 
         # region Elemente der Personaldaten-Suchmaske
@@ -54,7 +56,8 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public ObservableCollection<wt2_konst_honorarkraft_thema> Cbx_Personal_Thema { get; set; }
         # endregion
 
-        # region MenuCommands der Personaldaten-Suchmaske
+        # region Commands der Personaldaten-Suchmaske
+        public RelayCommand OpenEditViewCommand { get; set; }
         public RelayCommand ResetCommand { get; set; }
         public RelayCommand SearchCommand { get; set; }
         # endregion
@@ -66,6 +69,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             HonorarListe = hDAO.LoadTestdata();
             # endregion
 
+            this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
             InitComboBoxes();
@@ -133,6 +137,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 + Chkbx_Status_Verfolgen + " / " 
                 + Chkbx_Status_Pruefen + " / " 
                 + Chkbx_Status_bedenklich);
+        }
+
+        private void OpenEditView(object dataObj)
+        {
+            int test = ((wt2_honorarkraft)dataObj).hk_ident;
+            Console.WriteLine(test);
         }
         # endregion
 

@@ -20,13 +20,12 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// <summary>
     /// Interaktionslogik für VertragsdatenView.xaml
     /// </summary>
-    [Export("VertragsdatenView"), PartCreationPolicy(CreationPolicy.NonShared)] 
+    [Export("VertragsdatenView")] 
     public partial class VertragsdatenView : TIS3_Base.TIS3ActiveView
     {
         public VertragsdatenView()
         {
             InitializeComponent();
-            this.DataContext = new VertragsdatenViewModel();
         }
     }
 }

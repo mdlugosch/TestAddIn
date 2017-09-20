@@ -18,9 +18,11 @@ using TIS3_WPF_TestMusterAddIn.Infrastructure;
 using TIS3_WPF_TestMusterAddIn.Views;
 using WinTIS30db_entwModel.Lookup;
 
+
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
-    class AbfrageViewModel : TIS3ActiveViewModel
+
+    public class AbfrageViewModel : TIS3ActiveViewModel
     {
 
         // Laden des aktuellen RegionManagers
@@ -70,14 +72,14 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         {
             Header.Title = "Suchmaske";                         // Header Attribut zum bestimmen des Tab-Namens
             Header.Group = "Honorarkräfteverwaltung";           // Gruppenname der Anwendungs-Tabs
-
+            
             /*
              * Implementation der Hauptmenu RelayCommands
              */
             OpenPersonalSuche = new RelayCommand(_execute => { LadePersonaldatenView(); }, _canExecute => { return true; });
             OpenVertragsSuche = new RelayCommand(_execute => { LadeVertragsdatenView(); }, _canExecute => { return true; });
             OpenZahlungsanweisungsSuche = new RelayCommand(_execute => { LadeZahlungsanweisungView(); }, _canExecute => { return true; });
-            OpenBewertungsSuche = new RelayCommand(_execute => { LadeBewertungsbogenView(); }, _canExecute => { return true; });    
+            OpenBewertungsSuche = new RelayCommand(_execute => { LadeBewertungsbogenView(); }, _canExecute => { return true; });
              }
             # endregion
 
@@ -95,6 +97,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         private object GetStartView(string viewName)
         {
             var startView = (TIS3ViewBase)ServiceLocator.Current.GetInstance<object>(viewName);
+            ViewModelLocator.SetAutoWireViewModel(startView as DependencyObject, true);
    
             return startView;
         }

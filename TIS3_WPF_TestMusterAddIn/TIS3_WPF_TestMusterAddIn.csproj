@@ -89,25 +89,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="ReachFramework" />
-    <Reference Include="Syncfusion.Data.WPF, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Syncfusion.Grid.WPF, Version=13.2450.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Syncfusion.GridCommon.Wpf, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Syncfusion.Linq.Base, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Syncfusion.SfGrid.WPF, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Syncfusion.Shared.Wpf, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -157,6 +141,9 @@
     </Compile>
     <Compile Include="Views\BewertungsbogenView.xaml.cs">
       <DependentUpon>BewertungsbogenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditView.xaml.cs">
+      <DependentUpon>EditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PersonaldatenView.xaml.cs">
       <DependentUpon>PersonaldatenView.xaml</DependentUpon>
@@ -210,6 +197,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PersonaldatenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -238,8 +229,8 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>echo Kopiere von "$(TargetDir)"
-echo nach "$(SolutionDir)TIS3_WPF\TIS3_WPF_Main\bin\$(ConfigurationName)"
-xcopy /Y "$(TargetDir)*.*" "$(SolutionDir)TIS3_WPF\TIS3_WPF_Main\bin\$(ConfigurationName)"</PostBuildEvent>
+echo nach "$(SolutionDir)TIS3_WPF\TIS3_WPF_Main\bin\$(ConfigurationName)\excl"
+xcopy /Y "$(TargetDir)*.*" "$(SolutionDir)TIS3_WPF\TIS3_WPF_Main\bin\$(ConfigurationName)\excl"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

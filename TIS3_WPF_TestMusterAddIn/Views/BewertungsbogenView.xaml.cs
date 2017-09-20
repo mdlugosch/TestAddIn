@@ -20,13 +20,12 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// <summary>
     /// Interaktionslogik für BewertungsbogenView.xaml
     /// </summary>
-   [Export("BewertungsbogenView"), PartCreationPolicy(CreationPolicy.NonShared)] 
+   [Export("BewertungsbogenView")] 
     public partial class BewertungsbogenView : TIS3_Base.TIS3ActiveView
     {
         public BewertungsbogenView()
         {
             InitializeComponent();
-            this.DataContext = new BewertungsbogenViewModel();
         }
     }
 }

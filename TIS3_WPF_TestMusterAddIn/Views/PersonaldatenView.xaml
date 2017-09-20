@@ -1,10 +1,10 @@
-﻿<base:TIS3ActiveView
+﻿<base:TIS3ActiveView x:Class="TIS3_WPF_TestMusterAddIn.Views.PersonaldatenView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
-             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.PersonaldatenView"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" 
              mc:Ignorable="d">
 
     <!-- *** Suchmaske: Personaldaten *** -->
@@ -86,14 +86,24 @@
                 </Grid>
             </Grid>
             <!-- Ergebnisbereich -->
-            <Syncfusion:SfDataGrid Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
-                                   AllowSorting="True">
-                <Syncfusion:SfDataGrid.Columns>
+            <Syncfusion:SfDataGrid x:Name="PersonaldatenGrid" Grid.Row="2" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" 
+                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                
+                <Syncfusion:SfDataGrid.RowStyle>
+                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
+                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
+                    </Style>
+                </Syncfusion:SfDataGrid.RowStyle>
+                
+                        <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
+            
         </Grid>
     </Border>
 </base:TIS3ActiveView>

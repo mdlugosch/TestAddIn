@@ -20,13 +20,12 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// <summary>
     /// Interaktionslogik für ZahlungsanweisungView.xaml
     /// </summary>
-    [Export("ZahlungsanweisungView"), PartCreationPolicy(CreationPolicy.NonShared)] 
+    [Export("ZahlungsanweisungView")] 
     public partial class ZahlungsanweisungView : TIS3_Base.TIS3ActiveView
     {
         public ZahlungsanweisungView()
         {
             InitializeComponent();
-            this.DataContext = new ZahlungsanweisungViewModel();
         }
     }
 }
