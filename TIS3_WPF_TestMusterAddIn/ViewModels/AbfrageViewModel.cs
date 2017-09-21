@@ -66,7 +66,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         private static Uri BewertungsbogenViewUri = new Uri("/BewertungsbogenView", UriKind.Relative);
         # endregion
 
-
         # region Init() - Ausführung wenn Klasse Instanziiert wird
         public override void Init()
         {

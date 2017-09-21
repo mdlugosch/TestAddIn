@@ -18,12 +18,12 @@ using TIS3_Base;
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
     /// <summary>
-    /// Interaktionslogik für EditView.xaml
+    /// Interaktionslogik für NeuaufnahmeView.xaml
     /// </summary>
     [Export("EditView"), PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class EditView : TIS3ActiveView
+    public partial class NeuaufnahmeView : TIS3ActiveView
     {
-        public EditView()
+        public NeuaufnahmeView()
         {
             InitializeComponent();
         }

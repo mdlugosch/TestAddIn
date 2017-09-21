@@ -1,5 +1,6 @@
 ﻿using BFZ_Common_Lib.MVVM;
 using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.ServiceLocation;
 using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
     [NotifyPropertyChanged]
     public class PersonaldatenViewModel : TIS3ActiveViewModel, INavigationAware
     {
+        // Laden des aktuellen RegionManagers
+        public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+
         # region Data Access Objecte für Honorarkraefte Tabellen
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
         LookupRepository LookRepo = new LookupRepository();
@@ -141,8 +145,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         private void OpenEditView(object dataObj)
         {
-            int test = ((wt2_honorarkraft)dataObj).hk_ident;
-            Console.WriteLine(test);
+             
+            // Laden der EditView in die Region MainWorkspace.
+            regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView", UriKind.Relative));
+            
+            //int test = ((wt2_honorarkraft)dataObj).hk_ident;
+            //Console.WriteLine(test);
         }
         # endregion
 

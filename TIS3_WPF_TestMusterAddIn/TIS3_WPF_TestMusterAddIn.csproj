@@ -132,6 +132,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AbfrageViewModel.cs" />
     <Compile Include="ViewModels\BewertungsbogenViewModel.cs" />
+    <Compile Include="ViewModels\EditViewModel.cs" />
     <Compile Include="ViewModels\PersonaldatenViewModel.cs" />
     <Compile Include="ViewModels\TestMusterAppViewModel.cs" />
     <Compile Include="ViewModels\VertragsdatenViewModel.cs" />
@@ -144,6 +145,9 @@
     </Compile>
     <Compile Include="Views\EditView.xaml.cs">
       <DependentUpon>EditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NeuaufnahmeView.xaml.cs">
+      <DependentUpon>NeuaufnahmeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PersonaldatenView.xaml.cs">
       <DependentUpon>PersonaldatenView.xaml</DependentUpon>
@@ -198,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NeuaufnahmeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
