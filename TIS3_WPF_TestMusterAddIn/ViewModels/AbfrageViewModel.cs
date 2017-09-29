@@ -21,7 +21,7 @@ using WinTIS30db_entwModel.Lookup;
 
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
-
+    [NotifyPropertyChanged]
     public class AbfrageViewModel : TIS3ActiveViewModel
     {
 
@@ -51,6 +51,11 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         }
         # endregion
 
+        public bool PersonalMenuStatus { get; set; }
+        public bool VertragMenuStatus { get; set; }
+        public bool ZahlungMenuStatus { get; set; }
+        public bool BewertungMenuStatus { get; set; }
+
         # region Definition der Hauptmenu RelayCommands
         public RelayCommand OpenPersonalSuche { get; set; }
         public RelayCommand OpenVertragsSuche { get; set; }
@@ -71,7 +76,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         {
             Header.Title = "Suchmaske";                         // Header Attribut zum bestimmen des Tab-Namens
             Header.Group = "Honorarkräfteverwaltung";           // Gruppenname der Anwendungs-Tabs
-            
+
+            PersonalMenuStatus = true;
+            VertragMenuStatus = false;
+            ZahlungMenuStatus = false;
+            BewertungMenuStatus = false;
+
             /*
              * Implementation der Hauptmenu RelayCommands
              */
@@ -110,21 +120,41 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
          */
         public void LadePersonaldatenView() 
         {
+            PersonalMenuStatus = true;
+            VertragMenuStatus = false;
+            ZahlungMenuStatus = false;
+            BewertungMenuStatus = false;
+
             this.regionManager.RequestNavigate(SearchPanel, PersonaldatenViewUri);
         }
 
         public void LadeVertragsdatenView() 
         {
+            PersonalMenuStatus = false;
+            VertragMenuStatus = true;
+            ZahlungMenuStatus = false;
+            BewertungMenuStatus = false;
+
             this.regionManager.RequestNavigate(SearchPanel, VertragsdatenViewUri);
         }
 
         public void LadeZahlungsanweisungView() 
         {
+            PersonalMenuStatus = false;
+            VertragMenuStatus = false;
+            ZahlungMenuStatus = true;
+            BewertungMenuStatus = false;
+
             this.regionManager.RequestNavigate(SearchPanel, ZahlungsanweisungViewUri);
         }
 
         public void LadeBewertungsbogenView() 
         {
+            PersonalMenuStatus = false;
+            VertragMenuStatus = false;
+            ZahlungMenuStatus = false;
+            BewertungMenuStatus = true;
+
             this.regionManager.RequestNavigate(SearchPanel, BewertungsbogenViewUri);
         }
         # endregion

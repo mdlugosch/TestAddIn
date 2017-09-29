@@ -17,12 +17,12 @@ using System.Windows.Shapes;
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
     /// <summary>
-    /// Interaktionslogik für TestMusterAppView.xaml
+    /// Interaktionslogik für AddThemeView.xaml
     /// </summary>
-    [Export ("TestMusterAppView")]
-    public partial class TestMusterAppView : TIS3_Base.TIS3ActiveView
+    [Export("AddThemeView"), PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class AddThemeView : TIS3_Base.TIS3ActiveView
     {
-        public TestMusterAppView()
+        public AddThemeView()
         {
             InitializeComponent();
         }

@@ -7,629 +7,677 @@
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.EditView" 
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1500">
+
+    <base:TIS3ActiveView.Resources>
+        <Style x:Key="CheckBoxListBoxEinsatzgebiete" TargetType="{x:Type ListBox}">
+            <Setter Property="ItemContainerStyle"
+            Value="{DynamicResource CheckBoxListBoxItemEinsatzgebiete}" />
+        </Style>
+        <Style x:Key="CheckBoxListBoxItemEinsatzgebiete" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Einsatzgebiet.khke_bezeichnung}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </base:TIS3ActiveView.Resources>
+    
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
     <Grid>
-        <Syncfusion:TabControlExt HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Syncfusion:TabItemExt  Header="Personaldaten" IsNewTab="False" MinWidth="150" MinHeight="20">
-                <StackPanel>
-                    <Label Content="Personaldaten" />
-                    <Border BorderBrush="Black" Margin="0 0 0 0" BorderThickness="1">
-                        <!-- Personaldaten Haupt-Grid-Aufteilung -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <!-- Spalte 0 Labels -->
-                            <StackPanel Grid.Column="0" Margin="10 10 0 0">
-                                <Label Content="Anrede / Titel" />
-                                <Label Content="Vorname" Margin="0 10 0 0"/>
-                                <Label Content="Nachname" Margin="0 10 0 0"/>
-                                <Label Content="Firma" Height="50" Margin="0 10 0 0"/>
-                                <Label Content="Strasse" Margin="0 10 0 0"/>
-                                <Label Content="PLZ / Ort" Margin="0 10 0 0"/>
-                                <Label Content="Telefon/ Fax" Margin="0 10 0 0"/>
-                                <Label Content="Tel. Firma /Mobil" Margin="0 10 0 0"/>
-                                <Label Content="EMail" Margin="0 10 0 0"/>
-                                <Label Content="BLZ / Bank" Margin="0 10 0 0"/>
-                                <Label Content="Konto" Margin="0 10 0 0"/>
-                                <Label Content="Honorar je UE" Margin="0 10 0 0"/>
-                                <Label Content="Bildungsträger" Margin="0 10 0 0"/>
-                                <Label Content="Abteilung" Margin="0 10 0 0"/>
-                                <Label Content="Team" Margin="0 10 0 0"/>
-                            </StackPanel>
-                            <!-- Spalte 1 Felder für Labels aus Spalte 0 -->
-                            <StackPanel Grid.Column="1" Margin="10 10 10 0">
-                                <!-- Stackpanel: Anrede/ Titel -->
-                                <StackPanel Orientation="Horizontal">
-                                    <Syncfusion:ComboBoxAdv
+            <Grid.Resources>
+                <HierarchicalDataTemplate x:Key="Child_template">
+                    <CheckBox IsChecked="{Binding IsChecked}">
+                        <TextBlock Text="{Binding Thema.khkth_bezeichnung}"/>
+                    </CheckBox>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate x:Key="Parent_template"  ItemsSource="{Binding ThemeGroup}" ItemTemplate="{StaticResource Child_template}">
+                    <TextBlock Text="{Binding Gruppe}"/>
+                </HierarchicalDataTemplate>
+            </Grid.Resources>
+        
+            <Syncfusion:TabControlExt HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Syncfusion:TabItemExt  Header="Personaldaten" IsNewTab="False" MinWidth="150" MinHeight="20">
+                    <StackPanel>
+                        <!-- Menuzeile Personaldaten -->
+                        <Menu IsMainMenu="True">
+                            <MenuItem Name="mnu_Personal_Speichern" Header="_Speichern"  />
+                            <Separator />
+                            <MenuItem Name="mnu_Personal_Reset" Header="_Reset" />
+                        </Menu>
+                        <Label Content="Personaldaten" />
+                        <Border BorderBrush="Black" Margin="0 0 0 0" BorderThickness="1">
+                            <!-- Personaldaten Haupt-Grid-Aufteilung -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Spalte 0 Labels -->
+                                <StackPanel Grid.Column="0" Margin="10 10 0 0">
+                                    <Label Content="Anrede / Titel" />
+                                    <Label Content="Vorname" Margin="0 10 0 0"/>
+                                    <Label Content="Nachname" Margin="0 10 0 0"/>
+                                    <Label Content="Firma" Height="50" Margin="0 10 0 0"/>
+                                    <Label Content="Strasse" Margin="0 10 0 0"/>
+                                    <Label Content="PLZ / Ort" Margin="0 10 0 0"/>
+                                    <Label Content="Telefon/ Fax" Margin="0 10 0 0"/>
+                                    <Label Content="Tel. Firma /Mobil" Margin="0 10 0 0"/>
+                                    <Label Content="EMail" Margin="0 10 0 0"/>
+                                    <Label Content="BLZ / Bank" Margin="0 10 0 0"/>
+                                    <Label Content="Konto" Margin="0 10 0 0"/>
+                                    <Label Content="Honorar je UE" Margin="0 10 0 0"/>
+                                    <Label Content="Bildungsträger" Margin="0 10 0 0"/>
+                                    <Label Content="Abteilung" Margin="0 10 0 0"/>
+                                    <Label Content="Team" Margin="0 10 0 0"/>
+                                </StackPanel>
+                                <!-- Spalte 1 Felder für Labels aus Spalte 0 -->
+                                <StackPanel Grid.Column="1" Margin="10 10 10 0">
+                                    <!-- Stackpanel: Anrede/ Titel -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <Syncfusion:ComboBoxAdv ItemsSource="{Binding Cbx_Personal_Anrede}"
                                 Name="cbx_Personal_Anrede" Width="100" Margin="0 5 0 10"   
                                 Syncfusion:SkinStorage.VisualStyle="Metro" />
-                                    <Syncfusion:ComboBoxAdv
+                                        <Syncfusion:ComboBoxAdv ItemsSource="{Binding Cbx_Personal_Titel}"
                                 Name="cbx_Personal_Titel" Width="100" Margin="10 5 0 10"   
                                 Syncfusion:SkinStorage.VisualStyle="Metro" />
-                                </StackPanel>
-                                <TextBox Name="tbx_Personal_Vorname" Margin="0 5 0 0"
+                                    </StackPanel>
+                                    <TextBox Name="tbx_Personal_Vorname" Margin="0 5 0 0"
+                             HorizontalAlignment="Left" Width="210" Text="{Binding Tbx_Personal_Vorname}"/>
+                                    <TextBox Name="tbx_Personal_Nachname" Margin="0 15 0 0"
+                             HorizontalAlignment="Left" Width="210" Text="{Binding Tbx_Personal_Nachname}"/>
+                                    <TextBox Name="tbx_Personal_Firma" Margin="0 15 0 0"
+                             HorizontalAlignment="Left" Height="50"  Width="210" Text="{Binding Tbx_Personal_Firma}"/>
+                                    <TextBox Name="tbx_Personal_Strasse" Margin="0 10 0 0"
                              HorizontalAlignment="Left" Width="210" />
-                                <TextBox Name="tbx_Personal_Nachname" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="210" />
-                                <TextBox Name="tbx_Personal_Firma" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Height="50"  Width="210" />
-                                <TextBox Name="tbx_Personal_Strasse" Margin="0 10 0 0"
-                             HorizontalAlignment="Left" Width="210" />
-                                <!-- Stackpanel: Plz / Ort -->
-                                <StackPanel Orientation="Horizontal" Margin="0 10 10 0">
-                                    <TextBox Name="tbx_Personal_Plz" Margin="0 0 10 0"
+                                    <!-- Stackpanel: Plz / Ort -->
+                                    <StackPanel Orientation="Horizontal" Margin="0 10 10 0">
+                                        <TextBox Name="tbx_Personal_Plz" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="50" />
-                                    <TextBox Name="tbx_Personal_Ort" Margin="0 0 10 0"
+                                        <TextBox Name="tbx_Personal_Ort" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="150" />
-                                </StackPanel>
-                                <!-- Stackpanel: Privattelefon/ Fax -->
-                                <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
-                                    <TextBox Name="tbx_Personal_PTel" Margin="0 0 10 0"
+                                    </StackPanel>
+                                    <!-- Stackpanel: Privattelefon/ Fax -->
+                                    <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
+                                        <TextBox Name="tbx_Personal_PTel" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="100" />
-                                    <TextBox Name="tbx_Personal_Fax" Margin="0 0 10 0"
+                                        <TextBox Name="tbx_Personal_Fax" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="100" />
-                                </StackPanel>
-                                <!-- Stackpanel: Firmentelefon / Mobiltelefon -->
-                                <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
-                                    <TextBox Name="tbx_Personal_FTel" Margin="0 0 10 0"
+                                    </StackPanel>
+                                    <!-- Stackpanel: Firmentelefon / Mobiltelefon -->
+                                    <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
+                                        <TextBox Name="tbx_Personal_FTel" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="100" />
-                                    <TextBox Name="tbx_Personal_Mobil" Margin="0 0 10 0"
+                                        <TextBox Name="tbx_Personal_Mobil" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="100" />
-                                </StackPanel>
+                                    </StackPanel>
 
-                                <TextBox Name="tbx_Personal_EMail" Margin="0 15 10 0"
+                                    <TextBox Name="tbx_Personal_EMail" Margin="0 15 10 0"
                              HorizontalAlignment="Left" Width="210" />
-                                <!-- Stackpanel: Blz/ Bank -->
-                                <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
-                                    <TextBox Name="tbx_Personal_Blz" Margin="0 0 10 0"
+                                    <!-- Stackpanel: Blz/ Bank -->
+                                    <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
+                                        <TextBox Name="tbx_Personal_Blz" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="100" />
-                                    <TextBox Name="tbx_Personal_Bank" Margin="0 0 10 0"
+                                        <TextBox Name="tbx_Personal_Bank" Margin="0 0 10 0"
                              HorizontalAlignment="Left" Width="100" />
-                                </StackPanel>
-                                <TextBox Name="tbx_Personal_Konto" Margin="0 15 10 0"
+                                    </StackPanel>
+                                    <TextBox Name="tbx_Personal_Konto" Margin="0 15 10 0"
                              HorizontalAlignment="Left" Width="210" />
-                                <TextBox Name="tbx_Personal_Ue" Margin="0 10 10 0"
+                                    <TextBox Name="tbx_Personal_Ue" Margin="0 10 10 0"
                              HorizontalAlignment="Left" Width="50" />
-                                <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 15 0 10"   
-                             Syncfusion:SkinStorage.VisualStyle="Metro" />
-                                <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Abteilung" Width="200" Margin="0 5 0 10"   
-                             Syncfusion:SkinStorage.VisualStyle="Metro" />
-                                <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Team" Width="200" Margin="0 5 0 10"   
-                             Syncfusion:SkinStorage.VisualStyle="Metro" />
-                            </StackPanel>
-                            <!-- Spalte 2 Labels -->
-                            <StackPanel Grid.Column="2" Margin="10 10 0 0">
-                                <Label Content="Ausbildung"/>
-                                <Label Content="Studium" Margin="0 10 0 0"/>
-                                <Label Content="Situation" Margin="0 10 0 0"/>
-                                <Label Content="Einsatzgebiet" Margin="0 10 0 0"/>
-                                <Label Content="Fachgebiet" Margin="0 105 0 0"/>
-                                <Label Content="Themen" Margin="0 10 0 0"/>
-                            </StackPanel>
-                            <!-- Spalte 3 Felder für Labels aus Spalte 2 -->
-                            <StackPanel Grid.Column="3" Margin="10 10 0 0">
-                                <TextBox Name="tbx_Personal_Ausbildung" Margin="0 5 0 0"
+                                    <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
+                             Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 15 0 10" DisplayMemberPath="Name1"   
+                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Personal_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
+                             Name="cbx_Personal_Abteilung" Width="200" Margin="0 5 0 10" DisplayMemberPath="Bezeichnung"   
+                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Abteilung}" SelectedIndex="{Binding SelectedItem_Personal_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
+                             Name="cbx_Personal_Teams" Width="200" Margin="0 5 0 10" DisplayMemberPath="Bezeichnung" 
+                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Teams}" SelectedIndex="{Binding SelectedItem_Personal_Team, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                                <!-- Spalte 2 Labels -->
+                                <StackPanel Grid.Column="2" Margin="10 10 0 0">
+                                    <Label Content="Ausbildung"/>
+                                    <Label Content="Studium" Margin="0 10 0 0"/>
+                                    <Label Content="Situation" Margin="0 10 0 0"/>
+                                    <Label Content="Einsatzgebiet" Margin="0 10 0 0"/>
+                                    <Label Content="Fachgebiet" Margin="0 105 0 0"/>
+                                    <Label Content="Themen" Margin="0 10 0 0"/>
+                                </StackPanel>
+                                <!-- Spalte 3 Felder für Labels aus Spalte 2 -->
+                                <StackPanel Grid.Column="3" Margin="10 10 0 0">
+                                    <TextBox Name="tbx_Personal_Ausbildung" Margin="0 5 0 0"
                              HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Personal_Studium" Margin="0 15 0 0"
+                                    <TextBox Name="tbx_Personal_Studium" Margin="0 15 0 0"
                              HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Personal_Situation" Margin="0 15 0 0"
+                                    <TextBox Name="tbx_Personal_Situation" Margin="0 15 0 0"
                              HorizontalAlignment="Left" Width="200" />
-                                <ListBox Name="lbx_Einsatzgebiete" Height="115" Margin="0 15 0 0"/>
-                                <TextBox Name="tbx_Personal_Fachgebiet" Margin="0 15 0 0"
+                                    <ListBox Name="lbx_Einsatzgebiete" Height="115" Margin="0 15 0 0" ItemsSource="{Binding Lbx_Einsatzgebiete}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}"/>
+                                    <TextBox Name="tbx_Personal_Fachgebiet" Margin="0 15 0 0"
                              HorizontalAlignment="Left" Width="200" />
-                                <TreeView Name="tv_Themen" Width="200" Height="115" Margin="0 15 0 0"/>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-            </Syncfusion:TabItemExt>
+                                    <TreeView Name="tv_Themen" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Themen}" Width="250" Height="270" Margin="0 15 0 0"/> 
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Syncfusion:TabItemExt>
 
-            <!-- Tab-Verträge -->
-            <Syncfusion:TabItemExt  Header="Verträge" IsNewTab="False" MinWidth="150" MinHeight="20">
-                <StackPanel>
-                    <Label Content="Verträge" />
-                    <!-- Verträge Haupt-Grid-Aufteilung -->
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <!-- Verträge Spalte 0 -->
-                            <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
+                <!-- Tab-Verträge -->
+                <Syncfusion:TabItemExt  Header="Verträge" IsNewTab="False" MinWidth="150" MinHeight="20">
+                    <StackPanel>
+                        <!-- Menuzeile Vertragsdaten -->
+                        <Menu IsMainMenu="True">
+                            <MenuItem Name="mnu_Vertrag_Speichern" Header="_Speichern"  />
+                            <Separator />
+                            <MenuItem Name="mnu_Vertrag_Reset" Header="_Reset" />
+                        </Menu>
+                        <Label Content="Verträge" />
+                        <!-- Verträge Haupt-Grid-Aufteilung -->
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!-- Verträge Spalte 0 -->
+                                <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" Margin="10 10 0 10"
                                    SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <!--<Syncfusion:SfDataGrid.RowStyle>
-                                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
-                                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
-                                    </Style>
-                                </Syncfusion:SfDataGrid.RowStyle>-->
-                                <Syncfusion:SfDataGrid.Columns>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeile"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Nr."/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Abteilung"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Datum"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="gedruckt"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Unterschrift"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="geändert"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Summe"/>
-                                </Syncfusion:SfDataGrid.Columns>
-                            </Syncfusion:SfDataGrid>
-                            <StackPanel Grid.Column="1" Margin="10">
-                                <Button x:Name="btn_Vertraege_Neu" Content="Neu" Width="100"/>
-                                <Button x:Name="btn_Vertraege_Löschen" Content="Löschen" Width="100" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <!-- Verträge Spalte 1 -->
-                    <Label Content="Vertrag" />
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <!-- Vertrag Spalte 0 -->
-                            <StackPanel Grid.Column="0">
-                                <Label Content="Nr." Margin="0 5 0 0"/>
-                                <Label Content="Abteilung" Margin="0 5 0 0"/>
-                                <Label Content="Vertrags-Datum" Margin="0 5 0 0"/>
-                                <Label Content="Druckdatum" Margin="0 5 0 0"/>
-                                <Label Content="Unterschriftendatum" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <!-- Vertrag Spalte 1 -->
-                            <StackPanel Grid.Column="1" Margin="5 0 0 0">
-                                <TextBox Name="tbx_Vertrag_Nummer" Margin="0 10 0 0"
+                 
+                                    <Syncfusion:SfDataGrid.Columns>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Nr."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Abteilung"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Datum"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="gedruckt"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Unterschrift"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="geändert"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Summe"/>
+                                    </Syncfusion:SfDataGrid.Columns>
+                                </Syncfusion:SfDataGrid>
+                                <StackPanel Grid.Column="1" Margin="10">
+                                    <Button x:Name="btn_Vertraege_Neu" Content="Neu" Width="100"/>
+                                    <Button x:Name="btn_Vertraege_Löschen" Content="Löschen" Width="100" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <!-- Verträge Spalte 1 -->
+                        <Label Content="Vertrag" />
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!-- Vertrag Spalte 0 -->
+                                <StackPanel Grid.Column="0">
+                                    <Label Content="Nr." Margin="0 5 0 0"/>
+                                    <Label Content="Abteilung" Margin="0 5 0 0"/>
+                                    <Label Content="Vertrags-Datum" Margin="0 5 0 0"/>
+                                    <Label Content="Druckdatum" Margin="0 5 0 0"/>
+                                    <Label Content="Unterschriftendatum" Margin="0 5 0 0"/>
+                                </StackPanel>
+                                <!-- Vertrag Spalte 1 -->
+                                <StackPanel Grid.Column="1" Margin="5 0 0 0">
+                                    <TextBox Name="tbx_Vertrag_Nummer" Margin="0 10 0 0"
                                 HorizontalAlignment="Left" Width="200" />
-                                <Syncfusion:ComboBoxAdv
+                                    <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
                                 Name="cbx_Vertrag_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                <TextBox Name="tbx_Vertrag_Datum" Margin="0 10 0 0"
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Vertrag_Abteilung}" SelectedIndex="{Binding SelectedItem_Vertrag_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Name="tbx_Vertrag_Datum" Margin="0 10 0 0"
                                 HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Vertrag_Druckdatum" Margin="0 10 0 0"
+                                    <TextBox Name="tbx_Vertrag_Druckdatum" Margin="0 10 0 0"
                                 HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Vertrag_Unterschriftdatum" Margin="0 10 0 0"
+                                    <TextBox Name="tbx_Vertrag_Unterschriftdatum" Margin="0 10 0 0"
                                 HorizontalAlignment="Left" Width="200" />
-                                <Button x:Name="btn_Vertrag_Reset" Content="Reset" Width="100" Margin="0 10 0 10"/>
-                            </StackPanel>
-                            <!-- Vertrag Spalte 2 -->
-                            <StackPanel Grid.Column="2"  Margin="5 0 0 0">
-                                <Label Content="Aussteller" Margin="0 10 0 0"/>
-                                <Label Content="Bildungsträger" Margin="0 10 0 0"/>
-                            </StackPanel>
-                            <!-- Vertrag Spalte 3 -->
-                            <StackPanel Grid.Column="3"  Margin="5 0 0 0">
-                                <Syncfusion:ComboBoxAdv
+                                    <Button x:Name="btn_Vertrag_Reset" Content="Reset" Width="100" Margin="0 10 0 10"/>
+                                </StackPanel>
+                                <!-- Vertrag Spalte 2 -->
+                                <StackPanel Grid.Column="2"  Margin="5 0 0 0">
+                                    <Label Content="Aussteller" Margin="0 10 0 0"/>
+                                    <Label Content="Bildungsträger" Margin="0 10 0 0"/>
+                                </StackPanel>
+                                <!-- Vertrag Spalte 3 -->
+                                <StackPanel Grid.Column="3"  Margin="5 0 0 0">
+                                    <Syncfusion:ComboBoxAdv
                                 Name="cbx_Vertrag_Aussteller" Width="200" Margin="0 15 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                <Syncfusion:ComboBoxAdv
+                                    <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
                                 Name="cbx_Vertrag_Bildungstraeger" Width="200" Margin="0 15 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                <CheckBox x:Name="chkbx_Vertrag_400" Margin="0 10 0 0"> Vertrag auf 400 € Basis</CheckBox>
-                                <CheckBox x:Name="chkbx_Vertrag_AZWV" Margin="0 10 0 0">
-                                    <TextBlock>
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Vertrag_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Vertrag_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <CheckBox x:Name="chkbx_Vertrag_400" Margin="0 10 0 0">Vertrag auf 400 € Basis</CheckBox>
+                                    <CheckBox x:Name="chkbx_Vertrag_AZWV" Margin="0 10 0 0">
+                                        <TextBlock>
                                     Es handelt sich um einen Auftrag<LineBreak/>
                                     in AZWV-zertifizierten Kursen     
                                     (Umsatzsteuerbefreiung)
-                                    </TextBlock>
-                                </CheckBox>
-                                <CheckBox x:Name="chkbx_Vertrag_Vermittlungsagentur" Margin="0 10 0 0"> Vermittlungsagentur</CheckBox>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <!-- Bereich Position -->
-                    <Label Content="Positionen" />
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Syncfusion:SfDataGrid x:Name="dg_Vertrag_Positionen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <!--<Syncfusion:SfDataGrid.RowStyle>
-                                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
-                                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
-                                    </Style>
-                                </Syncfusion:SfDataGrid.RowStyle>-->
-                                <Syncfusion:SfDataGrid.Columns>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeile"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Kst."/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Auftrag"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Thema"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeitraum"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="UE"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Honorar"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Summe"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Provision"/>
-                                </Syncfusion:SfDataGrid.Columns>
-                            </Syncfusion:SfDataGrid>
-                            <StackPanel Grid.Column="1" Margin="10">
-                                <Button x:Name="btn_Vertrag_Neu" Content="Neu" Width="100"/>
-                                <Button x:Name="btn_Vertrag_Aendern" Content="Ändern" Width="100"/>
-                                <Button x:Name="btn_Vertrag_Löschen" Content="Löschen" Width="100" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>                   
-                </StackPanel>
-            </Syncfusion:TabItemExt>
-            
-            <!-- Tab: Zahlungsanweisungen -->
-            <Syncfusion:TabItemExt  Header="Zahlungsanweisungen" IsNewTab="False" MinWidth="150" MinHeight="20">
-                <StackPanel>
-                    <Label Content="Zahlungsanweisungen" />
-                    <Border BorderBrush="Black" BorderThickness="1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition  Width="auto"/>
-                            <ColumnDefinition  Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Syncfusion:SfDataGrid x:Name="dg_Zahlungsanweisungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <!--<Syncfusion:SfDataGrid.RowStyle>
-                                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
-                                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
-                                    </Style>
-                                </Syncfusion:SfDataGrid.RowStyle>-->
-                            <Syncfusion:SfDataGrid.Columns>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeile"/>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Nr."/>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Abteilung"/>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Monat"/>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="gedruckt"/>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Änderung"/>
-                                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Summe"/>
-                            </Syncfusion:SfDataGrid.Columns>
-                        </Syncfusion:SfDataGrid>
-                        <StackPanel Grid.Column="1" Margin="10">
-                            <Button x:Name="btn_Zahlungen_Neu" Content="Neu" Width="100"/>
-                            <Button x:Name="btn_Zahlungen_Löschen" Content="Löschen" Width="100" />
-                        </StackPanel>
-                    </Grid>
-                    </Border>
-                    <!-- Anzeigebereich der einzelnen Zahlungsanweisungen -->
-                    <Label Content="Zahlungsanweisung" />
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <StackPanel> <!-- Stackpanel-Kapselung für Randdarstellung -->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Column="0" Grid.Row="0">
-                                <Label Content="Nr." Margin="0 5 0 0"/>
-                                <Label Content="Monat" Margin="0 5 0 0"/>
-                                <Label Content="Druckdatum" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Grid.Row="0">
-                                <TextBox Name="tbx_Zahlung_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Zahlung_Monat" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Zahlung_Druckdatum" Margin="0 10 0 10"
-                                HorizontalAlignment="Left" Width="200" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Grid.Row="0">
-                                <Label Content="Bildungsträger" Margin="0 5 0 0"/>
-                                <Label Content="Abteilung" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="3" Grid.Row="0">
-                                <Syncfusion:ComboBoxAdv
-                                Name="cbx_Zahlung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                <Syncfusion:ComboBoxAdv
-                                Name="cbx_Zahlung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                            </StackPanel>
-                        </Grid>
+                                        </TextBlock>
+                                    </CheckBox>
+                                    <CheckBox x:Name="chkbx_Vertrag_Vermittlungsagentur" Margin="0 10 0 0">Vermittlungsagentur</CheckBox>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <!-- Bereich Position -->
+                        <Label Content="Positionen" />
+                        <Border BorderBrush="Black" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Syncfusion:SfDataGrid x:Name="dg_Vertrag_Positionen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
+                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                          
+                                    <Syncfusion:SfDataGrid.Columns>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Kst."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Auftrag"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Thema"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeitraum"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="UE"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Honorar"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Summe"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Provision"/>
+                                    </Syncfusion:SfDataGrid.Columns>
+                                </Syncfusion:SfDataGrid>
+                                <StackPanel Grid.Column="1" Margin="10">
+                                    <Button x:Name="btn_Vertrag_Neu" Content="Neu" Width="100"/>
+                                    <Button x:Name="btn_Vertrag_Aendern" Content="Ändern" Width="100"/>
+                                    <Button x:Name="btn_Vertrag_Löschen" Content="Löschen" Width="100" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Syncfusion:TabItemExt>
+
+                <!-- Tab: Zahlungsanweisungen -->
+                <Syncfusion:TabItemExt  Header="Zahlungsanweisungen" IsNewTab="False" MinWidth="150" MinHeight="20">
+                    <StackPanel>
+                        <!-- Menuzeile Zahlungsanweisungen -->
+                        <Menu IsMainMenu="True">
+                            <MenuItem Name="mnu_Zahlung_Speichern" Header="_Speichern"  />
+                            <Separator />
+                            <MenuItem Name="mnu_Zahlung_Reset" Header="_Reset" />
+                        </Menu>
+                        <Label Content="Zahlungsanweisungen" />
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Syncfusion:SfDataGrid x:Name="dg_Zahlungsanweisungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
+                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    
+                                    <Syncfusion:SfDataGrid.Columns>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Nr."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Abteilung"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Monat"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="gedruckt"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Änderung"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Summe"/>
+                                    </Syncfusion:SfDataGrid.Columns>
+                                </Syncfusion:SfDataGrid>
+                                <StackPanel Grid.Column="1" Margin="10">
+                                    <Button x:Name="btn_Zahlungen_Neu" Content="Neu" Width="100"/>
+                                    <Button x:Name="btn_Zahlungen_Löschen" Content="Löschen" Width="100" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <!-- Anzeigebereich der einzelnen Zahlungsanweisungen -->
+                        <Label Content="Zahlungsanweisung" />
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <StackPanel>
+                                <!-- Stackpanel-Kapselung für Randdarstellung -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="0">
+                                        <Label Content="Nr." Margin="0 5 0 0"/>
+                                        <Label Content="Monat" Margin="0 5 0 0"/>
+                                        <Label Content="Druckdatum" Margin="0 5 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Grid.Row="0">
+                                        <TextBox Name="tbx_Zahlung_Nummer" Margin="0 10 0 0"
+                                HorizontalAlignment="Left" Width="200" />
+                                        <TextBox Name="tbx_Zahlung_Monat" Margin="0 10 0 0"
+                                HorizontalAlignment="Left" Width="200" />
+                                        <TextBox Name="tbx_Zahlung_Druckdatum" Margin="0 10 0 10"
+                                HorizontalAlignment="Left" Width="200" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Grid.Row="0">
+                                        <Label Content="Bildungsträger" Margin="0 5 0 0"/>
+                                        <Label Content="Abteilung" Margin="0 5 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="3" Grid.Row="0">
+                                        <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
+                                Name="cbx_Zahlung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Zahlung_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Zahlung_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
+                                Name="cbx_Zahlung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Zahlung_Abteilung}" SelectedIndex="{Binding SelectedItem_Zahlung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label Content="Positionen" Grid.Column="0" Grid.Row="0"/>
+                                    <Syncfusion:SfDataGrid x:Name="dg_Zahlung_Positionen" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" Grid.Column="0" Grid.Row="1"
+                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                  
+                                        <Syncfusion:SfDataGrid.Columns>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Kst."/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Auftrag"/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Thema"/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeitraum"/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="UE"/>
+                                        </Syncfusion:SfDataGrid.Columns>
+                                    </Syncfusion:SfDataGrid>
+                                    <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
+                                        <Button x:Name="btn_Zahlung_Neu" Content="Neu" Width="100"/>
+                                        <Button x:Name="btn_Zahlung_Aendern" Content="Ändern" Width="100"/>
+                                        <Button x:Name="btn_Zahlung_Löschen" Content="Löschen" Width="100" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                            <!-- Stackpanel-Kapselung für Randdarstellung -->
+                        </Border>
+                    </StackPanel>
+                </Syncfusion:TabItemExt>
+
+                <Syncfusion:TabItemExt  Header="Bewertung" IsNewTab="False" MinWidth="150" MinHeight="20">
+                    <StackPanel>
+                        <!-- Menuzeile Bewertung -->
+                        <Menu IsMainMenu="True">
+                            <MenuItem Name="mnu_Bewertung_Speichern" Header="_Speichern"  />
+                            <Separator />
+                            <MenuItem Name="mnu_Bewertung_Reset" Header="_Reset" />
+                        </Menu>
+                        <Label Content="Bewertungen" />
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  Width="auto"/>
+                                    <ColumnDefinition  Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Syncfusion:SfDataGrid x:Name="dg_Bewertungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
+                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                                    <Syncfusion:SfDataGrid.Columns>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Nr."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Abteilung"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Datum"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Befr. TL"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Befr. TN"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Ergebnis"/>
+                                    </Syncfusion:SfDataGrid.Columns>
+                                </Syncfusion:SfDataGrid>
+                                <StackPanel Grid.Column="1" Margin="10">
+                                    <Button x:Name="btn_Bewertung_Neu" Content="Neu" Width="100"/>
+                                    <Button x:Name="btn_Bewertung_Löschen" Content="Löschen" Width="100" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <Label Content="Bewertung" />
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <Label Content="Positionen" Grid.Column="0" Grid.Row="0"/>
-                                <Syncfusion:SfDataGrid x:Name="dg_Zahlung_Positionen" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" Grid.Column="0" Grid.Row="1"
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <!--<Syncfusion:SfDataGrid.RowStyle>
-                                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
-                                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
-                                    </Style>
-                                </Syncfusion:SfDataGrid.RowStyle>-->
-                                    <Syncfusion:SfDataGrid.Columns>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeile"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Kst."/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Auftrag"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Thema"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeitraum"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="UE"/>
-                                    </Syncfusion:SfDataGrid.Columns>
-                                </Syncfusion:SfDataGrid>
-                                <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
-                                    <Button x:Name="btn_Zahlung_Neu" Content="Neu" Width="100"/>
-                                    <Button x:Name="btn_Zahlung_Aendern" Content="Ändern" Width="100"/>
-                                    <Button x:Name="btn_Zahlung_Löschen" Content="Löschen" Width="100" />
+                                <StackPanel Grid.Column="0" Grid.Row="0">
+                                    <Label Content="Nr." Margin="0 5 0 0"/>
+                                    <Label Content="Datum" Margin="0 5 0 0"/>
+                                    <Label Content="Befragung TL" Margin="0 5 0 0"/>
+                                    <Label Content="Befragung TN" Margin="0 5 0 0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="5 0 0 0">
+                                    <TextBox Name="tbx_Bewertung_Nummer" Margin="0 10 0 0"
+                                HorizontalAlignment="Left" Width="200" />
+                                    <TextBox Name="tbx_Bewertung_Datum" Margin="0 10 0 0"
+                                HorizontalAlignment="Left" Width="200" />
+                                    <!-- Bewertungsspanne von/bis als zusätzliche StackPanels -->
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Name="tbx_Bewertung_TLvon" Margin="0 10 0 0"
+                                HorizontalAlignment="Left" Width="50" />
+                                        <TextBox Name="tbx_Bewertung_TLbis" Margin="5 10 0 0"
+                                HorizontalAlignment="Left" Width="50" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Name="tbx_Bewertung_TNvon" Margin="0 10 0 10"
+                                HorizontalAlignment="Left" Width="50" />
+                                        <TextBox Name="tbx_Bewertung_TNbis" Margin="5 10 0 10"
+                                HorizontalAlignment="Left" Width="50" />
+                                    </StackPanel>
+                                    <!-- .................................................... -->
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Grid.Row="0">
+                                    <Label Content="Bildungsträger" Margin="0 5 0 0"/>
+                                    <Label Content="Abteilung" Margin="0 5 0 0"/>
+                                    <Label Content="Kommentar" Margin="0 5 0 0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Grid.Row="0">
+                                    <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
+                                Name="cbx_Bewertung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Bewertung_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
+                                Name="cbx_Bewertung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" SelectedIndex="{Binding SelectedItem_Bewertung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Name="tbx_Bewertung_Kommentar" Margin="0 10 0 0"
+                                HorizontalAlignment="Left" Width="200" Height="60" />
                                 </StackPanel>
                             </Grid>
-                        </StackPanel> <!-- Stackpanel-Kapselung für Randdarstellung -->
-                    </Border>
-                </StackPanel>
-            </Syncfusion:TabItemExt>
-            
-            <Syncfusion:TabItemExt  Header="Bewertung" IsNewTab="False" MinWidth="150" MinHeight="20">
-                <StackPanel>
-                    <Label Content="Bewertungen" />
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition  Width="auto"/>
-                                <ColumnDefinition  Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Syncfusion:SfDataGrid x:Name="dg_Bewertungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <!--<Syncfusion:SfDataGrid.RowStyle>
-                                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
-                                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
-                                    </Style>
-                                </Syncfusion:SfDataGrid.RowStyle>-->
-                                <Syncfusion:SfDataGrid.Columns>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Zeile"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Nr."/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Abteilung"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Datum"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Befr. TL"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Befr. TN"/>
-                                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="" HeaderText="Ergebnis"/>
-                                </Syncfusion:SfDataGrid.Columns>
-                            </Syncfusion:SfDataGrid>
-                            <StackPanel Grid.Column="1" Margin="10">
-                                <Button x:Name="btn_Bewertung_Neu" Content="Neu" Width="100"/>
-                                <Button x:Name="btn_Bewertung_Löschen" Content="Löschen" Width="100" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <Label Content="Bewertung" />
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Column="0" Grid.Row="0">
-                                <Label Content="Nr." Margin="0 5 0 0"/>
-                                <Label Content="Datum" Margin="0 5 0 0"/>
-                                <Label Content="Befragung TL" Margin="0 5 0 0"/>
-                                <Label Content="Befragung TN" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Grid.Row="0" Margin="5 0 0 0">
-                                <TextBox Name="tbx_Bewertung_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Bewertung_Datum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
-                                <!-- Bewertungsspanne von/bis als zusätzliche StackPanels -->
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBox Name="tbx_Bewertung_TLvon" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="50" />
-                                    <TextBox Name="tbx_Bewertung_TLbis" Margin="5 10 0 0"
-                                HorizontalAlignment="Left" Width="50" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBox Name="tbx_Bewertung_TNvon" Margin="0 10 0 10"
-                                HorizontalAlignment="Left" Width="50" />
-                                    <TextBox Name="tbx_Bewertung_TNbis" Margin="5 10 0 10"
-                                HorizontalAlignment="Left" Width="50" />
-                                </StackPanel>
-                                <!-- .................................................... -->
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Grid.Row="0">
-                                <Label Content="Bildungsträger" Margin="0 5 0 0"/>
-                                <Label Content="Abteilung" Margin="0 5 0 0"/>
-                                <Label Content="Kommentar" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="3" Grid.Row="0">
-                                <Syncfusion:ComboBoxAdv
-                                Name="cbx_Bewertung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                <Syncfusion:ComboBoxAdv
-                                Name="cbx_Bewertung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                <TextBox Name="tbx_Bewertung_Kommentar" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Height="60" />
-                            </StackPanel>
-                        </Grid>       
-                    </Border>
+                        </Border>
+                        <StackPanel>
+                            <Label Content="Verbesserungsmaßnahmen" Margin="0 5 0 0"/>
+                            <Border BorderBrush="Black" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="5 0 0 0">
+                                        <Label Content="Was" Margin="0 5 0 0"/>
+                                        <Label Content="Wer" Margin="0 5 0 0"/>
+                                        <Label Content="Wann" Margin="0 5 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="5 0 0 0">
+                                        <TextBox Name="tbx_Bewertung_Was" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="800" />
+                                        <TextBox Name="tbx_Bewertung_Wer" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="800" />
+                                        <TextBox Name="tbx_Bewertung_Wann" Margin="0 10 0 10"
+                                                 HorizontalAlignment="Left" Width="800" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Syncfusion:TabItemExt>
+
+                <Syncfusion:TabItemExt  Header="Info" IsNewTab="False" MinWidth="150" MinHeight="20">
                     <StackPanel>
-                        <Label Content="Verbesserungsmaßnahmen" Margin="0 5 0 0"/>
-                        <Border BorderBrush="Black" BorderThickness="1">
+                        <!-- Menuzeile Info -->
+                        <Menu IsMainMenu="True">
+                            <MenuItem Name="mnu_Info_Speichern" Header="_Speichern"  />
+                            <Separator />
+                            <MenuItem Name="mnu_Info_Reset" Header="_Reset" />
+                        </Menu>
+                        <Label Content="Infos" />
+                        <Border BorderBrush="Black" Margin="0 0 0 0"  BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Margin="5 0 0 0">
-                                    <Label Content="Was" Margin="0 5 0 0"/>
-                                    <Label Content="Wer" Margin="0 5 0 0"/>
-                                    <Label Content="Wann" Margin="0 5 0 0"/>
+                                    <Label Content="Info" Margin="0 5 0 0"/>
+                                    <Label Content="Strasse (Privat)" Margin="0 85 0 0"/>
+                                    <Label Content="PLZ / Ort (Privat)" Margin="0 5 0 0"/>
+                                    <Label Content="2. EMail" Margin="0 5 0 0"/>
+                                    <Label Content="3. EMail" Margin="0 5 0 0"/>
+                                    <Label Content="Web" Margin="0 5 0 0"/>
+                                    <Label Content="Abteilung (Firma)" Margin="0 5 0 0"/>
+                                    <Label Content="Position" Margin="0 5 0 0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Margin="5 0 0 0">
-                                    <TextBox Name="tbx_Bewertung_Was" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="800" />
-                                    <TextBox Name="tbx_Bewertung_Wer" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="800" />
-                                    <TextBox Name="tbx_Bewertung_Wann" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="800" />
+                                    <RichTextBox Name="rtbx_Bewertung_Info" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Height="100"  Width="400" />
+                                    <TextBox Name="tbx_Bewertung_Strasse" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="200" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Name="tbx_Bewertung_Plz" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="50" />
+                                        <TextBox Name="tbx_Bewertung_Ort" Margin="5 10 0 0"
+                                                 HorizontalAlignment="Left" Width="200" />
+                                    </StackPanel>
+                                    <TextBox Name="tbx_Info_2Mail" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="200" />
+                                    <TextBox Name="tbx_Info_3Mail" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="200" />
+                                    <TextBox Name="tbx_Info_Web" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="200" />
+                                    <TextBox Name="tbx_Info_Abteilung" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Width="200" />
+                                    <TextBox Name="tbx_Info_Position" Margin="0 10 0 10"
+                                                 HorizontalAlignment="Left" Width="200" />
                                 </StackPanel>
                             </Grid>
                         </Border>
                     </StackPanel>
-                </StackPanel>
-            </Syncfusion:TabItemExt>
+                </Syncfusion:TabItemExt>
 
-            <Syncfusion:TabItemExt  Header="Info" IsNewTab="False" MinWidth="150" MinHeight="20">
-                <StackPanel>
-                    <Label Content="Infos" />
-                    <Border BorderBrush="Black" Margin="0 0 0 0"  BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Margin="5 0 0 0">
-                                <Label Content="Info" Margin="0 5 0 0"/>
-                                <Label Content="Strasse (Privat)" Margin="0 85 0 0"/>
-                                <Label Content="PLZ / Ort (Privat)" Margin="0 5 0 0"/>
-                                <Label Content="2. EMail" Margin="0 5 0 0"/>
-                                <Label Content="3. EMail" Margin="0 5 0 0"/>
-                                <Label Content="Web" Margin="0 5 0 0"/>
-                                <Label Content="Abteilung (Firma)" Margin="0 5 0 0"/>
-                                <Label Content="Position" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="5 0 0 0">
-                                <RichTextBox Name="rtbx_Bewertung_Info" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Height="100"  Width="400" />
-                                <TextBox Name="tbx_Bewertung_Strasse" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBox Name="tbx_Bewertung_Plz" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="50" />
-                                    <TextBox Name="tbx_Bewertung_Ort" Margin="5 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
-                                </StackPanel>
-                                <TextBox Name="tbx_Info_2Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_3Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_Web" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_Abteilung" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_Position" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="200" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>   
-                </StackPanel>
-            </Syncfusion:TabItemExt>
-            
-            <Syncfusion:TabItemExt  Header="Statusprüfung" IsNewTab="False" MinWidth="150" MinHeight="20">
-                <StackPanel>
+                <Syncfusion:TabItemExt  Header="Statusprüfung" IsNewTab="False" MinWidth="150" MinHeight="20">
+                    <StackPanel>
+                        <!-- Menuzeile Statusprüfung -->
+                        <Menu IsMainMenu="True">
+                            <MenuItem Name="mnu_Status_Speichern" Header="_Speichern"  />
+                            <Separator />
+                            <MenuItem Name="mnu_Status_Reset" Header="_Reset" />
+                        </Menu>
                         <Label Content="Statusprüfung" Margin="0 0 0 0"/>
-                    <Border BorderBrush="Black" Margin="0 5 0 0" BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Border BorderBrush="Black" Margin="0 5 0 0" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Margin="5 0 0 0" Grid.Column="0">
-                                <Label Content="Personalbogen vom" Margin="0 5 0 0"/>
-                                <Label Content="Checkliste vom" Margin="0 5 0 0"/>
-                                <Label Content="1/6 Regelung" Margin="0 5 0 0"/>
-                                <Label Content="ArbN beschäftigt" Margin="0 5 0 0"/>
-                                <Label Content="Umsatzsteuerpflichtige Unternehmen" Margin="0 5 0 0"/>
-                                <Label Content="Rechtsform" Margin="0 5 0 0"/>
-                                <Label Content="SV Befreiung für Selbstständige" Margin="0 5 0 0"/>
-                                <Label Content="Einsatzvolumen > 80 Std. / Monat" Margin="0 75 0 0"/>
-                                <Label Content="Info" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <TextBox Name="tbx_Info_BogenVon" Margin="0 10 0 0"
+                                <StackPanel Margin="5 0 0 0" Grid.Column="0">
+                                    <Label Content="Personalbogen vom" Margin="0 5 0 0"/>
+                                    <Label Content="Checkliste vom" Margin="0 5 0 0"/>
+                                    <Label Content="1/6 Regelung" Margin="0 5 0 0"/>
+                                    <Label Content="ArbN beschäftigt" Margin="0 5 0 0"/>
+                                    <Label Content="Umsatzsteuerpflichtige Unternehmen" Margin="0 5 0 0"/>
+                                    <Label Content="Rechtsform" Margin="0 5 0 0"/>
+                                    <Label Content="SV Befreiung für Selbstständige" Margin="0 5 0 0"/>
+                                    <Label Content="Einsatzvolumen > 80 Std. / Monat" Margin="0 75 0 0"/>
+                                    <Label Content="Info" Margin="0 5 0 0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBox Name="tbx_Info_BogenVon" Margin="0 10 0 0"
                                                  HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_CheckVon" Margin="0 5 0 0"
+                                    <TextBox Name="tbx_Info_CheckVon" Margin="0 5 0 0"
                                                  HorizontalAlignment="Left" Width="200" />
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="Regelung" Content="Ja" x:Name="chkbx_Regelung_Ja" Margin="0 15 0 0" />
-                                    <RadioButton GroupName="Regelung" Content="Nein" x:Name="chkbx_Regelung_Nein" Margin="5 15 0 0"/>
-                                    <RadioButton GroupName="Regelung" Content="Keine Angaben" x:Name="chkbx_Regelung_ka" Margin="5 15 0 0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="ArbN" Content="Ja" x:Name="chkbx_ArbN_Ja" Margin="0 15 0 0" />
-                                    <RadioButton GroupName="ArbN" Content="Nein" x:Name="chkbx_ArbN_Nein" Margin="5 15 0 0"/>
-                                    <RadioButton GroupName="ArbN" Content="Keine Angaben" x:Name="chkbx_ArbN_ka" Margin="5 15 0 0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="Umst" Content="Ja" x:Name="chkbx_Umst_Ja" Margin="0 15 0 0" />
-                                    <RadioButton GroupName="Umst" Content="Nein" x:Name="chkbx_Umst_Nein" Margin="5 15 0 0"/>
-                                    <RadioButton GroupName="Umst" Content="Keine Angaben" x:Name="chkbx_Umst_ka" Margin="5 15 0 0"/>
-                                </StackPanel>
-                                <TextBox Name="tbx_Info_Rechtsform" Margin="0 10 0 0"
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton GroupName="Regelung" Content="Ja" x:Name="chkbx_Regelung_Ja" Margin="0 15 0 0" />
+                                        <RadioButton GroupName="Regelung" Content="Nein" x:Name="chkbx_Regelung_Nein" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="Regelung" Content="Keine Angaben" x:Name="chkbx_Regelung_ka" Margin="5 15 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton GroupName="ArbN" Content="Ja" x:Name="chkbx_ArbN_Ja" Margin="0 15 0 0" />
+                                        <RadioButton GroupName="ArbN" Content="Nein" x:Name="chkbx_ArbN_Nein" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="ArbN" Content="Keine Angaben" x:Name="chkbx_ArbN_ka" Margin="5 15 0 0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton GroupName="Umst" Content="Ja" x:Name="chkbx_Umst_Ja" Margin="0 15 0 0" />
+                                        <RadioButton GroupName="Umst" Content="Nein" x:Name="chkbx_Umst_Nein" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="Umst" Content="Keine Angaben" x:Name="chkbx_Umst_ka" Margin="5 15 0 0"/>
+                                    </StackPanel>
+                                    <TextBox Name="tbx_Info_Rechtsform" Margin="0 10 0 0"
                                                  HorizontalAlignment="Left" Width="200" />
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="SVPflicht" Content="Ja" x:Name="chkbx_SVPflicht_Ja" Margin="0 15 0 0" />
-                                    <RadioButton GroupName="SVPflicht" Content="Nein" x:Name="chkbx_SVPflicht_Nein" Margin="5 15 0 0"/>
-                                    <RadioButton GroupName="SVPflicht" Content="Keine Angaben" x:Name="chkbx_SVPflicht_ka" Margin="5 15 0 0"/>
-                                </StackPanel>
-                                <CheckBox x:Name="chkbx_Info_DRV" Margin="0 15 0 0">Statusfeststellung durch DRV...</CheckBox>
-                                <CheckBox x:Name="chkbx_Info_SVBefreiung" Margin="0 15 0 0">SV Befreiung für Selbstständige</CheckBox>
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="SVBefreiung" Content="...ist beantragt" x:Name="chkbx_SVBefreiung_beantragt" Margin="0 0 0 0" />
-                                    <RadioButton GroupName="SVBefreiung" Content="...liegt vor" x:Name="chkbx_SVBefreiung_liegtvor" Margin="5 0 0 0"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="Einsatzvolumen" Content="Ja" x:Name="chkbx_Einsatzvolument_Ja" Margin="0 5 0 0" />
-                                    <RadioButton GroupName="Einsatzvolumen" Content="Nein" x:Name="chkbx_Einsatzvolumen_Nein" Margin="5 5 0 0"/>
-                                    <RadioButton GroupName="Einsatzvolumen" Content="Keine Angaben" x:Name="chkbx_Einsatzvolumen_ka" Margin="5 5 0 0"/>
-                                </StackPanel>
-                                <RichTextBox Name="rtbx_Status_Info" Margin="0 10 0 10"
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton GroupName="SVPflicht" Content="Ja" x:Name="chkbx_SVPflicht_Ja" Margin="0 15 0 0" />
+                                        <RadioButton GroupName="SVPflicht" Content="Nein" x:Name="chkbx_SVPflicht_Nein" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="SVPflicht" Content="Keine Angaben" x:Name="chkbx_SVPflicht_ka" Margin="5 15 0 0"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="chkbx_Info_DRV" Margin="0 15 0 0">Statusfeststellung durch DRV...</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_SVBefreiung" Margin="0 15 0 0" IsChecked="{Binding Path=Chkbx_Info_SVBefreiung,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">SV Befreiung für Selbstständige</CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton GroupName="SVBefreiung" Content="...ist beantragt" x:Name="chkbx_SVBefreiung_beantragt" Margin="0 0 0 0" IsEnabled="{Binding ElementName=chkbx_Info_SVBefreiung, Path=IsChecked}" />
+                                        <RadioButton GroupName="SVBefreiung" Content="...liegt vor" x:Name="chkbx_SVBefreiung_liegtvor" Margin="5 0 0 0" IsEnabled="{Binding ElementName=chkbx_Info_SVBefreiung, Path=IsChecked}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <RadioButton GroupName="Einsatzvolumen" Content="Ja" x:Name="chkbx_Einsatzvolument_Ja" Margin="0 5 0 0" />
+                                        <RadioButton GroupName="Einsatzvolumen" Content="Nein" x:Name="chkbx_Einsatzvolumen_Nein" Margin="5 5 0 0"/>
+                                        <RadioButton GroupName="Einsatzvolumen" Content="Keine Angaben" x:Name="chkbx_Einsatzvolumen_ka" Margin="5 5 0 0"/>
+                                    </StackPanel>
+                                    <RichTextBox Name="rtbx_Status_Info" Margin="0 10 0 10"
                                                  HorizontalAlignment="Left" Height="100"  Width="400" />
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Margin="5 0 0 0">
-                                <CheckBox x:Name="chkbx_Info_Selbst" Margin="5 15 0 0">Selbstständigenstatus ist gegeben</CheckBox>
-                                <CheckBox x:Name="chkbx_Info_Verfolgen" Margin="5 15 0 0">Weiterverfolgung ist erforderlich</CheckBox>
-                                <CheckBox x:Name="chkbx_Info_OffzVerfolgen" Margin="5 15 0 0">Offizielle Statusprüfung ist erforderlich</CheckBox>
-                                <CheckBox x:Name="chkbx_Info_Bedenklich" Margin="5 15 0 0">Einsatz als Honorarkraft bedenklich</CheckBox>
-                                <Label Content="Datum der letzten Überprüfung" Margin="0 5 0 0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="3" Margin="5 0 0 0">
-                                <TextBox Name="tbx_Info_Verfolgung" Margin="0 45 0 0"
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Margin="5 0 0 0">
+                                    <CheckBox x:Name="chkbx_Info_Selbst" Margin="5 15 0 0">Selbstständigenstatus ist gegeben</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Verfolgen" Margin="5 15 0 0">Weiterverfolgung ist erforderlich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_OffzVerfolgen" Margin="5 15 0 0">Offizielle Statusprüfung ist erforderlich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Bedenklich" Margin="5 15 0 0">Einsatz als Honorarkraft bedenklich</CheckBox>
+                                    <Label Content="Datum der letzten Überprüfung" Margin="0 5 0 0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="3" Margin="5 0 0 0">
+                                    <TextBox Name="tbx_Info_Verfolgung" Margin="0 45 0 0"
                                                  HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_OffzVerfolgung" Margin="0 10 0 0"
+                                    <TextBox Name="tbx_Info_OffzVerfolgung" Margin="0 10 0 0"
                                                  HorizontalAlignment="Left" Width="200" />
-                                <TextBox Name="tbx_Info_DatumUederpruefung" Margin="0 35 0 0"
+                                    <TextBox Name="tbx_Info_DatumUederpruefung" Margin="0 35 0 0"
                                                  HorizontalAlignment="Left" Width="200" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-            </Syncfusion:TabItemExt>
-        </Syncfusion:TabControlExt>
-
-    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Syncfusion:TabItemExt>
+            </Syncfusion:TabControlExt>
+        </Grid>
+    </ScrollViewer>
 </base:TIS3ActiveView>

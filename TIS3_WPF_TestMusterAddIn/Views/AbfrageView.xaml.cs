@@ -25,6 +25,10 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// Interaktionslogik für AbfrageView.xaml
     /// </summary>
 
+    /*
+     * PartCreationPolicy(CreationPolicy.NonShared)
+     * Es können mehrere Views der selben Art geöffnet werden (non shared)
+     */
     [Export("AbfrageView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class AbfrageView : TIS3_Base.TIS3ActiveView
     {

@@ -24,8 +24,9 @@
                 <MenuItem Name="mnu_Vertag_Export" Header="_Exportieren" />
                 <MenuItem Name="mnu_Vertag_Drucken" Header="_Drucken" />
             </Menu>
-
-            <Grid Grid.Row="1">
+            
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+                <Grid Grid.Row="1">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -80,9 +81,17 @@
                     </Grid>
                 </StackPanel>
             </Grid>
+            </ScrollViewer>
             <!-- Ergebnisbereich -->
-            <Syncfusion:SfDataGrid Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
+            <Syncfusion:SfDataGrid x:Name="dg_Vertragsdaten" Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
                                    AllowSorting="True" Margin="5">
+                
+                <Syncfusion:SfDataGrid.RowStyle>
+                    <Style TargetType="Syncfusion:VirtualizingCellsControl">
+                        <EventSetter Event="Loaded" Handler="Row_Loaded"/>
+                    </Style>                   
+                </Syncfusion:SfDataGrid.RowStyle>
+                
                 <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>

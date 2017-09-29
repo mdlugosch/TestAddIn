@@ -58,7 +58,7 @@ namespace TIS3_WPF_TestMusterAddIn.Views
             ICommand command = (ICommand)CommandPropertyInfo.GetValue(DataContext);
             if (command != null)
             {
-                command.Execute(this.PersonaldatenGrid.SelectedItem);
+                command.Execute(this.dg_Personaldaten.SelectedItem);
             }
         }
     }

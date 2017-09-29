@@ -19,6 +19,7 @@
                 <!--<RowDefinition Height="20" />-->
             </Grid.RowDefinitions>
 
+            
             <!-- Menuzeile Personaldaten -->
             <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
                 <MenuItem Name="mnu_Personal_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
@@ -27,7 +28,8 @@
                 <MenuItem Name="mnu_Personal_Drucken" Header="_Drucken" />
             </Menu>
 
-            <Grid Grid.Row="1">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+                <Grid Grid.Row="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -60,7 +62,7 @@
                     </StackPanel>
 
                     <!-- *** Suchkriterien-Abschnitt: Statusprüfung *** -->
-                    <Grid Margin="10 0 0 10" Grid.Column="2" MinWidth="250">
+                    <Grid Margin="10 20 0 10" Grid.Column="2" MinWidth="250">
                         <!-- Aufteilung Statusprüfung -->
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -85,10 +87,11 @@
                     </Grid>
                 </Grid>
             </Grid>
+            </ScrollViewer>
             <!-- Ergebnisbereich -->
-            <Syncfusion:SfDataGrid x:Name="PersonaldatenGrid" Grid.Row="2" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
+            <Syncfusion:SfDataGrid x:Name="dg_Personaldaten" Grid.Row="2" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" 
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" Margin="5"
                                    SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 
                 <Syncfusion:SfDataGrid.RowStyle>

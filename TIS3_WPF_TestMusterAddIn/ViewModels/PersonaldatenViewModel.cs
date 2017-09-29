@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using TIS3_Base;
+using TIS3_Base.Services;
 using TIS3_LookupBL;
 using TIS3_WPF_TestMusterAddIn.Infrastructure;
 using WinTIS30db_entwModel.Honorarkraefte;
@@ -24,11 +25,11 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
     public class PersonaldatenViewModel : TIS3ActiveViewModel, INavigationAware
     {
         // Laden des aktuellen RegionManagers
-        public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+        public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();           
 
         # region Data Access Objecte für Honorarkraefte Tabellen
-        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
         LookupRepository LookRepo = new LookupRepository();
+        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
         # endregion
 
         # region Testdaten
@@ -145,12 +146,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         private void OpenEditView(object dataObj)
         {
-             
-            // Laden der EditView in die Region MainWorkspace.
-            regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView", UriKind.Relative));
-            
-            //int test = ((wt2_honorarkraft)dataObj).hk_ident;
-            //Console.WriteLine(test);
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ID", ((wt2_honorarkraft)dataObj).hk_ident);
+            regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView" + navigationParameters.ToString(), UriKind.Relative));
         }
         # endregion
 

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using BFZ_Common_Lib.MVVM;
+using Syncfusion.UI.Xaml.Grid;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,9 +26,32 @@ namespace TIS3_WPF_TestMusterAddIn.Views
    [Export("BewertungsbogenView")] 
     public partial class BewertungsbogenView : TIS3_Base.TIS3ActiveView
     {
+       public RelayCommand OpenEditViewCommand { get; set; }
         public BewertungsbogenView()
         {
             InitializeComponent();
+            this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditViewCommandMethode(), _canExecute => true);
+        }
+
+        private void Row_Loaded(object sender, RoutedEventArgs e)
+        {
+            var row = sender as VirtualizingCellsControl;
+            if (row != null)
+            {
+                row.InputBindings.Add(new MouseBinding(OpenEditViewCommand, new MouseGesture() { MouseAction = MouseAction.LeftDoubleClick }));
+                row.InputBindings.Add(new KeyBinding(OpenEditViewCommand, new KeyGesture(Key.Return)));
+            }
+        }
+
+        private void OpenEditViewCommandMethode()
+        {
+            Type ViewModelType = this.DataContext.GetType();
+            PropertyInfo CommandPropertyInfo = ViewModelType.GetProperty("OpenEditViewCommand");
+            ICommand command = (ICommand)CommandPropertyInfo.GetValue(DataContext);
+            if (command != null)
+            {
+                command.Execute(this.dg_Bewertungsbogen.SelectedItem);
+            }
         }
     }
 }

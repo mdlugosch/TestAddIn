@@ -8,22 +8,90 @@
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.AbfrageView"
              mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="800" VerticalAlignment="Top">
-    <Grid x:Name="MainGrid">
-        <!-- Aufteilung AbfrageView -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="22" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <Grid x:Name="MainGrid">
+            <!-- Aufteilung AbfrageView -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="22" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <!-- Menuzeile Vertagdaten Zeile 0 -->
-        <Menu Grid.Row="0" IsMainMenu="True">
-            <MenuItem Name="mnu_Personaldaten" Header="Personaldaten" Command="{Binding OpenPersonalSuche}"/>
-            <MenuItem Name="mnu_Vertragsdaten" Header="Vertragsdaten" Command="{Binding OpenVertragsSuche}"/>
-            <MenuItem Name="mnu_Zahlungsanweisung" Header="Zahlungsanweisung" Command="{Binding OpenZahlungsanweisungsSuche}"/>
-            <MenuItem Name="mnu_Bewertungsbogen" Header="Bewertungsbogen" Command="{Binding OpenBewertungsSuche}"/>
-        </Menu>
+            <!-- Menuzeile Vertagdaten Zeile 0 -->
+            <Menu Grid.Row="0" IsMainMenu="True">
+            <MenuItem Name="mnu_Personaldaten" Header="Personaldaten" Command="{Binding OpenPersonalSuche}">
+                <MenuItem.Icon>
+                    <Image  Margin="0 0 -10 0" Height="15" Width="15">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                        <DataTrigger Binding="{Binding PersonalMenuStatus}" Value="False">
+                                            <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOff.png" />
+                                        </DataTrigger>
+                                    <DataTrigger Binding="{Binding PersonalMenuStatus}" Value="True">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOn.png" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Name="mnu_Vertragsdaten" Header="Vertragsdaten" Command="{Binding OpenVertragsSuche}">
+                <MenuItem.Icon>
+                    <Image  Margin="0 0 -10 0" Height="15" Width="15">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding VertragMenuStatus}" Value="False">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOff.png" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding VertragMenuStatus}" Value="True">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOn.png" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Name="mnu_Zahlungsanweisung" Header="Zahlungsanweisung" Command="{Binding OpenZahlungsanweisungsSuche}">
+                <MenuItem.Icon>
+                    <Image  Margin="0 0 -10 0" Height="15" Width="15">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ZahlungMenuStatus}" Value="False">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOff.png" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ZahlungMenuStatus}" Value="True">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOn.png" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Name="mnu_Bewertungsbogen" Header="Bewertungsbogen" Command="{Binding OpenBewertungsSuche}">
+                <MenuItem.Icon>
+                    <Image Margin="0 0 -10 0" Height="15" Width="15">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding BewertungMenuStatus}" Value="False">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOff.png" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding BewertungMenuStatus}" Value="True">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOn.png" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </MenuItem.Icon>
+            </MenuItem>
+            </Menu>
 
-        <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding SearchPanel}"
+            <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding SearchPanel}"
                 Grid.Row="1" Margin="5,0,5,5" />
-    </Grid>
+        </Grid>
 </base:TIS3ActiveView>

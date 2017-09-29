@@ -6,9 +6,44 @@
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="600" d:DesignWidth="900">
+    
+    <base:TIS3ActiveView.Resources>
+        <Style x:Key="CheckBoxListBoxEinsatzgebiete" TargetType="{x:Type ListBox}">
+            <Setter Property="ItemContainerStyle"
+            Value="{DynamicResource CheckBoxListBoxItemEinsatzgebiete}" />
+        </Style>
+        <Style x:Key="CheckBoxListBoxItemEinsatzgebiete" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Einsatzgebiet.khke_bezeichnung}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </base:TIS3ActiveView.Resources>
+    
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <StackPanel>
+            <StackPanel.Resources>
+                <HierarchicalDataTemplate x:Key="Child_template">
+                    <CheckBox IsChecked="{Binding IsChecked}">
+                        <TextBlock Text="{Binding Thema.khkth_bezeichnung}"/>
+                    </CheckBox>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate x:Key="Parent_template"  ItemsSource="{Binding ThemeGroup}" ItemTemplate="{StaticResource Child_template}">
+                    <TextBlock Text="{Binding Gruppe}"/>
+                </HierarchicalDataTemplate>
+            </StackPanel.Resources>
+            
+            <!-- Neuaufnahme-Menu -->
+            <Menu Grid.Row="0" Grid.ColumnSpan="3" Grid.Column="0" IsMainMenu="True">
+                <MenuItem Name="mnu_Neu_Speichern" Header="_Speichern" Command="{Binding SaveCommand}"  />
+                <Separator />
+                <MenuItem Name="mnu_Neu_Reset" Header="_Zurücksetzen" Command="{Binding ResetCommand}"/>
+            </Menu>
             <Label Content="Personaldaten" />
             <Border BorderBrush="Black" Margin="0 0 0 0" BorderThickness="1">
                 <!-- Personaldaten Haupt-Grid-Aufteilung -->
@@ -16,11 +51,127 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Anrede" Grid.Column="0" Grid.Row="0" />
+                        <Syncfusion:ComboBoxAdv  Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left"
+                                    Name="cbx_Neu_Anrede" Width="200" Margin="0 5 0 5"  ItemsSource="{Binding Cbx_Neu_Anrede}" 
+                                    Syncfusion:SkinStorage.VisualStyle="Metro"/>
+                        <Label Content="Titel" Grid.Column="2" Grid.Row="0"  />
+                        <Syncfusion:ComboBoxAdv Grid.Column="3" Grid.Row="0" 
+                                    Name="cbx_Neu_Titel" Width="200" Margin="0 5 0 5"   ItemsSource="{Binding Cbx_Neu_Titel}"      
+                                    Syncfusion:SkinStorage.VisualStyle="Metro" />
+                        <Label Content="Vorname" Grid.Column="0" Grid.Row="1" />
+                        <TextBox Name="tbx_Neu_Vorname" Margin="0 0 10 0" Grid.Column="1" Grid.Row="1"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Nachname" Grid.Column="0" Grid.Row="2" />
+                        <TextBox Name="tbx_Neu_Nachname" Margin="0 0 10 0" Grid.Column="1" Grid.Row="2"
+                                     HorizontalAlignment="Left" Width="200" />
+                        <Label Content="Firma" Grid.Column="0" Grid.Row="3" />
+                        <TextBox Name="tbx_Neu_Firma" Margin="0 0 10 0" Grid.Column="1" Grid.Row="3"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Strasse" Grid.Column="0" Grid.Row="4" />
+                        <TextBox Name="tbx_Neu_Strasse" Margin="0 0 10 0" Grid.Column="1" Grid.Row="4"
+                                     HorizontalAlignment="Left" Width="200" />
+                        <Label Content="PLZ" Grid.Column="0" Grid.Row="5" />
+                        <TextBox Name="tbx_Neu_Plz" Margin="0 0 10 0" Grid.Column="1" Grid.Row="5"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Ort" Grid.Column="2" Grid.Row="5" />
+                        <TextBox Name="tbx_Neu_Ort" Margin="0 0 10 0" Grid.Column="3" Grid.Row="5"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Telefon" Grid.Column="0" Grid.Row="6" />
+                        <TextBox Name="tbx_Neu_PTel" Margin="0 0 10 0" Grid.Column="1" Grid.Row="6"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Fax" Grid.Column="2" Grid.Row="6" />
+                        <TextBox Name="tbx_Neu_Fax" Margin="0 0 10 0" Grid.Column="3" Grid.Row="6"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Telefon (Firma)" Grid.Column="0" Grid.Row="7" />
+                        <TextBox Name="tbx_Neu_FTel" Margin="0 0 10 0" Grid.Column="1" Grid.Row="7"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Mobil" Grid.Column="2" Grid.Row="7" />
+                        <TextBox Name="tbx_Neu_Mobil" Margin="0 0 10 0" Grid.Column="3" Grid.Row="7"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="EMail" Grid.Column="0" Grid.Row="8" />
+                        <TextBox Name="tbx_Neu_EMail" Margin="0 0 10 0" Grid.Column="1" Grid.Row="8"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="BLZ" Grid.Column="0" Grid.Row="9" />
+                        <TextBox Name="tbx_Neu_BLZ" Margin="0 0 10 0" Grid.Column="1" Grid.Row="9"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Bank" Grid.Column="2" Grid.Row="9" />
+                        <TextBox Name="tbx_Neu_Bank" Margin="0 0 10 0" Grid.Column="3" Grid.Row="9"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Konto" Grid.Column="0" Grid.Row="10" />
+                        <TextBox Name="tbx_Neu_Konto" Margin="0 0 10 0" Grid.Column="1" Grid.Row="10" Height="22" />
+                        <Label Content="Honorar je UE" Grid.Column="0" Grid.Row="11" />
+                        <TextBox Name="tbx_Neu_UE" Margin="0 0 10 0" Width="200" Height="22" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="11"/>
+                        <Label Content="Bildungsträger" Grid.Column="0" Grid.Row="12" />
+                        <Syncfusion:ComboBoxAdv  Grid.Column="1" Grid.Row="12" HorizontalAlignment="Left" 
+                                    Name="cbx_Neu_Bildungstraeger" Width="200" Margin="0 5 0 5" ItemsSource="{Binding Cbx_Neu_Bildungstraeger}" DisplayMemberPath="Name1"     
+                                    Syncfusion:SkinStorage.VisualStyle="Metro" SelectedIndex="{Binding SelectedItem_Neu_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Abteilung" Grid.Column="0" Grid.Row="13" />
+                        <Syncfusion:ComboBoxAdv  Grid.Column="1" Grid.Row="13" HorizontalAlignment="Left" 
+                                    Name="cbx_Neu_Abteilung" Width="200" Margin="0 5 0 5" ItemsSource="{Binding Cbx_Neu_Abteilung}" DisplayMemberPath="Bezeichnung"     
+                                    Syncfusion:SkinStorage.VisualStyle="Metro" SelectedIndex="{Binding SelectedItem_Neu_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Team" Grid.Column="0" Grid.Row="14" />
+                        <Syncfusion:ComboBoxAdv  Grid.Column="1" Grid.Row="14" HorizontalAlignment="Left" 
+                                    Name="cbx_Neu_Team" Width="200" Margin="0 5 0 5" ItemsSource="{Binding Cbx_Neu_Teams}" DisplayMemberPath="Bezeichnung"      
+                                    Syncfusion:SkinStorage.VisualStyle="Metro" SelectedIndex="{Binding SelectedItem_Neu_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Ausbildung" Grid.Column="0" Grid.Row="0" />
+                        <TextBox Name="tbx_Neu_Ausbildung" Margin="0 0 10 0" Grid.Column="1" Grid.Row="0"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Studium" Grid.Column="0" Grid.Row="1" />
+                        <TextBox Name="tbx_Neu_Studium" Margin="0 0 10 0" Grid.Column="1" Grid.Row="1"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Einsatzgebiete" Grid.Column="0" Grid.Row="2" />
+                        <ListBox Name="lbx_Neu_Einsatzgebiete" Grid.Column="1" Height="200" Width="200" Grid.Row="2" HorizontalAlignment="Left" ItemsSource="{Binding Lbx_Neu_Einsatzgebiete}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}" />
+                        <Label Content="Fachgebiet" Grid.Column="0" Grid.Row="3" />
+                        <TextBox Name="tbx_Neu_Fachgebiet" Margin="0 0 10 0" Grid.Column="1" Grid.Row="3"
+                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                        <Label Content="Themen" Grid.Column="0" Grid.Row="4" />
+                        <TreeView Name="tv_Neu_Themen" Height="200" Width="200" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Neu_Themen}"/>
+                    </Grid>
                 </Grid>
             </Border>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </base:TIS3ActiveView>

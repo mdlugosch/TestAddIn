@@ -19,7 +19,7 @@ namespace TIS3_WPF_TestMusterAddIn.MenuItems
     {
         public TestMusterRootMenuItem()
         {
-            this.Header = "TestAddIn"; // Name der unter dem Icon angezeigt wird
+            this.Header = "Honorarkräfte (Demo)"; // Name der unter dem Icon angezeigt wird
             this.Name = "TestMusterRoot"; // Damit das Element als Elternteil verwendet werden kann wird hier ein Name vergeben.
             this.Icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/TIS3_WPF_Styles;component/Icons/test.png")) };
         }

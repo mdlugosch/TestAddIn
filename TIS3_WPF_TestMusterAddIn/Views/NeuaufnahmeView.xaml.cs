@@ -20,7 +20,7 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// <summary>
     /// Interaktionslogik für NeuaufnahmeView.xaml
     /// </summary>
-    [Export("EditView"), PartCreationPolicy(CreationPolicy.NonShared)]
+    [Export("NeuaufnahmeView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class NeuaufnahmeView : TIS3ActiveView
     {
         public NeuaufnahmeView()

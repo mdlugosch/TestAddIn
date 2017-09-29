@@ -14,18 +14,17 @@ namespace TIS3_WPF_TestMusterAddIn.MenuItems
     // Verweis zu Hauptmenu, Muss von Typ MenuItem sein. Wird als MenuItem exportiert.
     [Export(CompositionPoints.ExtensionPoints.MainMenu.Self, typeof(MenuItem))]
     [ExportMetadata("Parent", "TestMusterRoot")] // Hat ein Elternelement. Namensangabe des Elternelements 
-    [ExportMetadata("Position", 990)] // Position des Menupunktes
+    [ExportMetadata("Position", 995)] // Position des Menupunktes
     [DesignTimeVisible(false)]
-
-    // IPartImportsSatisfiedNotification stellt sicher das ein Import abgeschlossen ist.
-    class OpenTestMusterAppMenuItem : MenuItem, IPartImportsSatisfiedNotification
+    class HonorarkraefteNeuaufnahmeMenuItem : MenuItem, IPartImportsSatisfiedNotification
     {
-        [Import("OpenTestMusterAppCommand")]
+
+        [Import("OpenHonorarkraefteNeuaufnahmeCommand")]
         private ICommand MyCommand { get; set; }
 
-        public OpenTestMusterAppMenuItem()
+        public HonorarkraefteNeuaufnahmeMenuItem()
         {
-            this.Header = "Honorarkraft suchen"; // Name unter dem Icon
+            this.Header = "Honorarkraft-Neuaufnahme"; // Name unter dem Icon
             this.Icon = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/TIS3_WPF_Styles;component/Icons/test.png")) };
         }
 

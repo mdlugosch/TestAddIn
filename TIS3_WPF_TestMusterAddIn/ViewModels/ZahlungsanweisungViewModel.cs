@@ -1,5 +1,6 @@
 ﻿using BFZ_Common_Lib.MVVM;
 using Microsoft.Practices.Prism.Regions;
+using Microsoft.Practices.ServiceLocation;
 using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
     [NotifyPropertyChanged]
     class ZahlungsanweisungViewModel : TIS3ActiveViewModel, INavigationAware
     {
+        // Laden des aktuellen RegionManagers
+        public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+
         # region Data Access Objecte für Honorarkraefte Tabellen
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
         LookupRepository LookRepo = new LookupRepository();
@@ -48,7 +52,8 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public ObservableCollection<wt2_konst_honorarkraft_thema> Cbx_Zahlung_Thema { get; set; }
         # endregion
 
-        # region MenuCommands der Zahlungsanweisung-Suchmaske
+        # region Commands der Zahlungsanweisung-Suchmaske
+        public RelayCommand OpenEditViewCommand { get; set; }
         public RelayCommand ResetCommand { get; set; }
         public RelayCommand SearchCommand { get; set; }
         # endregion
@@ -60,6 +65,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             HonorarListe = hDAO.LoadTestdata();
             # endregion
 
+            this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
             InitComboBoxes();
@@ -116,6 +122,13 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             MessageBox.Show("It works!");
         }
         # endregion
+
+        private void OpenEditView(object dataObj)
+        {
+            var navigationParameters = new NavigationParameters();
+            navigationParameters.Add("ID", ((wt2_honorarkraft)dataObj).hk_ident);
+            regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView" + navigationParameters.ToString(), UriKind.Relative));
+        }
 
         # region Prism-Navigation-Einstellungen
         /*
