@@ -9,6 +9,7 @@
              d:DesignHeight="900" d:DesignWidth="1500">
 
     <base:TIS3ActiveView.Resources>
+        <!-- Style für ListBox-Einsatzgebiete -->
         <Style x:Key="CheckBoxListBoxEinsatzgebiete" TargetType="{x:Type ListBox}">
             <Setter Property="ItemContainerStyle"
             Value="{DynamicResource CheckBoxListBoxItemEinsatzgebiete}" />
@@ -18,6 +19,35 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                         <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Einsatzgebiet.khke_bezeichnung}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Style für ListBox Abteilung (lbx_Personal_Abteilung) -->
+        <Style x:Key="CheckBoxListBoxAbteilungen" TargetType="{x:Type ListBox}">
+            <Setter Property="ItemContainerStyle"
+            Value="{DynamicResource CheckBoxListBoxItemAbteilungen}" />
+        </Style>
+        <Style x:Key="CheckBoxListBoxItemAbteilungen" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Bezeichnung}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style für ListBox Abteilung (lbx_Personal_Team) -->
+        <Style x:Key="CheckBoxListBoxTeam" TargetType="{x:Type ListBox}">
+            <Setter Property="ItemContainerStyle"
+            Value="{DynamicResource CheckBoxListBoxItemTeam}" />
+        </Style>
+        <Style x:Key="CheckBoxListBoxItemTeam" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Bezeichnung}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -59,21 +89,23 @@
                                 </Grid.ColumnDefinitions>
                                 <!-- Spalte 0 Labels -->
                                 <StackPanel Grid.Column="0" Margin="10 10 0 0">
-                                    <Label Content="Anrede / Titel" />
+                                    <Label Content="Anrede" />
                                     <Label Content="Vorname" Margin="0 10 0 0"/>
                                     <Label Content="Nachname" Margin="0 10 0 0"/>
                                     <Label Content="Firma" Height="50" Margin="0 10 0 0"/>
-                                    <Label Content="Strasse" Margin="0 10 0 0"/>
-                                    <Label Content="PLZ / Ort" Margin="0 10 0 0"/>
-                                    <Label Content="Telefon/ Fax" Margin="0 10 0 0"/>
-                                    <Label Content="Tel. Firma /Mobil" Margin="0 10 0 0"/>
+                                    <Label Content="Strasse" Margin="0 15 0 0"/>
+                                    <Label Content="PLZ" Margin="0 10 0 0"/>
+                                    <Label Content="Telefon" Margin="0 15 0 0"/>
+                                    <Label Content="Tel. Firma" Margin="0 15 0 0"/>
                                     <Label Content="EMail" Margin="0 10 0 0"/>
-                                    <Label Content="BLZ / Bank" Margin="0 10 0 0"/>
+                                    <Label Content="BLZ" Margin="0 15 0 0"/>
                                     <Label Content="Konto" Margin="0 10 0 0"/>
                                     <Label Content="Honorar je UE" Margin="0 10 0 0"/>
+                                    <Label Content="Ausbildung" Margin="0 2 0 0"/>
+                                    <Label Content="Studium" Margin="0 10 0 0"/>
+                                    <Label Content="Situation" Margin="0 10 0 0"/>
+                                    <Label Content="Fachgebiet" Margin="0 15 0 0"/>
                                     <Label Content="Bildungsträger" Margin="0 10 0 0"/>
-                                    <Label Content="Abteilung" Margin="0 10 0 0"/>
-                                    <Label Content="Team" Margin="0 10 0 0"/>
                                 </StackPanel>
                                 <!-- Spalte 1 Felder für Labels aus Spalte 0 -->
                                 <StackPanel Grid.Column="1" Margin="10 10 10 0">
@@ -82,8 +114,9 @@
                                         <Syncfusion:ComboBoxAdv ItemsSource="{Binding Cbx_Personal_Anrede}"
                                 Name="cbx_Personal_Anrede" Width="100" Margin="0 5 0 10"   
                                 Syncfusion:SkinStorage.VisualStyle="Metro" />
+                                        <Label Content="Titel" Margin="10 5 0 10" />
                                         <Syncfusion:ComboBoxAdv ItemsSource="{Binding Cbx_Personal_Titel}"
-                                Name="cbx_Personal_Titel" Width="100" Margin="10 5 0 10"   
+                                Name="cbx_Personal_Titel" Width="100" Margin="25 5 0 10"   
                                 Syncfusion:SkinStorage.VisualStyle="Metro" />
                                     </StackPanel>
                                     <TextBox Name="tbx_Personal_Vorname" Margin="0 5 0 0"
@@ -91,75 +124,76 @@
                                     <TextBox Name="tbx_Personal_Nachname" Margin="0 15 0 0"
                              HorizontalAlignment="Left" Width="210" Text="{Binding Tbx_Personal_Nachname}"/>
                                     <TextBox Name="tbx_Personal_Firma" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Height="50"  Width="210" Text="{Binding Tbx_Personal_Firma}"/>
+                             HorizontalAlignment="Left" Height="50"  Width="265" Text="{Binding Tbx_Personal_Firma}"/>
                                     <TextBox Name="tbx_Personal_Strasse" Margin="0 10 0 0"
-                             HorizontalAlignment="Left" Width="210" />
+                             HorizontalAlignment="Left" Width="265" Text="{Binding Tbx_Personal_Strasse}"/>
                                     <!-- Stackpanel: Plz / Ort -->
                                     <StackPanel Orientation="Horizontal" Margin="0 10 10 0">
                                         <TextBox Name="tbx_Personal_Plz" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="50" />
+                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_Plz}"/>
+                                        <Label Content="Ort" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Ort" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="150" />
+                             HorizontalAlignment="Left" Width="120" Text="{Binding Tbx_Personal_Ort}"/>
                                     </StackPanel>
                                     <!-- Stackpanel: Privattelefon/ Fax -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_PTel" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" />
+                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_PTel}"/>
+                                        <Label Content="Fax" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Fax" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" />
+                             HorizontalAlignment="Left" Width="120" Text="{Binding Tbx_Personal_Fax}"/>
                                     </StackPanel>
                                     <!-- Stackpanel: Firmentelefon / Mobiltelefon -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_FTel" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" />
+                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_FTel}"/>
+                                        <Label Content="Mobil" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Mobil" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" />
+                             HorizontalAlignment="Left" Width="105" Text="{Binding Tbx_Personal_Mobil}"/>
                                     </StackPanel>
 
                                     <TextBox Name="tbx_Personal_EMail" Margin="0 15 10 0"
-                             HorizontalAlignment="Left" Width="210" />
+                             HorizontalAlignment="Left" Width="265" Text="{Binding Tbx_Personal_EMail}"/>
                                     <!-- Stackpanel: Blz/ Bank -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_Blz" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" />
+                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_Blz}"/>
+                                        <Label Content="Bank" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Bank" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" />
+                             HorizontalAlignment="Left" Width="110" Text="{Binding Tbx_Personal_Bank}"/>
                                     </StackPanel>
-                                    <TextBox Name="tbx_Personal_Konto" Margin="0 15 10 0"
-                             HorizontalAlignment="Left" Width="210" />
-                                    <TextBox Name="tbx_Personal_Ue" Margin="0 10 10 0"
-                             HorizontalAlignment="Left" Width="50" />
+                                    <TextBox Name="tbx_Personal_Konto" Margin="0 10 10 0"
+                             HorizontalAlignment="Left" Width="265" Text="{Binding Tbx_Personal_Konto}"/>
+                                    <TextBox Name="tbx_Personal_Ue" Margin="0 15 10 0"
+                             HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Personal_Ue}"/>
+
+                                    <TextBox Name="tbx_Personal_Ausbildung" Margin="0 5 0 0"
+                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Ausbildung}"/>
+                                    <TextBox Name="tbx_Personal_Studium" Margin="0 15 0 0"
+                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Studium}"/>
+                                    <TextBox Name="tbx_Personal_Situation" Margin="0 15 0 0"
+                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Situation}"/>
+                                    <TextBox Name="tbx_Personal_Fachgebiet" Margin="0 15 0 10"
+                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Fachgebiet}"/>
                                     <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 15 0 10" DisplayMemberPath="Name1"   
+                             Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 5 0 10" DisplayMemberPath="Name1"   
                              Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Personal_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Abteilung" Width="200" Margin="0 5 0 10" DisplayMemberPath="Bezeichnung"   
-                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Abteilung}" SelectedIndex="{Binding SelectedItem_Personal_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Teams" Width="200" Margin="0 5 0 10" DisplayMemberPath="Bezeichnung" 
-                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Teams}" SelectedIndex="{Binding SelectedItem_Personal_Team, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                                 <!-- Spalte 2 Labels -->
                                 <StackPanel Grid.Column="2" Margin="10 10 0 0">
-                                    <Label Content="Ausbildung"/>
-                                    <Label Content="Studium" Margin="0 10 0 0"/>
-                                    <Label Content="Situation" Margin="0 10 0 0"/>
-                                    <Label Content="Einsatzgebiet" Margin="0 10 0 0"/>
-                                    <Label Content="Fachgebiet" Margin="0 105 0 0"/>
-                                    <Label Content="Themen" Margin="0 10 0 0"/>
+                                    <Label Content="Abteilung" Margin="0 0 0 0"/>
+                                    <Label Content="Team" Margin="0 100 0 0"/>
+                                    <Label Content="Einsatzgebiet" Margin="0 110 0 0"/>
+                                    <Label Content="Themen" Margin="0 105 0 0"/>
                                 </StackPanel>
                                 <!-- Spalte 3 Felder für Labels aus Spalte 2 -->
                                 <StackPanel Grid.Column="3" Margin="10 10 0 0">
-                                    <TextBox Name="tbx_Personal_Ausbildung" Margin="0 5 0 0"
-                             HorizontalAlignment="Left" Width="200" />
-                                    <TextBox Name="tbx_Personal_Studium" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" />
-                                    <TextBox Name="tbx_Personal_Situation" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" />
-                                    <ListBox Name="lbx_Einsatzgebiete" Height="115" Margin="0 15 0 0" ItemsSource="{Binding Lbx_Einsatzgebiete}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}"/>
-                                    <TextBox Name="tbx_Personal_Fachgebiet" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" />
-                                    <TreeView Name="tv_Themen" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Themen}" Width="250" Height="270" Margin="0 15 0 0"/> 
+                                    <ListBox Name="lbx_Personal_Abteilung" Height="115" Width="250" Margin="0 10 0 0" ItemsSource="{Binding Lbx_Personal_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxListBoxAbteilungen}" />
+                                    <ListBox Name="lbx_Personal_Teams" Height="115" Width="250" Margin="0 10 0 0" ItemsSource="{Binding Lbx_Personal_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxListBoxTeam}" />
+                                    <ListBox Name="lbx_Einsatzgebiete" Height="115" Width="250" Margin="0 15 0 0" ItemsSource="{Binding Lbx_Einsatzgebiete}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}"/>
+
+                                    <TreeView Name="tv_Themen" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Themen}" Width="250" Height="270" Margin="0 15 0 0"/>
+                                    <Button Name="btn_Personal_AddTheme" Grid.Column="1" Grid.Row="5" Width="250" Content="Thema hinzufügen" Command="{Binding AddThemeCommand}" Margin="0 5" HorizontalAlignment="Left"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -228,40 +262,40 @@
                                 <!-- Vertrag Spalte 1 -->
                                 <StackPanel Grid.Column="1" Margin="5 0 0 0">
                                     <TextBox Name="tbx_Vertrag_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Nummer}"/>
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
                                 Name="cbx_Vertrag_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Vertrag_Abteilung}" SelectedIndex="{Binding SelectedItem_Vertrag_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBox Name="tbx_Vertrag_Datum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Datum}"/>
                                     <TextBox Name="tbx_Vertrag_Druckdatum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Druckdatum}"/>
                                     <TextBox Name="tbx_Vertrag_Unterschriftdatum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Unterschriftdatum}"/>
                                     <Button x:Name="btn_Vertrag_Reset" Content="Reset" Width="100" Margin="0 10 0 10"/>
                                 </StackPanel>
                                 <!-- Vertrag Spalte 2 -->
                                 <StackPanel Grid.Column="2"  Margin="5 0 0 0">
-                                    <Label Content="Aussteller" Margin="0 10 0 0"/>
-                                    <Label Content="Bildungsträger" Margin="0 10 0 0"/>
+                                    <Label Content="Aussteller" Margin="10 5 0 0"/>
+                                    <Label Content="Bildungsträger" Margin="10 10 0 0"/>
                                 </StackPanel>
                                 <!-- Vertrag Spalte 3 -->
                                 <StackPanel Grid.Column="3"  Margin="5 0 0 0">
                                     <Syncfusion:ComboBoxAdv
-                                Name="cbx_Vertrag_Aussteller" Width="200" Margin="0 15 0 0" Height="22" 
+                                Name="cbx_Vertrag_Aussteller" Width="200" Margin="0 10 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
-                                Name="cbx_Vertrag_Bildungstraeger" Width="200" Margin="0 15 0 0" Height="22" 
+                                Name="cbx_Vertrag_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Vertrag_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Vertrag_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <CheckBox x:Name="chkbx_Vertrag_400" Margin="0 10 0 0">Vertrag auf 400 € Basis</CheckBox>
-                                    <CheckBox x:Name="chkbx_Vertrag_AZWV" Margin="0 10 0 0">
+                                    <CheckBox x:Name="chkbx_Vertrag_400" Margin="0 10 0 0" IsChecked="{Binding Path=Chkbx_Vertrag_400,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Vertrag auf 400 € Basis</CheckBox>
+                                    <CheckBox x:Name="chkbx_Vertrag_AZWV" Margin="0 10 0 0" IsChecked="{Binding Path=Chkbx_Vertrag_AZWV,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                         <TextBlock>
                                     Es handelt sich um einen Auftrag<LineBreak/>
                                     in AZWV-zertifizierten Kursen     
                                     (Umsatzsteuerbefreiung)
                                         </TextBlock>
                                     </CheckBox>
-                                    <CheckBox x:Name="chkbx_Vertrag_Vermittlungsagentur" Margin="0 10 0 0">Vermittlungsagentur</CheckBox>
+                                    <CheckBox x:Name="chkbx_Vertrag_Vermittlungsagentur" Margin="0 10 0 0" IsChecked="{Binding Path=Chkbx_Vertrag_Vermittlungsagentur,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Vermittlungsagentur</CheckBox>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -361,15 +395,15 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="0">
                                         <TextBox Name="tbx_Zahlung_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Zahlung_Nummer}"/>
                                         <TextBox Name="tbx_Zahlung_Monat" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Zahlung_Monat}"/>
                                         <TextBox Name="tbx_Zahlung_Druckdatum" Margin="0 10 0 10"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Zahlung_Druckdatum}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Grid.Row="0">
-                                        <Label Content="Bildungsträger" Margin="0 5 0 0"/>
-                                        <Label Content="Abteilung" Margin="0 5 0 0"/>
+                                        <Label Content="Bildungsträger" Margin="10 5 0 0"/>
+                                        <Label Content="Abteilung" Margin="10 5 0 0"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="3" Grid.Row="0">
                                         <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
@@ -474,28 +508,27 @@
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Grid.Row="0" Margin="5 0 0 0">
                                     <TextBox Name="tbx_Bewertung_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Nummer}"/>
                                     <TextBox Name="tbx_Bewertung_Datum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" />
+                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Datum}"/>
                                     <!-- Bewertungsspanne von/bis als zusätzliche StackPanels -->
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox Name="tbx_Bewertung_TLvon" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="50" />
+                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TLvon}"/>
                                         <TextBox Name="tbx_Bewertung_TLbis" Margin="5 10 0 0"
-                                HorizontalAlignment="Left" Width="50" />
+                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TLbis}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox Name="tbx_Bewertung_TNvon" Margin="0 10 0 10"
-                                HorizontalAlignment="Left" Width="50" />
+                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TNvon}"/>
                                         <TextBox Name="tbx_Bewertung_TNbis" Margin="5 10 0 10"
-                                HorizontalAlignment="Left" Width="50" />
+                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TNbis}"/>
                                     </StackPanel>
-                                    <!-- .................................................... -->
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Grid.Row="0">
-                                    <Label Content="Bildungsträger" Margin="0 5 0 0"/>
-                                    <Label Content="Abteilung" Margin="0 5 0 0"/>
-                                    <Label Content="Kommentar" Margin="0 5 0 0"/>
+                                    <Label Content="Bildungsträger" Margin="10 5 0 0"/>
+                                    <Label Content="Abteilung" Margin="10 5 0 0"/>
+                                    <Label Content="Kommentar" Margin="10 5 0 0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Grid.Row="0">
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
@@ -505,7 +538,7 @@
                                 Name="cbx_Bewertung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" SelectedIndex="{Binding SelectedItem_Bewertung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     <TextBox Name="tbx_Bewertung_Kommentar" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Height="60" />
+                                HorizontalAlignment="Left" Width="200" Height="60" Text="{Binding Tbx_Bewertung_Kommentar}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -524,11 +557,11 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="5 0 0 0">
                                         <TextBox Name="tbx_Bewertung_Was" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="800" />
+                                                 HorizontalAlignment="Left" Width="800" Text="{Binding Tbx_Bewertung_Was}"/>
                                         <TextBox Name="tbx_Bewertung_Wer" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="800" />
+                                                 HorizontalAlignment="Left" Width="800" Text="{Binding Tbx_Bewertung_Wer}"/>
                                         <TextBox Name="tbx_Bewertung_Wann" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="800" />
+                                                 HorizontalAlignment="Left" Width="800" Text="{Binding Tbx_Bewertung_Wann}"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -562,26 +595,26 @@
                                     <Label Content="Position" Margin="0 5 0 0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Margin="5 0 0 0">
-                                    <RichTextBox Name="rtbx_Bewertung_Info" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Height="100"  Width="400" />
+                                    <TextBox Name="rtbx_Bewertung_Info" Margin="0 10 0 0"
+                                                 HorizontalAlignment="Left" Height="100"  Width="400" Text="{Binding Tbx_Bewertung_Info}"/>
                                     <TextBox Name="tbx_Bewertung_Strasse" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Strasse}"/>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox Name="tbx_Bewertung_Plz" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="50" />
+                                                 HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_Plz}"/>
                                         <TextBox Name="tbx_Bewertung_Ort" Margin="5 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Ort}"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Info_2Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_2Mail}"/>
                                     <TextBox Name="tbx_Info_3Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_3Mail}"/>
                                     <TextBox Name="tbx_Info_Web" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Web}"/>
                                     <TextBox Name="tbx_Info_Abteilung" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Abteilung}"/>
                                     <TextBox Name="tbx_Info_Position" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Position}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -619,59 +652,59 @@
                                 </StackPanel>
                                 <StackPanel Grid.Column="1">
                                     <TextBox Name="tbx_Info_BogenVon" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_BogenVon}"/>
                                     <TextBox Name="tbx_Info_CheckVon" Margin="0 5 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_CheckVon}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="Regelung" Content="Ja" x:Name="chkbx_Regelung_Ja" Margin="0 15 0 0" />
-                                        <RadioButton GroupName="Regelung" Content="Nein" x:Name="chkbx_Regelung_Nein" Margin="5 15 0 0"/>
-                                        <RadioButton GroupName="Regelung" Content="Keine Angaben" x:Name="chkbx_Regelung_ka" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="Regelung" Content="Ja" x:Name="rb_Regelung_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_Regelung_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="Regelung" Content="Nein" x:Name="rb_Regelung_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Regelung_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="Regelung" Content="Keine Angaben" x:Name="rb_Regelung_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Regelung_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="ArbN" Content="Ja" x:Name="chkbx_ArbN_Ja" Margin="0 15 0 0" />
-                                        <RadioButton GroupName="ArbN" Content="Nein" x:Name="chkbx_ArbN_Nein" Margin="5 15 0 0"/>
-                                        <RadioButton GroupName="ArbN" Content="Keine Angaben" x:Name="chkbx_ArbN_ka" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="ArbN" Content="Ja" x:Name="rb_ArbN_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_ArbN_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="ArbN" Content="Nein" x:Name="rb_ArbN_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_ArbN_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <RadioButton GroupName="ArbN" Content="Keine Angaben" x:Name="rb_ArbN_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_ArbN_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="Umst" Content="Ja" x:Name="chkbx_Umst_Ja" Margin="0 15 0 0" />
-                                        <RadioButton GroupName="Umst" Content="Nein" x:Name="chkbx_Umst_Nein" Margin="5 15 0 0"/>
-                                        <RadioButton GroupName="Umst" Content="Keine Angaben" x:Name="chkbx_Umst_ka" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="Umst" Content="Ja" x:Name="rb_Umst_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_Umst_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="Umst" Content="Nein" x:Name="rb_Umst_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Umst_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="Umst" Content="Keine Angaben" x:Name="rb_Umst_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Umst_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Info_Rechtsform" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Rechtsform}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="SVPflicht" Content="Ja" x:Name="chkbx_SVPflicht_Ja" Margin="0 15 0 0" />
-                                        <RadioButton GroupName="SVPflicht" Content="Nein" x:Name="chkbx_SVPflicht_Nein" Margin="5 15 0 0"/>
-                                        <RadioButton GroupName="SVPflicht" Content="Keine Angaben" x:Name="chkbx_SVPflicht_ka" Margin="5 15 0 0"/>
+                                        <RadioButton GroupName="SVPflicht" Content="Ja" x:Name="rb_SVPflicht_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_SVPflicht_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="SVPflicht" Content="Nein" x:Name="rb_SVPflicht_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_SVPflicht_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="SVPflicht" Content="Keine Angaben" x:Name="rb_SVPflicht_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_SVPflicht_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="chkbx_Info_DRV" Margin="0 15 0 0">Statusfeststellung durch DRV...</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_DRV" Margin="0 15 0 0" IsChecked="{Binding Path=Chkbx_Info_DRV,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Statusfeststellung durch DRV...</CheckBox>
                                     <CheckBox x:Name="chkbx_Info_SVBefreiung" Margin="0 15 0 0" IsChecked="{Binding Path=Chkbx_Info_SVBefreiung,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">SV Befreiung für Selbstständige</CheckBox>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="SVBefreiung" Content="...ist beantragt" x:Name="chkbx_SVBefreiung_beantragt" Margin="0 0 0 0" IsEnabled="{Binding ElementName=chkbx_Info_SVBefreiung, Path=IsChecked}" />
-                                        <RadioButton GroupName="SVBefreiung" Content="...liegt vor" x:Name="chkbx_SVBefreiung_liegtvor" Margin="5 0 0 0" IsEnabled="{Binding ElementName=chkbx_Info_SVBefreiung, Path=IsChecked}" />
+                                        <RadioButton GroupName="SVBefreiung" Content="...ist beantragt" x:Name="rb_SVBefreiung_beantragt" Margin="0 0 0 0" IsEnabled="{Binding ElementName=Rb_SVBefreiung_beantragt, Path=IsChecked}" />
+                                        <RadioButton GroupName="SVBefreiung" Content="...liegt vor" x:Name="rb_SVBefreiung_liegtvor" Margin="5 0 0 0" IsEnabled="{Binding ElementName=Rb_SVBefreiung_liegtvor, Path=IsChecked}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="Einsatzvolumen" Content="Ja" x:Name="chkbx_Einsatzvolument_Ja" Margin="0 5 0 0" />
-                                        <RadioButton GroupName="Einsatzvolumen" Content="Nein" x:Name="chkbx_Einsatzvolumen_Nein" Margin="5 5 0 0"/>
-                                        <RadioButton GroupName="Einsatzvolumen" Content="Keine Angaben" x:Name="chkbx_Einsatzvolumen_ka" Margin="5 5 0 0"/>
+                                        <RadioButton GroupName="Einsatzvolumen" Content="Ja" x:Name="rb_Einsatzvolument_Ja" Margin="0 5 0 0" IsChecked="{Binding Path=Rb_Einsatzvolument_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="Einsatzvolumen" Content="Nein" x:Name="rb_Einsatzvolumen_Nein" Margin="5 5 0 0" IsChecked="{Binding Path=Rb_Einsatzvolumen_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton GroupName="Einsatzvolumen" Content="Keine Angaben" x:Name="rb_Einsatzvolumen_ka" Margin="5 5 0 0" IsChecked="{Binding Path=Rb_Einsatzvolumen_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
-                                    <RichTextBox Name="rtbx_Status_Info" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Height="100"  Width="400" />
+                                    <TextBox Name="rtbx_Status_Info" Margin="0 10 0 10"
+                                                 HorizontalAlignment="Left" Height="100"  Width="400" Text="{Binding Tbx_Status_Info}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Margin="5 0 0 0">
-                                    <CheckBox x:Name="chkbx_Info_Selbst" Margin="5 15 0 0">Selbstständigenstatus ist gegeben</CheckBox>
-                                    <CheckBox x:Name="chkbx_Info_Verfolgen" Margin="5 15 0 0">Weiterverfolgung ist erforderlich</CheckBox>
-                                    <CheckBox x:Name="chkbx_Info_OffzVerfolgen" Margin="5 15 0 0">Offizielle Statusprüfung ist erforderlich</CheckBox>
-                                    <CheckBox x:Name="chkbx_Info_Bedenklich" Margin="5 15 0 0">Einsatz als Honorarkraft bedenklich</CheckBox>
-                                    <Label Content="Datum der letzten Überprüfung" Margin="0 5 0 0"/>
+                                    <CheckBox x:Name="chkbx_Info_Selbst" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_Selbst,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Selbstständigenstatus ist gegeben</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Verfolgen" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_Verfolgen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Weiterverfolgung ist erforderlich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_OffzVerfolgen" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_OffzVerfolgen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Offizielle Statusprüfung ist erforderlich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Bedenklich" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_Bedenklich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Einsatz als Honorarkraft bedenklich</CheckBox>
+                                    <Label Content="Datum der letzten Überprüfung" Margin="0 5 0 0" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Margin="5 0 0 0">
                                     <TextBox Name="tbx_Info_Verfolgung" Margin="0 45 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Verfolgung}"/>
                                     <TextBox Name="tbx_Info_OffzVerfolgung" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_OffzVerfolgung}"/>
                                     <TextBox Name="tbx_Info_DatumUederpruefung" Margin="0 35 0 0"
-                                                 HorizontalAlignment="Left" Width="200" />
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_DatumUederpruefung}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>

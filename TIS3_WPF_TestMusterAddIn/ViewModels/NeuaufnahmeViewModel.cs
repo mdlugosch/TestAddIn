@@ -7,9 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Technewlogic.WpfDialogManagement;
 using TIS3_Base;
+using TIS3_Base.Services;
 using TIS3_LookupBL;
 using TIS3_WPF_TestMusterAddIn.Infrastructure;
+using TIS3_WPF_TestMusterAddIn.Views;
+using WinTIS30db_entwModel.Honorarkraefte;
 using WinTIS30db_entwModel.Lookup;
 
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
@@ -38,11 +42,30 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public ObservableCollection<Bildungstraeger> Cbx_Neu_Bildungstraeger { get; set; }
         public int SelectedItem_Neu_Teams { get; set; }
         public LookupCollectionBO Cbx_Neu_Teams { get; set; }
+        public string Tbx_Neu_Vorname { get; set; }
+        public string Tbx_Neu_Nachname { get; set; }
+        public string Tbx_Neu_Firma { get; set; }
+        public string Tbx_Neu_Strasse { get; set; }
+        public string Tbx_Neu_Plz { get; set; }
+        public string Tbx_Neu_Ort { get; set; }
+        public string Tbx_Neu_PTel { get; set; }
+        public string Tbx_Neu_Fax { get; set; }
+        public string Tbx_Neu_FTel { get; set; }
+        public string Tbx_Neu_Mobil { get; set; }
+        public string Tbx_Neu_EMail { get; set; }
+        public string Tbx_Neu_BLZ { get; set; }
+        public string Tbx_Neu_Bank { get; set; }
+        public string Tbx_Neu_Konto { get; set; }
+        public string Tbx_Neu_UE { get; set; }
+        public string Tbx_Neu_Ausbildung { get; set; }
+        public string Tbx_Neu_Studium { get; set; }
+        public string Tbx_Neu_Fachgebiet { get; set; }
         # endregion
 
         # region Commands-Neuaufnahme
         public RelayCommand SaveCommand { get; set; }
         public RelayCommand ResetCommand { get; set; }
+        public RelayCommand AddThemeCommand { get; set; }
         # endregion
 
         public override void Init()
@@ -51,6 +74,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Header.Group = "Honorarkräfteverwaltung";             // Gruppenname der Anwendungs-Tabs
             SaveCommand = new RelayCommand(_execute => this.Neuanlegen(), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => this.Zureucksetzen(), _canExecute => true);
+            AddThemeCommand = new RelayCommand(_execute => this.AddTheme(), _canExecute => true);
 
             InitComboBoxes();
         }
@@ -90,7 +114,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         private void Zureucksetzen()
         {
-            MessageBox.Show("It works! - zurücksetzen");
+            MessageBox.Show("It works! - zurücksetzen"); 
+        }
+
+        private void AddTheme()
+        {
+            ViewService.Current.ShowInlineDialog(this.DialogManager, "AddThemeView", "Thema hinzufügen", DialogMode.OkCancel);
         }
     }
 }

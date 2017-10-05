@@ -89,47 +89,49 @@
                                     Syncfusion:SkinStorage.VisualStyle="Metro" />
                         <Label Content="Vorname" Grid.Column="0" Grid.Row="1" />
                         <TextBox Name="tbx_Neu_Vorname" Margin="0 0 10 0" Grid.Column="1" Grid.Row="1"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Vorname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Nachname" Grid.Column="0" Grid.Row="2" />
                         <TextBox Name="tbx_Neu_Nachname" Margin="0 0 10 0" Grid.Column="1" Grid.Row="2"
-                                     HorizontalAlignment="Left" Width="200" />
+                                     HorizontalAlignment="Left" Width="200" Text="{Binding Path=Tbx_Neu_Nachname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Firma" Grid.Column="0" Grid.Row="3" />
                         <TextBox Name="tbx_Neu_Firma" Margin="0 0 10 0" Grid.Column="1" Grid.Row="3"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Firma, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Strasse" Grid.Column="0" Grid.Row="4" />
                         <TextBox Name="tbx_Neu_Strasse" Margin="0 0 10 0" Grid.Column="1" Grid.Row="4"
-                                     HorizontalAlignment="Left" Width="200" />
+                                     HorizontalAlignment="Left" Width="200" Text="{Binding Path=Tbx_Neu_Strasse, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="PLZ" Grid.Column="0" Grid.Row="5" />
                         <TextBox Name="tbx_Neu_Plz" Margin="0 0 10 0" Grid.Column="1" Grid.Row="5"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Plz, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Ort" Grid.Column="2" Grid.Row="5" />
                         <TextBox Name="tbx_Neu_Ort" Margin="0 0 10 0" Grid.Column="3" Grid.Row="5"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Ort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Telefon" Grid.Column="0" Grid.Row="6" />
                         <TextBox Name="tbx_Neu_PTel" Margin="0 0 10 0" Grid.Column="1" Grid.Row="6"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_PTel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Fax" Grid.Column="2" Grid.Row="6" />
                         <TextBox Name="tbx_Neu_Fax" Margin="0 0 10 0" Grid.Column="3" Grid.Row="6"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Fax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Telefon (Firma)" Grid.Column="0" Grid.Row="7" />
                         <TextBox Name="tbx_Neu_FTel" Margin="0 0 10 0" Grid.Column="1" Grid.Row="7"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_FTel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Mobil" Grid.Column="2" Grid.Row="7" />
                         <TextBox Name="tbx_Neu_Mobil" Margin="0 0 10 0" Grid.Column="3" Grid.Row="7"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Mobil, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="EMail" Grid.Column="0" Grid.Row="8" />
                         <TextBox Name="tbx_Neu_EMail" Margin="0 0 10 0" Grid.Column="1" Grid.Row="8"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_EMail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="BLZ" Grid.Column="0" Grid.Row="9" />
                         <TextBox Name="tbx_Neu_BLZ" Margin="0 0 10 0" Grid.Column="1" Grid.Row="9"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_BLZ, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Bank" Grid.Column="2" Grid.Row="9" />
                         <TextBox Name="tbx_Neu_Bank" Margin="0 0 10 0" Grid.Column="3" Grid.Row="9"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Bank, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Konto" Grid.Column="0" Grid.Row="10" />
-                        <TextBox Name="tbx_Neu_Konto" Margin="0 0 10 0" Grid.Column="1" Grid.Row="10" Height="22" />
+                        <TextBox Name="tbx_Neu_Konto" Margin="0 0 10 0" Grid.Column="1" Grid.Row="10" 
+                                 Height="22" Text="{Binding Path=Tbx_Neu_Konto, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Honorar je UE" Grid.Column="0" Grid.Row="11" />
-                        <TextBox Name="tbx_Neu_UE" Margin="0 0 10 0" Width="200" Height="22" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="11"/>
+                        <TextBox Name="tbx_Neu_UE" Margin="0 0 10 0" Width="200" Height="22" 
+                                 HorizontalAlignment="Left" Grid.Column="1" Grid.Row="11" Text="{Binding Path=Tbx_Neu_UE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Bildungsträger" Grid.Column="0" Grid.Row="12" />
                         <Syncfusion:ComboBoxAdv  Grid.Column="1" Grid.Row="12" HorizontalAlignment="Left" 
                                     Name="cbx_Neu_Bildungstraeger" Width="200" Margin="0 5 0 5" ItemsSource="{Binding Cbx_Neu_Bildungstraeger}" DisplayMemberPath="Name1"     
@@ -158,17 +160,18 @@
                         </Grid.RowDefinitions>
                         <Label Content="Ausbildung" Grid.Column="0" Grid.Row="0" />
                         <TextBox Name="tbx_Neu_Ausbildung" Margin="0 0 10 0" Grid.Column="1" Grid.Row="0"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Ausbildung, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Studium" Grid.Column="0" Grid.Row="1" />
                         <TextBox Name="tbx_Neu_Studium" Margin="0 0 10 0" Grid.Column="1" Grid.Row="1"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Studium, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Einsatzgebiete" Grid.Column="0" Grid.Row="2" />
                         <ListBox Name="lbx_Neu_Einsatzgebiete" Grid.Column="1" Height="200" Width="200" Grid.Row="2" HorizontalAlignment="Left" ItemsSource="{Binding Lbx_Neu_Einsatzgebiete}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}" />
                         <Label Content="Fachgebiet" Grid.Column="0" Grid.Row="3" />
                         <TextBox Name="tbx_Neu_Fachgebiet" Margin="0 0 10 0" Grid.Column="1" Grid.Row="3"
-                                     HorizontalAlignment="Left" Width="200" Height="22" />
+                                     HorizontalAlignment="Left" Width="200" Height="22" Text="{Binding Path=Tbx_Neu_Fachgebiet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Themen" Grid.Column="0" Grid.Row="4" />
                         <TreeView Name="tv_Neu_Themen" Height="200" Width="200" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Neu_Themen}"/>
+                        <Button Name="btn_Neu_AddTheme" Grid.Column="1" Grid.Row="5" Width="200" Content="Thema hinzufügen" Command="{Binding AddThemeCommand}" Margin="0 5" HorizontalAlignment="Left"/>
                     </Grid>
                 </Grid>
             </Border>

@@ -124,6 +124,32 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
             return result;
         }
 
+        // Holt Bezeichnungen für Themengruppen als Stringliste
+        public ObservableCollection<string> HoleThemaGruppen()
+        {
+            // Result mit IsChecked Property
+            ObservableCollection<string> result = new ObservableCollection<string>();
+
+            result.Clear();
+
+            CreateContext();
+
+            using (context)
+            {
+                // Gruppenliste für anschließende Sortierung erstellen
+                var groupQuery = from themaTab in context.wt2_konst_honorarkraft_thema
+                                 group themaTab by themaTab.khkth_gruppe;
+
+                // Ablegen der LinQ Ergebnisse in die Result Collection
+                foreach (var t in groupQuery) 
+                {
+                    result.Add(t.Key);
+                }
+            }
+
+            return result;
+        }
+
         // ThemaListe aufbereiten für TreeView
         public ObservableCollection<SortedList_Thema> HoleThemaListe()
         {
