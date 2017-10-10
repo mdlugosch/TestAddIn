@@ -18,7 +18,7 @@ using WinTIS30db_entwModel.Lookup;
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
     [NotifyPropertyChanged]
-    class VertragsdatenViewModel : TIS3ActiveViewModel, INavigationAware
+    public class VertragsdatenViewModel : TIS3ActiveViewModel, INavigationAware
     {
         // Laden des aktuellen RegionManagers
         public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
@@ -28,8 +28,8 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
         # endregion
 
-        # region Testdaten
-        public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
+        # region Auswahlliste
+        public ObservableCollection<wt2_honorarkraft_vertrag> HonorarListe { get; set; }
         # endregion
 
         # region Elemente der Vertragsdaten-Suchmaske
@@ -40,7 +40,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public String Tbx_Vertrag_Datum{ get; set; }
         public String Tbx_Vertrag_Auftrag { get; set; }
         public bool Chkbx_Vertrag_Gedruckt{ get; set; }
-        public bool Chkbx_Vertrag_Ausgezahlt{ get; set; }
         public bool Chkbx_Vertrag_400 { get; set; }
         # endregion
 
@@ -65,9 +64,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Initialisierung VertragsdatenViewModel
         public override void Init()
         {
-            # region Testdaten initializieren
-            HonorarListe = hDAO.LoadTestdata();
-            # endregion
 
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
@@ -84,7 +80,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Cbx_Vertrag_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
             Cbx_Vertrag_Thema = new ObservableCollection<wt2_konst_honorarkraft_thema>();
 
-            Cbx_Vertrag_Teams = LookRepo.GetTeams(true, "", true);
+            Cbx_Vertrag_Teams = LookRepo.GetTeams(true, "", true,true);
             Cbx_Vertrag_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Vertrag_Bildungstraeger = LookRepo.GetBildungstraeger(true);
             Cbx_Vertrag_Thema = hDAO.HoleThema(false);
@@ -99,7 +95,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             SelectedItem_Vertrag_Teams = 0;
             SelectedItem_Vertrag_Abteilung = 0;
             SelectedItem_Vertrag_Bildungstraeger = 0;
-            SelectedItem_Vertrag_Thema = 0;
+            SelectedItem_Vertrag_Thema = 1;
             # endregion
         }
         # endregion
@@ -118,14 +114,13 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Tbx_Vertrag_Datum = "";
             Tbx_Vertrag_Auftrag = "";
             Chkbx_Vertrag_Gedruckt = false;
-            Chkbx_Vertrag_Ausgezahlt = false;
             Chkbx_Vertrag_400 = false;
             # endregion
         }
 
         public void Search()
         {
-            MessageBox.Show("It works!");
+            HonorarListe = hDAO.VertragsdatenSuche(this);
         }
 
         private void OpenEditView(object dataObj)

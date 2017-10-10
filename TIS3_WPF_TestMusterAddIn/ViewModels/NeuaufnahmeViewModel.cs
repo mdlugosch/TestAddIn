@@ -90,7 +90,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             # region Daten in Comboboxen laden
             Tv_Neu_Themen = hDAO.HoleThemaListe();
             Lbx_Neu_Einsatzgebiete = hDAO.HoleEinsatzgebieteListe();
-            Cbx_Neu_Teams = LookRepo.GetTeams(true, "", true);
+            Cbx_Neu_Teams = LookRepo.GetTeams(true, "", true,true);
             Cbx_Neu_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Neu_Bildungstraeger = LookRepo.GetBildungstraeger(true);
             # endregion

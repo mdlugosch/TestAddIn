@@ -32,7 +32,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
         # endregion
 
-        # region Testdaten
+        # region Auswahlliste
         public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
         public wt2_honorarkraft SelectedHonorar { get; set; } 
         # endregion
@@ -70,10 +70,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Initialisierung PersonaldatenViewModel
         public override void Init()
         {
-            # region Testdaten initializieren
-            HonorarListe = hDAO.LoadTestdata();
-            # endregion
-
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
@@ -93,7 +89,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             # endregion
 
             # region Daten in Comboboxen laden
-            Cbx_Personal_Teams = LookRepo.GetTeams(true, "", true);
+            Cbx_Personal_Teams = LookRepo.GetTeams(true, "", true,true);
             Cbx_Personal_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Personal_Bildungstraeger = LookRepo.GetBildungstraeger(true);
             Cbx_Personal_Einsatzgebiet = hDAO.HoleEinsatzgebiete(true);
@@ -111,7 +107,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             SelectedItem_Personal_Abteilung = 0;
             SelectedItem_Personal_Einsatzgebiet = 0;
             SelectedItem_Personal_Bildungstraeger = 0;
-            SelectedItem_Personal_Thema = 0;
+            SelectedItem_Personal_Thema = 1;
             # endregion
         }
         # endregion
@@ -135,13 +131,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         public void Search()
         {
-            MessageBox.Show(Tbx_Personal_Name + " / " 
-                + Tbx_Personal_Vorname + " / " 
-                + Tbx_Personal_Firma + " / "
-                + Environment.NewLine + Chkbx_Status_Selbstaendig + " / " 
-                + Chkbx_Status_Verfolgen + " / " 
-                + Chkbx_Status_Pruefen + " / " 
-                + Chkbx_Status_bedenklich);
+            HonorarListe = hDAO.PersonendatenSuche(this);
         }
 
         private void OpenEditView(object dataObj)

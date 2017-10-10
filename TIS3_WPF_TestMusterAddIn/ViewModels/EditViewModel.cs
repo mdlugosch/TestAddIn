@@ -151,8 +151,8 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public int SelectedItem_Bewertung_Bildungstraeger { get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Bewertung_Bildungstraeger { get; set; }
 
-        public bool Chkbx_Info_DRV { get; set; }
-        public bool Chkbx_Info_SVBefreiung { get; set; }
+        //public bool Chkbx_Info_DRV { get; set; }
+        //public bool Chkbx_Info_SVBefreiung { get; set; }
 
         public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
         # endregion

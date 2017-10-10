@@ -63,7 +63,7 @@
                     <Label Content="Abteilung" />
                     <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Abteilung" ItemsSource="{Binding Cbx_Zahlung_Abteilung}" DisplayMemberPath="Bezeichnung" Height="25" SelectedIndex="{Binding SelectedItem_Zahlung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
                     <Label Content="Thema" />
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Thema" ItemsSource="{Binding Cbx_Zahlung_Thema}" DisplayMemberPath="khkth_bezeichnung" Height="25" SelectedIndex="{Binding SelectedItem_Zahlung_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Zahlung_Thema" ItemsSource="{Binding Cbx_Zahlung_Thema}" DisplayMemberPath="GruppeUndThema" Height="25" SelectedIndex="{Binding SelectedItem_Zahlung_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -86,9 +86,11 @@
                 </Syncfusion:SfDataGrid.RowStyle>
 
                 <Syncfusion:SfDataGrid.Columns>
-                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
-                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nr."/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Datum"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Firma"/>
             </Syncfusion:SfDataGrid.Columns>
         </Syncfusion:SfDataGrid>
     </Grid>

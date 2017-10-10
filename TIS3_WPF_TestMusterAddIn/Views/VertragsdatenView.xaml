@@ -61,7 +61,7 @@
                     <Label Content="Abteilung" />
                     <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Abteilung" ItemsSource="{Binding Cbx_Vertrag_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
                     <Label Content="Thema" />
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Thema" ItemsSource="{Binding Cbx_Vertrag_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="{Binding SelectedItem_Vertrag_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Vertrag_Thema" ItemsSource="{Binding Cbx_Vertrag_Thema}" DisplayMemberPath="GruppeUndThema" SelectedIndex="{Binding SelectedItem_Vertrag_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  Width="200"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -73,10 +73,8 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Label Grid.Column="0" Grid.Row="0" Content="noch nicht gedruckt" />
-                        <CheckBox Name="chkbx_Vertrag_Gedruckt" IsChecked="{Binding Path=Chkbx_Vertrag_Gedruckt,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" />
-                        <Label Grid.Column="0" Grid.Row="1" Content="noch nicht komplett ausgezahlt" />
-                        <CheckBox Name="chkbx_Vertrag_Ausgezahlt" IsChecked="{Binding Path=Chkbx_Vertrag_Ausgezahlt,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" />
-                        <Label Grid.Column="0" Grid.Row="2" Content="400 Basis" />
+                            <CheckBox Name="chkbx_Vertrag_Gedruckt" IsChecked="{Binding Path=Chkbx_Vertrag_Gedruckt,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" />
+                            <Label Grid.Column="0" Grid.Row="2" Content="400 Basis" />
                         <CheckBox Name="chkbx_Vertrag_400" IsChecked="{Binding Path=Chkbx_Vertrag_400,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" />
                     </Grid>
                 </StackPanel>
@@ -93,9 +91,11 @@
                 </Syncfusion:SfDataGrid.RowStyle>
                 
                 <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkv_ident" HeaderText="Nr."/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkv_datum" HeaderText="Datum"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_nachname" HeaderText="Nachname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_firma" HeaderText="Firma"/>     
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
         </Grid>

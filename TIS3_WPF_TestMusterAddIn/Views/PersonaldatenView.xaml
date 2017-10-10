@@ -12,6 +12,23 @@
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
         <Grid>
+            <Grid.Resources>
+                <Style TargetType="Syncfusion:GridHeaderCellControl" x:Key="noHeaderStyle">
+                    <Setter Property="Height" Value="0" />
+                </Style>
+
+                <Style x:Key="sfMultiColumnDropDown" TargetType="Syncfusion:SfMultiColumnDropDownControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Syncfusion:SfMultiColumnDropDownControl">
+                    
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+            </Grid.Resources>
+            
             <Grid.RowDefinitions>
                 <RowDefinition Height="22" />
                 <RowDefinition Height="210" />
@@ -52,8 +69,8 @@
                     <!-- *** Suchkriterien-Abschnitt 2:  Personendaten *** -->
                     <StackPanel Margin="10 0 0 10" Grid.Column="1" MinWidth="200">
                         <Label Content="Thema"/>
-                        <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Thema" ItemsSource="{Binding Cbx_Personal_Thema}" DisplayMemberPath="khkth_bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" MaxWidth="200" />
-                        <Label Content="Bildungsträger"/>
+                            <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Thema" ItemsSource="{Binding Cbx_Personal_Thema}" DisplayMemberPath="GruppeUndThema" SelectedIndex="{Binding SelectedItem_Personal_Thema, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" MaxWidth="200" />
+                            <Label Content="Bildungsträger"/>
                         <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Bildungstraeger" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" DisplayMemberPath="Name1" SelectedIndex="{Binding SelectedItem_Personal_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
                         <Label Content="Team"/>
                         <Syncfusion:ComboBoxAdv  Name="cbx_Personal_Team" ItemsSource="{Binding Cbx_Personal_Teams}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Personal_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro"  MaxWidth="200"/>
@@ -101,9 +118,10 @@
                 </Syncfusion:SfDataGrid.RowStyle>
                 
                         <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Anrede" HeaderText="Anrede"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_firma" HeaderText="Firma"/>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
             

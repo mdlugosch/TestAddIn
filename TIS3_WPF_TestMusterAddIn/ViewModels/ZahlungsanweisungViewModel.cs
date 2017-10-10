@@ -80,7 +80,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Cbx_Zahlung_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
             Cbx_Zahlung_Thema = new ObservableCollection<wt2_konst_honorarkraft_thema>();
 
-            Cbx_Zahlung_Teams = LookRepo.GetTeams(true, "", true);
+            Cbx_Zahlung_Teams = LookRepo.GetTeams(true, "", true,true);
             Cbx_Zahlung_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Zahlung_Bildungstraeger = LookRepo.GetBildungstraeger(true);
             Cbx_Zahlung_Thema = hDAO.HoleThema(false);
@@ -95,7 +95,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             SelectedItem_Zahlung_Teams = 0;
             SelectedItem_Zahlung_Abteilung = 0;
             SelectedItem_Zahlung_Bildungstraeger = 0;
-            SelectedItem_Zahlung_Thema = 0;
+            SelectedItem_Zahlung_Thema = 1;
             # endregion
         }
         # endregion

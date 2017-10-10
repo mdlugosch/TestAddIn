@@ -109,9 +109,11 @@
                 </Syncfusion:SfDataGrid.RowStyle>
 
                 <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nr."/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Datum"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_ort" HeaderText="Ort"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Firma"/>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
         </Grid>
