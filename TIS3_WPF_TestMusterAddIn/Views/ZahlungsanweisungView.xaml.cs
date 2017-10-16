@@ -23,7 +23,7 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// <summary>
     /// Interaktionslogik für ZahlungsanweisungView.xaml
     /// </summary>
-    [Export("ZahlungsanweisungView")] 
+    [Export("ZahlungsanweisungView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ZahlungsanweisungView : TIS3_Base.TIS3ActiveView
     {
         public RelayCommand OpenEditViewCommand { get; set; }

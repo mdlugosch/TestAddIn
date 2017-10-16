@@ -1,0 +1,60 @@
+﻿<base:TIS3ActiveView x:Class="TIS3_WPF_TestMusterAddIn.Views.UeberpruefungsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
+             xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="760">
+    
+    <base:TIS3ActiveView.Resources>
+        <ValueConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></ValueConverters:BooleanToVisibilityConverter>
+    </base:TIS3ActiveView.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Menuzeile Vertagdaten Zeile 0 -->
+        <Menu Grid.Row="0" IsMainMenu="True">
+            <MenuItem Name="mnu_Bewertung_Suchen" Header="_Suchen" Command="{Binding SearchCommand}" />
+            <MenuItem Name="mnu_Bewertung_Neu" Header="_Neu" Command="{Binding ResetCommand}"/>
+            <MenuItem Name="mnu_Bewertung_Export" Header="_Exportieren" />
+            <MenuItem Name="mnu_Bewertung_Drucken" Header="_Drucken" />
+        </Menu>
+        
+        <!-- Eingabebereich Zeile 1 -->
+        <StackPanel Grid.Row="1">
+            <Label Grid.Column="1" Margin="5 0 0 0" Content="Bewertung erforderlich für dieses Jahr" />
+            <Syncfusion:ComboBoxAdv Grid.Column="3" Margin="10 0 0 0" Name="cbx_Pruefung_Jahr" ItemsSource="{Binding Cbx_Pruefung_Jahr}" SelectedIndex="{Binding SelectedItem_Pruefung_Jahr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" Width="100" HorizontalAlignment="Left" />
+        </StackPanel>
+        
+        <!-- Ergebnisbereich Zeile 2 -->
+        <Syncfusion:SfDataGrid x:Name="dg_Pruefbogen" Grid.Row="2" AutoGenerateColumns="False"  ItemsSource="{Binding HonorarListe}"
+                                     AllowSorting="True" Margin="5">
+
+            <Syncfusion:SfDataGrid.RowStyle>
+                <Style TargetType="Syncfusion:VirtualizingCellsControl">
+                    <EventSetter Event="Loaded" Handler="Row_Loaded"/>
+                </Style>
+            </Syncfusion:SfDataGrid.RowStyle>
+
+            <Syncfusion:SfDataGrid.Columns>
+                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
+                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
+                <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_firma" HeaderText="Firma"/>
+            </Syncfusion:SfDataGrid.Columns>
+        </Syncfusion:SfDataGrid>
+
+        <!-- Grid-Overlay für Datenladeanimation -->
+        <Grid Name="BusyOverlay" Background="White" Grid.Row="2"
+            Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+            Grid.ZIndex="99999">
+            <Syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ZIndex="99999" />
+        </Grid>
+    </Grid>
+</base:TIS3ActiveView>

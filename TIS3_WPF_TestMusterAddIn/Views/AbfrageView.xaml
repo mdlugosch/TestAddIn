@@ -89,7 +89,25 @@
                     </Image>
                 </MenuItem.Icon>
             </MenuItem>
-            </Menu>
+            <MenuItem Name="mnu_Pruefungsbogen" Header="Pruefungsbogen" Command="{Binding OpenPruefungsSuche}">
+                <MenuItem.Icon>
+                    <Image Margin="0 0 -10 0" Height="15" Width="15">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PruefungMenuStatus}" Value="False">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOff.png" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding PruefungMenuStatus}" Value="True">
+                                        <Setter Property="Source" Value="pack://application:,,,/TIS3_WPF_Styles;component/Icons/RauteOn.png" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </MenuItem.Icon>
+            </MenuItem>
+        </Menu>
 
             <ContentControl x:Name="SearchMask" prism:RegionManager.RegionName="{Binding SearchPanel}"
                 Grid.Row="1" Margin="5,0,5,5" />

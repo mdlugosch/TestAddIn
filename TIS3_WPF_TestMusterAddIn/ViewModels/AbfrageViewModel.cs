@@ -55,12 +55,14 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public bool VertragMenuStatus { get; set; }
         public bool ZahlungMenuStatus { get; set; }
         public bool BewertungMenuStatus { get; set; }
+        public bool PruefungMenuStatus { get; set; }
 
         # region Definition der Hauptmenu RelayCommands
         public RelayCommand OpenPersonalSuche { get; set; }
         public RelayCommand OpenVertragsSuche { get; set; }
         public RelayCommand OpenZahlungsanweisungsSuche { get; set; }
         public RelayCommand OpenBewertungsSuche { get; set; }
+        public RelayCommand OpenPruefungsSuche { get; set; }
         # endregion
 
         # region Uri`s zu den versch. Suchmasken(SuchmaskenViews)
@@ -69,6 +71,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         private static Uri VertragsdatenViewUri = new Uri("/VertragsdatenView", UriKind.Relative);
         private static Uri ZahlungsanweisungViewUri = new Uri("/ZahlungsanweisungView", UriKind.Relative);
         private static Uri BewertungsbogenViewUri = new Uri("/BewertungsbogenView", UriKind.Relative);
+        private static Uri UeberpruefungsbogenViewUri = new Uri("/UeberpruefungsView", UriKind.Relative);
         # endregion
 
         # region Init() - Ausführung wenn Klasse Instanziiert wird
@@ -81,6 +84,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             VertragMenuStatus = false;
             ZahlungMenuStatus = false;
             BewertungMenuStatus = false;
+            PruefungMenuStatus = false;
 
             /*
              * Implementation der Hauptmenu RelayCommands
@@ -89,6 +93,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             OpenVertragsSuche = new RelayCommand(_execute => { LadeVertragsdatenView(); }, _canExecute => { return true; });
             OpenZahlungsanweisungsSuche = new RelayCommand(_execute => { LadeZahlungsanweisungView(); }, _canExecute => { return true; });
             OpenBewertungsSuche = new RelayCommand(_execute => { LadeBewertungsbogenView(); }, _canExecute => { return true; });
+            OpenPruefungsSuche = new RelayCommand(_execute => { LadeUeberpruefungsView(); }, _canExecute => { return true; });
              }
             # endregion
 
@@ -124,6 +129,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             VertragMenuStatus = false;
             ZahlungMenuStatus = false;
             BewertungMenuStatus = false;
+            PruefungMenuStatus = false;
 
             this.regionManager.RequestNavigate(SearchPanel, PersonaldatenViewUri);
         }
@@ -134,6 +140,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             VertragMenuStatus = true;
             ZahlungMenuStatus = false;
             BewertungMenuStatus = false;
+            PruefungMenuStatus = false;
 
             this.regionManager.RequestNavigate(SearchPanel, VertragsdatenViewUri);
         }
@@ -144,6 +151,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             VertragMenuStatus = false;
             ZahlungMenuStatus = true;
             BewertungMenuStatus = false;
+            PruefungMenuStatus = false;
 
             this.regionManager.RequestNavigate(SearchPanel, ZahlungsanweisungViewUri);
         }
@@ -154,8 +162,20 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             VertragMenuStatus = false;
             ZahlungMenuStatus = false;
             BewertungMenuStatus = true;
+            PruefungMenuStatus = false;
 
             this.regionManager.RequestNavigate(SearchPanel, BewertungsbogenViewUri);
+        }
+
+        private void LadeUeberpruefungsView()
+        {
+            PersonalMenuStatus = false;
+            VertragMenuStatus = false;
+            ZahlungMenuStatus = false;
+            BewertungMenuStatus = false;
+            PruefungMenuStatus = true;
+
+            this.regionManager.RequestNavigate(SearchPanel, UeberpruefungsbogenViewUri);         
         }
         # endregion
     }

@@ -160,15 +160,13 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Editview Init
         public override void Init()
         {
+            HonorarListe = hDAO.LoadTestdata();
+
             Header.Title = "Änderungsbogen";                         // Header Attribut zum bestimmen des Tab-Namens
             Header.Group = "Honorarkräfteverwaltung";                // Gruppenname der Anwendungs-Tabs
 
             AddThemeCommand = new RelayCommand(_execute => this.AddTheme(), _canExecute => true);
             InitComboBoxes();
-
-            # region Testdaten initializieren
-            HonorarListe = hDAO.LoadTestdata();
-            # endregion
         }
         # endregion
 
@@ -246,9 +244,18 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                                                        select tupel;
                 wt2_honorarkraft test = result.FirstOrDefault();
 
-                Tbx_Personal_Vorname = test.hk_vorname;
-                Tbx_Personal_Nachname = test.hk_nachname;
-                Tbx_Personal_Firma = test.hk_firma; 
+                if (test != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(test.hk_vorname))
+                        Tbx_Personal_Vorname = test.hk_vorname;
+                    else Tbx_Personal_Vorname = "";
+                    if (!string.IsNullOrWhiteSpace(test.hk_nachname))
+                        Tbx_Personal_Nachname = test.hk_nachname;
+                    else Tbx_Personal_Nachname = "";
+                    if (!string.IsNullOrWhiteSpace(test.hk_firma))
+                        Tbx_Personal_Firma = test.hk_firma;
+                    else Tbx_Personal_Firma = "";
+                }
         }
         # endregion
     }

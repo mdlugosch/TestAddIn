@@ -5,6 +5,7 @@ using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ using WinTIS30db_entwModel.Lookup;
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
     [NotifyPropertyChanged]
-    class BewertungsbogenViewModel : TIS3ActiveViewModel, INavigationAware
+    public class BewertungsbogenViewModel : TIS3ActiveViewModel, INavigationAware
     {
         // Laden des aktuellen RegionManagers
         public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
@@ -30,21 +31,21 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         string personId;
 
-        # region Testdaten
-        public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
+        # region Auswahlliste
+        public ObservableCollection<wt2_honorarkraft_bewertung> HonorarListe { get; set; }
         # endregion
 
         # region Elemente der Personaldaten-Suchmaske
+        public bool IsBusy { get; set; }
         public String Tbx_Bewertung_Name{ get; set; }
         public String Tbx_Bewertung_Vorname{ get; set; }
         public String Tbx_Bewertung_Firma{ get; set; }
-        public String Tbx_Bewertung_TNVon{ get; set; }
-        public String Tbx_Bewertung_TNBis{ get; set; }
-        public String Tbx_Bewertung_TLVon{ get; set; }
-        public String Tbx_Bewertung_TLBis{ get; set; }
-        public String Tbx_Bewertung_TerminVon{ get; set; }
-        public String Tbx_Bewertung_TerminBis{ get; set; }
-        public bool Chkbx_Bewertung_Erforderlich { get; set; }
+        public String Tbx_Bewertung_TNVon { get; set; }
+        public String Tbx_Bewertung_TNBis { get; set; }
+        public String Tbx_Bewertung_TLVon { get; set; }
+        public String Tbx_Bewertung_TLBis { get; set; }
+        public String Dp_Bewertung_TerminVon{ get; set; }
+        public String Dp_Bewertung_TerminBis{ get; set; }
         # endregion
 
         # region Comboboxen und zugehörige Combobox-Selection-Properties
@@ -53,8 +54,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public LookupCollectionBO Cbx_Bewertung_Abteilung { get; set; }
         public int SelectedItem_Bewertung_Bildungstraeger{ get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Bewertung_Bildungstraeger { get; set; }
-        public int SelectedItem_Bewertung_Jahr { get; set; }
-        public ObservableCollection<string> Cbx_Bewertung_Jahr { get; set; }
         #endregion
 
         # region MenuCommands der Bewertungsbogen-Suchmaske
@@ -66,10 +65,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Initialisierung BewertungsbogenViewModel
         public override void Init()
         {
-            # region Testdaten initializieren
-            HonorarListe = hDAO.LoadTestdata();
-            # endregion
-
+            this.IsBusy = false;
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
@@ -88,7 +84,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             # region Daten in Comboboxen laden
             Cbx_Bewertung_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Bewertung_Bildungstraeger = LookRepo.GetBildungstraeger(true);
-            Cbx_Bewertung_Jahr = HoleJahresliste(true);
             # endregion
 
             // Comboboxen zum Programmstart auf ersten Eintrag stellen
@@ -100,27 +95,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             # region Comboboxen auf den ersten Eintrag stellen    
             SelectedItem_Bewertung_Abteilung = 0;
             SelectedItem_Bewertung_Bildungstraeger = 0;
-            SelectedItem_Bewertung_Jahr = 0;
             # endregion
-        }
-
-        public ObservableCollection<string> HoleJahresliste(Boolean leeresElement)
-        {
-            ObservableCollection<string> result = new ObservableCollection<string>();
-
-            if (leeresElement)
-            {
-                result.Add("");
-            }
-
-            DateTime localDate = DateTime.Now;
-
-            for (int i = 2014; i <= (localDate.Year) + 2; i++)
-            {
-                result.Add(i.ToString());
-            }
-
-            return result;
         }
         # endregion
 
@@ -138,21 +113,40 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Tbx_Bewertung_TNBis = "";
             Tbx_Bewertung_TLVon = "";
             Tbx_Bewertung_TLBis = "";
-            Tbx_Bewertung_TerminVon = "";
-            Tbx_Bewertung_TerminBis = "";
-            Chkbx_Bewertung_Erforderlich = false;
+            Dp_Bewertung_TerminVon = "";
+            Dp_Bewertung_TerminBis = "";
             # endregion
         }
 
         public void Search()
         {
-            MessageBox.Show("It works!");
+            // Wir erwarten eine längere Aktion. Also ein Busy signalisieren:
+            this.IsBusy = true;
+
+            // Die UI kann nur aktualisiert werden (für den Busy Indicator), wenn
+            // die weitere Bearbeitung in einem weiteren Thread läuft. Also einen
+            // Backgroundworker anlegen und ihn die Arbeit tun lassen:
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += delegate(object sender, DoWorkEventArgs e)
+            {
+                HonorarListe = hDAO.BewertungbogenSuche(this);
+            };
+
+            // wird ausgeführt, wenn der Worker fertig ist:
+            worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs e)
+            {
+                this.IsBusy = false;
+            };
+            // den Worker nun starten:
+            worker.RunWorkerAsync();
+
         }
 
         private void OpenEditView(object dataObj)
         {
             var navigationParameters = new NavigationParameters();
-            navigationParameters.Add("ID", ((wt2_honorarkraft)dataObj).hk_ident);
+            navigationParameters.Add("ID", ((wt2_honorarkraft_bewertung)dataObj).wt2_honorarkraft.hk_ident);
             regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView" + navigationParameters.ToString(), UriKind.Relative));
         }
 

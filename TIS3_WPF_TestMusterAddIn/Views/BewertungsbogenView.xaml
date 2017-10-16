@@ -3,9 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.BewertungsbogenView"
              mc:Ignorable="d">
+
+    <base:TIS3ActiveView.Resources>
+        <ValueConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></ValueConverters:BooleanToVisibilityConverter>
+    </base:TIS3ActiveView.Resources>
     <!-- *** Suchmaske: Bewertungsbogen *** -->
     <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
@@ -46,23 +51,9 @@
                 <!-- Bewertungsbogen: rechte Hälfte/ Zeile 1 -->
                 <StackPanel  Margin="10 0 0 10" Grid.Column="1" Grid.Row="1">
                     <Label Content="Abteilung"/>
-                    <Syncfusion:ComboBoxAdv  Name="cbx_Bewertung_Abteilung" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Bewertung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" Width="200" />
-                    <Border Margin="5" Padding="5"
-                          BorderBrush="Black" BorderThickness="1,1,1,1" 
-                          CornerRadius="3" VerticalAlignment="Top">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="160" />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" Name="chkbx_Bewertung_Erforderlich" IsChecked="{Binding Path=Chkbx_Bewertung_Erforderlich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" />
-                            <Label Grid.Column="1" Content="Bewertung erforderlich für dieses Jahr" />
-                            <Syncfusion:ComboBoxAdv  Grid.Column="3" Margin="50 0 0 0" Name="cbx_Bewertung_Jahr" IsEnabled="{Binding ElementName=chkbx_Bewertung_Erforderlich, Path=IsChecked}" ItemsSource="{Binding Cbx_Bewertung_Jahr}" SelectedIndex="{Binding SelectedItem_Bewertung_Jahr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" Width="100" HorizontalAlignment="Left" />
-                        </Grid>
-                    </Border>
-                    <!-- Bewertungsbogen: Terminfelder  -->
-                    <Grid>
+                        <Syncfusion:ComboBoxAdv  Name="cbx_Bewertung_Abteilung" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" DisplayMemberPath="Bezeichnung" SelectedIndex="{Binding SelectedItem_Bewertung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" Width="200" />
+                        <!-- Bewertungsbogen: Terminfelder  -->
+                        <Grid Margin="0 10 0 10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -79,22 +70,22 @@
                         <!-- Bewertung TN von/bis -->
                         <Label Content="Bewertung TN" Grid.Column="0" Grid.Row="0" />
                         <Label Content="von:" Grid.Column="1" Grid.Row="0" />
-                        <TextBox Name="tbx_Bewertung_TNVon" Text="{Binding Path=Tbx_Bewertung_TNVon,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2" Grid.Row="0" Width="100" Margin="5 2 0 2" />
+                        <TextBox x:Name="tbx_Bewertung_TNVon" Text="{Binding Path=Tbx_Bewertung_TNVon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="0" Width="100"  Margin="5 2 0 2" />
                         <Label Content="bis:" Grid.Column="3" Grid.Row="0" />
-                        <TextBox Name="tbx_Bewertung_TNBis" Text="{Binding Path=Tbx_Bewertung_TNBis,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="4"  Grid.Row="0" Width="100" Margin="5 2 0 2" />
+                        <TextBox x:Name="tbx_Bewertung_TNBis" Text="{Binding Path=Tbx_Bewertung_TNBis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.Row="0" Width="100"  Margin="5 2 0 2" />
                         <!-- Bewertung TL von/bis -->
                         <Label Content="Bewertung TL" Grid.Column="0" Grid.Row="1" />
                         <Label Content="von:" Grid.Column="1" Grid.Row="1" />
-                        <TextBox Name="tbx_Bewertung_TLVon" Text="{Binding Path=Tbx_Bewertung_TLVon,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2"  Grid.Row="1" Width="100" Margin="5 2 0 2" />
+                        <TextBox x:Name="tbx_Bewertung_TLVon" Text="{Binding Path=Tbx_Bewertung_TLVon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="1" Width="100"  Margin="5 2 0 2" />
                         <Label Content="bis:" Grid.Column="3" Grid.Row="1" />
-                        <TextBox Name="tbx_Bewertung_TLBis" Text="{Binding Path=Tbx_Bewertung_TLBis,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="4" Grid.Row="1" Width="100" Margin="5 2 0 2" />
+                        <TextBox x:Name="tbx_Bewertung_TLBis" Text="{Binding Path=Tbx_Bewertung_TLBis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.Row="1" Width="100"  Margin="5 2 0 2" />
                         <!-- Termin Verbesserung TL von/bis -->
                         <Label Content="Termin Verbesserung" Grid.Column="0" Grid.Row="3" />
                         <Label Content="von:" Grid.Column="1" Grid.Row="3" />
-                        <TextBox Name="tbx_Bewertung_TerminVon" Text="{Binding Path=Tbx_Bewertung_TerminVon,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="2"  Grid.Row="3" Width="100" Margin="5 2 0 2" />
+                        <DatePicker x:Name="dp_Bewertung_TerminVon" Text="{Binding Path=Dp_Bewertung_TerminVon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="3" Width="100"  Margin="5 2 0 2" />
                         <Label Content="bis:" Grid.Column="3" Grid.Row="3" />
-                        <TextBox Name="tbx_Bewertung_TerminBis" Text="{Binding Path=Tbx_Bewertung_TerminBis,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="4"  Grid.Row="3" Width="100" Margin="5 2 0 2" />
-                    </Grid>
+                        <DatePicker x:Name="dp_Bewertung_TerminBis" Text="{Binding Path=Dp_Bewertung_TerminBis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Grid.Row="3" Width="100"  Margin="5 2 0 2" />
+                        </Grid>
                 </StackPanel>
             </Grid>
             </ScrollViewer>
@@ -109,13 +100,19 @@
                 </Syncfusion:SfDataGrid.RowStyle>
 
                 <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nr."/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Datum"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Firma"/>
+                    <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkb_datum" HeaderText="Datum"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_nachname" HeaderText="Nachname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_firma" HeaderText="Firma"/>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
+
+            <!-- Grid-Overlay für Datenladeanimation -->
+            <Grid Name="BusyOverlay" Background="White" Grid.Row="2"
+            Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+            Grid.ZIndex="99999">
+                <Syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ZIndex="99999" />
+            </Grid>
         </Grid>
     </Border>
 </base:TIS3ActiveView>

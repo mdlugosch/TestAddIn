@@ -17,6 +17,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
      */
     public class HonorarkraefteDAO 
     {
+        # region Context für die Honorarkräfte-Tabellen holen
         public static HonorarkraefteDAO hDAO;
 
         // Datenbank-Context für die Honorarkräfte-Tabellen
@@ -55,7 +56,9 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         {
             LookupRepository(new WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities());
         }
+        # endregion
 
+        # region Abfragen die Daten für Steuerelemente liefern
         // Auslesen von Daten mit Hilfe des Context
         public ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> HoleEinsatzgebiete(Boolean leeresElement)
         {
@@ -196,7 +199,9 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
             }
             return sortedResult;
         }
+        # endregion
 
+        # region LinQ-Abfragen der verschiedenen Suchmasken
         public ObservableCollection<wt2_honorarkraft> PersonendatenSuche(PersonaldatenViewModel vm)
         {
             ObservableCollection<wt2_honorarkraft> result = null;
@@ -206,7 +211,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
             using (context)
             {
-                # region Standartquery
+                # region Standardabfrage
                 IEnumerable<wt2_honorarkraft> query = from perso in context.wt2_honorarkraft
                                                           .Include("wt2_honorarkraft_team")
                                                           .Include("wt2_honorarkraft_cluster")
@@ -289,14 +294,14 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
             using (context)
             {
-                # region Standartquery
-                IEnumerable<wt2_honorarkraft_vertrag> query = from perso in context.wt2_honorarkraft_vertrag
+                # region Standardabfrage
+                IEnumerable<wt2_honorarkraft_vertrag> query = from vertrag in context.wt2_honorarkraft_vertrag
                                                           .Include("wt2_honorarkraft.wt2_honorarkraft_team")
                                                           .Include("wt2_honorarkraft.wt2_honorarkraft_cluster")
                                                           .Include("wt2_honorarkraft")
                                                           .Include("wt2_honorarkraft_vertrag_position")
                                                           .Include("wt2_honorarkraft.wt2_konst_honorarkraft_thema")     
-                                                      select perso;
+                                                      select vertrag;
                 # endregion
 
                 # region Prüfe Textboxen auf Suchparameter
@@ -315,11 +320,35 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # region Prüfe Comboboxen auf Suchparameter
                 if (vm.SelectedItem_Vertrag_Bildungstraeger != 0)
                 {
-                    query = query.Where(row => row.wt2_honorarkraft.hk_bildungstraeger.Equals(vm.Cbx_Vertrag_Bildungstraeger[vm.SelectedItem_Vertrag_Bildungstraeger].ID));
+                    query = query.Where(row => row.hkv_bildungstraeger.Equals(vm.Cbx_Vertrag_Bildungstraeger[vm.SelectedItem_Vertrag_Bildungstraeger].ID));
                 }
                 if (vm.SelectedItem_Vertrag_Teams != 0)
                 {
-                    query = query.Where(row => row.wt2_honorarkraft.wt2_honorarkraft_team.Any(a => a.hkt_team_nr.Equals(vm.Cbx_Vertrag_Teams[vm.SelectedItem_Vertrag_Teams].ID)));
+                    query = query.Where(row => row.wt2_honorarkraft_vertrag_position.Any(a => a.hkvp_kostenstelle.Equals(vm.Cbx_Vertrag_Teams[vm.SelectedItem_Vertrag_Teams].ID)));
+                }
+                if (vm.SelectedItem_Vertrag_Abteilung != 0)
+                {
+                    query = query.Where(row => row.hkv_abteilung.Equals(Convert.ToInt32(vm.Cbx_Vertrag_Abteilung[vm.SelectedItem_Vertrag_Abteilung].ID)));
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Thema))
+                {
+                    query = query.Where(row => row.wt2_honorarkraft_vertrag_position.Any(a => a.hkvp_thema.Equals(vm.Tbx_Vertrag_Thema)));
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Dp_Vertrag_Datum))
+                {
+                    DateTime dt = DateTime.Parse(vm.Dp_Vertrag_Datum);
+                    query = query.Where(row => row.hkv_datum.Equals(dt));
+                }
+                # endregion
+
+                # region Prüfe Checkboxen auf Suchparameter
+                if (vm.Chkbx_Vertrag_400 == true)
+                {
+                    query = query.Where(row => row.hkv_400EuroBasis.Contains("J"));
+                }
+                if (vm.Chkbx_Vertrag_Gedruckt == true)
+                {
+                    query = query.Where(row => string.IsNullOrWhiteSpace((row.hkv_druckdatum.ToString())));
                 }
                 # endregion
 
@@ -338,7 +367,218 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
             return result;
         }
 
-# region Testdaten generieren
+        public ObservableCollection<wt2_honorarkraft_zahlungsanweisung> ZahlungsanweisungSuche(ZahlungsanweisungViewModel vm)
+        {
+            ObservableCollection<wt2_honorarkraft_zahlungsanweisung> result = null;
+            CreateContext();
+
+            vm.HonorarListe = null;
+
+            using (context)
+            {
+                # region Standardabfrage
+                IEnumerable<wt2_honorarkraft_zahlungsanweisung> query = from zahlung in context.wt2_honorarkraft_zahlungsanweisung
+                                                          .Include("wt2_honorarkraft")
+                                                          .Include("wt2_honorarkraft_zahlungsanweisung_position.wt2_honorarkraft_vertrag_position")
+                                                          select zahlung;  
+                # endregion
+
+                # region Prüfe Textboxen auf Suchparameter
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Name))
+                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.Contains(vm.Tbx_Zahlung_Name));
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Vorname))
+                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.Contains(vm.Tbx_Zahlung_Vorname));
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Firma))
+                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.Contains(vm.Tbx_Zahlung_Firma));
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Nummer))
+                    query = query.Where(row => row.hkz_ident.Equals(Convert.ToInt32(vm.Tbx_Zahlung_Nummer)));
+                if (!string.IsNullOrWhiteSpace(vm.Dp_Zahlung_Datum))
+                {
+                    DateTime dt = DateTime.Parse(vm.Dp_Zahlung_Datum);
+                    query = query.Where(row => row.hkz_datum.Equals(dt));
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Auftrag))
+                    query = query.Where(row => row.wt2_honorarkraft_zahlungsanweisung_position.Any(a => 
+                    {
+                        if (a.wt2_honorarkraft_vertrag_position != null)
+                            return a.wt2_honorarkraft_vertrag_position.hkvp_auftrag.Contains(vm.Tbx_Zahlung_Auftrag);
+                        else return false;
+                    }));
+
+                # endregion
+
+                # region Prüfe Comboboxen auf Suchparameter
+                if (vm.SelectedItem_Zahlung_Thema!=1)
+                    query = query.Where(row => row.wt2_honorarkraft_zahlungsanweisung_position.Any(a =>
+                    {
+                        if (a.wt2_honorarkraft_vertrag_position != null)
+                            return a.wt2_honorarkraft_vertrag_position.hkvp_thema.Contains(vm.Cbx_Zahlung_Thema[vm.SelectedItem_Zahlung_Thema].khkth_bezeichnung);
+                        else return false;
+                    }));
+
+                if (vm.SelectedItem_Zahlung_Abteilung != 0)
+                    query = query.Where(row => row.hkz_abteilung.Equals(Convert.ToInt32(vm.Cbx_Zahlung_Abteilung[vm.SelectedItem_Zahlung_Abteilung].ID)));
+                if (vm.SelectedItem_Zahlung_Bildungstraeger != 0)
+                    query = query.Where(row => row.hkz_bildungstraeger.Equals(Convert.ToInt32(vm.Cbx_Zahlung_Bildungstraeger[vm.SelectedItem_Zahlung_Bildungstraeger].ID)));
+                if (vm.SelectedItem_Zahlung_Teams != 0)
+                    query = query.Where(row => row.wt2_honorarkraft_zahlungsanweisung_position.Any(a =>
+                    {
+                        if (a.wt2_honorarkraft_vertrag_position != null)
+                            return a.wt2_honorarkraft_vertrag_position.hkvp_kostenstelle.Contains(vm.Cbx_Zahlung_Teams[vm.SelectedItem_Zahlung_Teams].ID);
+                        else return false;
+                    }));
+                # endregion
+
+                # region Prüfe Checkboxen auf Suchparameter
+                if (vm.Chkbx_Zahlung_Gedruckt == true)
+                {
+                    query = query.Where(row => string.IsNullOrWhiteSpace((row.hkz_druckdatum.ToString())));
+                }
+                # endregion
+
+                # region Daten Vorsortieren
+                /* 
+                 * Schon beim Laden soll vorsortiert werden.
+                 * Ein "Order by" direkt im LinQ Statment bringt LinQ durcheinander.
+                 * LinQ ist der Meinung das eine Spalte zweimal vorkommt.
+                 */
+                query = query.OrderBy(o => o.wt2_honorarkraft.hk_nachname).ThenBy(t => t.wt2_honorarkraft.hk_vorname);
+                # endregion
+
+                result = new ObservableCollection<wt2_honorarkraft_zahlungsanweisung>(query);
+            }
+            return result;
+        }
+
+        public ObservableCollection<wt2_honorarkraft_bewertung> BewertungbogenSuche(BewertungsbogenViewModel vm)
+        {
+            ObservableCollection<wt2_honorarkraft_bewertung> result = null;
+            CreateContext();
+
+            vm.HonorarListe = null;
+
+            using (context)
+            {
+                # region Standardabfrage
+                IEnumerable<wt2_honorarkraft_bewertung> query = from bewertung in context.wt2_honorarkraft_bewertung
+                                                          .Include("wt2_honorarkraft")
+                                                          select bewertung;
+                # endregion
+
+                # region Prüfe Textboxen auf Suchparameter
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_Name))
+                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.Contains(vm.Tbx_Bewertung_Name));
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_Vorname))
+                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.Contains(vm.Tbx_Bewertung_Vorname));
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_Firma))
+                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.Contains(vm.Tbx_Bewertung_Firma));
+                # endregion
+
+                # region Prüfe Comboboxen auf Suchparameter
+                if (vm.SelectedItem_Bewertung_Bildungstraeger != 0)
+                {
+                    query = query.Where(row => row.hkb_bildungstraeger.Equals(vm.Cbx_Bewertung_Bildungstraeger[vm.SelectedItem_Bewertung_Bildungstraeger].ID));
+                }
+                if (vm.SelectedItem_Bewertung_Abteilung != 0)
+                {
+                    query = query.Where(row => row.hkb_abteilung.Equals(Convert.ToInt32(vm.Cbx_Bewertung_Abteilung[vm.SelectedItem_Bewertung_Abteilung].ID)));
+                }
+                # endregion
+
+                # region DatePicker und Decimal-Berechnung
+                if (!string.IsNullOrWhiteSpace(vm.Dp_Bewertung_TerminVon) && !string.IsNullOrWhiteSpace(vm.Dp_Bewertung_TerminBis))
+                {
+                    DateTime TerminVon = DateTime.Parse(vm.Dp_Bewertung_TerminVon);
+                    DateTime TerminBis = DateTime.Parse(vm.Dp_Bewertung_TerminBis);
+                    if(TerminVon<=TerminBis)
+                        query = query.Where(row => row.hkb_verbesserung_termin >= TerminVon && row.hkb_verbesserung_termin <= TerminBis); 
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TLVon) && !string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TLBis))
+                {
+                    Decimal TLVon = Parse(vm.Tbx_Bewertung_TLVon);
+                    Decimal TLBis = Parse(vm.Tbx_Bewertung_TLBis);
+                    if (TLVon <= TLBis)
+                        query = query.Where(row => row.hkb_befragung_tl >= TLVon && row.hkb_befragung_tl <= TLBis); 
+                }
+                if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TNVon) && !string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TNBis))
+                {
+                    Decimal TNVon = Parse(vm.Tbx_Bewertung_TNVon);
+                    Decimal TNBis = Parse(vm.Tbx_Bewertung_TNBis);
+                    if (TNVon <= TNBis)
+                        query = query.Where(row => row.hkb_befragung_tl >= TNVon && row.hkb_befragung_tl <= TNBis); 
+                } 
+                # endregion
+
+                # region Daten Vorsortieren
+                /* 
+                 * Schon beim Laden soll vorsortiert werden.
+                 * Ein "Order by" direkt im LinQ Statment bringt LinQ durcheinander.
+                 * LinQ ist der Meinung das eine Spalte zweimal vorkommt.
+                 */
+                query = query.OrderBy(o => o.wt2_honorarkraft.hk_nachname).ThenBy(t => t.wt2_honorarkraft.hk_vorname);
+                # endregion
+
+                result = new ObservableCollection<wt2_honorarkraft_bewertung>(query);
+            }
+            return result;
+        }
+
+        public ObservableCollection<wt2_honorarkraft> UeberpruefungsSuche(UeberpruefungsViewModel vm)
+        {
+            ObservableCollection<wt2_honorarkraft> result = null;
+            CreateContext();
+
+            using (context)
+            {
+                if (vm.SelectedItem_Pruefung_Jahr != 0)
+                {
+                    int auswahlJahr = Convert.ToInt32(vm.Cbx_Pruefung_Jahr[vm.SelectedItem_Pruefung_Jahr]);
+
+                    # region ID-Liste mit Honorarkräften die in dem angegebenen Jahr nicht bewertet wurden.
+                    IEnumerable<int> unbewertet = from row in context.wt2_honorarkraft
+                                                  .Include("wt2_honorarkraft_bewertung")
+                                             where row.wt2_honorarkraft_bewertung.Any(a => a.hkb_datum.Value.Year.Equals(auswahlJahr)) == false
+                                             select row.hk_ident;
+                    # endregion
+
+                    # region Honorarkräften im gewählten Jahr mit gültigen Vertrag mit Unterrichtsstunden >= 40
+                    var stunden = from row in context.wt2_honorarkraft_vertrag_position
+                                              .Include("wt2_honorarkraft_vertrag")
+                                  where unbewertet.Contains(row.wt2_honorarkraft_vertrag.hkv_hk_ident) && row.hkvp_datum_beginn.Value.Year <= auswahlJahr && row.hkvp_datum_ende.Value.Year >= auswahlJahr
+                                  group row by row.wt2_honorarkraft_vertrag.hkv_hk_ident into g
+                                  select new { Id = g.Key, Count = g.Sum(item => item.hkvp_unterrichtseinheiten) };
+                    # endregion
+
+                    # region Filtern der Honorarkraefte die 40 oder mehr Unterrichtsstunden im Vertragszeitrum hatten
+                    IEnumerable<wt2_honorarkraft> honorar = from row in context.wt2_honorarkraft
+                                                            where stunden.Any(a => a.Id == row.hk_ident && a.Count >= 40)
+                                                            select row;
+                    # endregion
+
+                    # region Daten Vorsortieren
+                    /* 
+                     * Schon beim Laden soll vorsortiert werden.
+                     * Ein "Order by" direkt im LinQ Statment bringt LinQ durcheinander.
+                     * LinQ ist der Meinung das eine Spalte zweimal vorkommt.
+                     */
+                    honorar = honorar.OrderBy(o => o.hk_nachname).ThenBy(t => t.hk_vorname);
+                    # endregion
+
+                    result = new ObservableCollection<wt2_honorarkraft>(honorar);
+                }           
+            }
+            return result;
+        }
+        # endregion
+
+        # region Hilfsmethoden
+        // Umwandlung deutsche dezimalnotation in englische
+        private static decimal Parse(string s)
+        {
+            s = s.Replace(",", ".");
+            return decimal.Parse(s);
+        }
+
         public ObservableCollection<wt2_honorarkraft> LoadTestdata()
         {
             ObservableCollection<wt2_honorarkraft> result = null;
@@ -354,7 +594,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
                 result = new ObservableCollection<wt2_honorarkraft>(query);
             }
-                return result;   
+               return result;   
         }
 # endregion
     }

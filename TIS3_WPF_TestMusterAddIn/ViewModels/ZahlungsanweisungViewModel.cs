@@ -5,6 +5,7 @@ using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ using WinTIS30db_entwModel.Lookup;
 namespace TIS3_WPF_TestMusterAddIn.ViewModels
 {
     [NotifyPropertyChanged]
-    class ZahlungsanweisungViewModel : TIS3ActiveViewModel, INavigationAware
+    public class ZahlungsanweisungViewModel : TIS3ActiveViewModel, INavigationAware
     {
         // Laden des aktuellen RegionManagers
         public IRegionManager regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
@@ -28,17 +29,17 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         LookupRepository LookRepo = new LookupRepository();
         # endregion
 
-        # region Testdaten
-        public ObservableCollection<wt2_honorarkraft> HonorarListe { get; set; }
+        # region Auswahlliste
+        public ObservableCollection<wt2_honorarkraft_zahlungsanweisung> HonorarListe { get; set; }
         # endregion
 
         # region Elemente der Zahlungsanweisung-Suchmaske
-
+        public bool IsBusy { get; set; }
         public String Tbx_Zahlung_Name{ get; set; }
         public String Tbx_Zahlung_Vorname{ get; set; }
         public String Tbx_Zahlung_Firma{ get; set; }
         public String Tbx_Zahlung_Nummer{ get; set; }
-        public String Tbx_Zahlung_Datum{ get; set; }
+        public String Dp_Zahlung_Datum{ get; set; }
         public String Tbx_Zahlung_Auftrag{ get; set; }
         public bool Chkbx_Zahlung_Gedruckt { get; set; }
 
@@ -61,10 +62,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Initialisierung ZahlungsanweisungViewModel
         public override void Init()
         {
-            # region Testdaten initializieren
-            HonorarListe = hDAO.LoadTestdata();
-            # endregion
-
+            this.IsBusy = false;
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
@@ -111,22 +109,41 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Tbx_Zahlung_Vorname = "";
             Tbx_Zahlung_Firma = "";
             Tbx_Zahlung_Nummer = "";
-            Tbx_Zahlung_Datum = "";
+            Dp_Zahlung_Datum = "";
             Tbx_Zahlung_Auftrag = "";
             Chkbx_Zahlung_Gedruckt = false;
             # endregion
         }
 
         public void Search()
-        {
-            MessageBox.Show("It works!");
+        {        
+            // Wir erwarten eine längere Aktion. Also ein Busy signalisieren:
+            this.IsBusy = true;
+
+            // Die UI kann nur aktualisiert werden (für den Busy Indicator), wenn
+            // die weitere Bearbeitung in einem weiteren Thread läuft. Also einen
+            // Backgroundworker anlegen und ihn die Arbeit tun lassen:
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += delegate(object sender, DoWorkEventArgs e)
+            {
+                HonorarListe = hDAO.ZahlungsanweisungSuche(this);
+            };
+
+            // wird ausgeführt, wenn der Worker fertig ist:
+            worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs e)
+            {
+                this.IsBusy = false;
+            };
+            // den Worker nun starten:
+            worker.RunWorkerAsync();
         }
         # endregion
 
         private void OpenEditView(object dataObj)
         {
             var navigationParameters = new NavigationParameters();
-            navigationParameters.Add("ID", ((wt2_honorarkraft)dataObj).hk_ident);
+            navigationParameters.Add("ID", ((wt2_honorarkraft_zahlungsanweisung)dataObj).wt2_honorarkraft.hk_ident);
             regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView" + navigationParameters.ToString(), UriKind.Relative));
         }
 

@@ -23,7 +23,7 @@ namespace TIS3_WPF_TestMusterAddIn.Views
     /// <summary>
     /// Interaktionslogik für VertragsdatenView.xaml
     /// </summary>
-    [Export("VertragsdatenView")] 
+    [Export("VertragsdatenView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class VertragsdatenView : TIS3_Base.TIS3ActiveView
     {
         public RelayCommand OpenEditViewCommand { get; set; }

@@ -89,11 +89,13 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="ReachFramework" />
+    <Reference Include="Syncfusion.SfBusyIndicator.WPF, Version=13.2450.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfChart.WPF, Version=13.2450.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.SfGrid.WPF, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Syncfusion.SfShared.Wpf, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL" />
     <Reference Include="Syncfusion.Shared.Wpf, Version=13.2451.0.29, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
@@ -142,6 +144,7 @@
     <Compile Include="ViewModels\EditViewModel.cs" />
     <Compile Include="ViewModels\NeuaufnahmeViewModel.cs" />
     <Compile Include="ViewModels\PersonaldatenViewModel.cs" />
+    <Compile Include="ViewModels\UeberpruefungsViewModel.cs" />
     <Compile Include="ViewModels\VertragsdatenViewModel.cs" />
     <Compile Include="ViewModels\ZahlungsanweisungViewModel.cs" />
     <Compile Include="Views\AbfrageView.xaml.cs">
@@ -161,6 +164,9 @@
     </Compile>
     <Compile Include="Views\PersonaldatenView.xaml.cs">
       <DependentUpon>PersonaldatenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UeberpruefungsView.xaml.cs">
+      <DependentUpon>UeberpruefungsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VertragsdatenView.xaml.cs">
       <DependentUpon>VertragsdatenView.xaml</DependentUpon>
@@ -194,6 +200,10 @@
       <Project>{03266cca-5322-4e4f-96d7-b1cde20a8d9d}</Project>
       <Name>TIS3_WPF_Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TIS3_WPF_TeilnehmerAddIn\TIS3_WPF_TeilnehmerAddIn.csproj">
+      <Project>{552758AF-6E10-4B61-BBAC-8AA0D7E70955}</Project>
+      <Name>TIS3_WPF_TeilnehmerAddIn</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -221,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PersonaldatenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UeberpruefungsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

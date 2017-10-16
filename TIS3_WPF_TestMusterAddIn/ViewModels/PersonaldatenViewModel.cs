@@ -38,6 +38,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # endregion
 
         # region Elemente der Personaldaten-Suchmaske
+        public bool IsBusy { get; set; }
         public String Tbx_Personal_Name{ get; set; }
         public String Tbx_Personal_Vorname{ get; set; }
         public String Tbx_Personal_Firma{ get; set; }
@@ -70,6 +71,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Initialisierung PersonaldatenViewModel
         public override void Init()
         {
+            this.IsBusy = false;
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
@@ -131,7 +133,26 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         public void Search()
         {
-            HonorarListe = hDAO.PersonendatenSuche(this);
+            // Wir erwarten eine längere Aktion. Also ein Busy signalisieren:
+            this.IsBusy = true;
+
+            // Die UI kann nur aktualisiert werden (für den Busy Indicator), wenn
+            // die weitere Bearbeitung in einem weiteren Thread läuft. Also einen
+            // Backgroundworker anlegen und ihn die Arbeit tun lassen:
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += delegate(object sender, DoWorkEventArgs e)
+            {
+                HonorarListe = hDAO.PersonendatenSuche(this);
+            };
+
+            // wird ausgeführt, wenn der Worker fertig ist:
+            worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs e)
+            {
+                this.IsBusy = false;
+            };
+            // den Worker nun starten:
+            worker.RunWorkerAsync();
         }
 
         private void OpenEditView(object dataObj)

@@ -5,6 +5,7 @@ using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,12 +34,14 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # endregion
 
         # region Elemente der Vertragsdaten-Suchmaske
+        public bool IsBusy { get; set; }
         public String Tbx_Vertrag_Name{ get; set; }
         public String Tbx_Vertrag_Vorname{ get; set; }
         public String Tbx_Vertrag_Firma{ get; set; }
         public String Tbx_Vertrag_Nummer{ get; set; }
-        public String Tbx_Vertrag_Datum{ get; set; }
+        public String Dp_Vertrag_Datum{ get; set; }
         public String Tbx_Vertrag_Auftrag { get; set; }
+        public String Tbx_Vertrag_Thema { get; set; }
         public bool Chkbx_Vertrag_Gedruckt{ get; set; }
         public bool Chkbx_Vertrag_400 { get; set; }
         # endregion
@@ -51,8 +54,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public LookupCollectionBO Cbx_Vertrag_Abteilung { get; set; }
         public int SelectedItem_Vertrag_Bildungstraeger { get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Vertrag_Bildungstraeger { get; set; }
-        public int SelectedItem_Vertrag_Thema { get; set; }
-        public ObservableCollection<wt2_konst_honorarkraft_thema> Cbx_Vertrag_Thema { get; set; }
         # endregion
 
         # region MenuCommands der Vertragsdaten-Suchmaske
@@ -64,7 +65,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # region Initialisierung VertragsdatenViewModel
         public override void Init()
         {
-
+            this.IsBusy = false;
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
             SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
@@ -78,12 +79,10 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Cbx_Vertrag_Teams = new LookupCollectionBO();
             Cbx_Vertrag_Abteilung = new LookupCollectionBO();
             Cbx_Vertrag_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
-            Cbx_Vertrag_Thema = new ObservableCollection<wt2_konst_honorarkraft_thema>();
 
             Cbx_Vertrag_Teams = LookRepo.GetTeams(true, "", true,true);
             Cbx_Vertrag_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Vertrag_Bildungstraeger = LookRepo.GetBildungstraeger(true);
-            Cbx_Vertrag_Thema = hDAO.HoleThema(false);
 
             // Comboboxen zum Programmstart auf ersten Eintrag stellen
             ResetComboBoxes();
@@ -95,7 +94,6 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             SelectedItem_Vertrag_Teams = 0;
             SelectedItem_Vertrag_Abteilung = 0;
             SelectedItem_Vertrag_Bildungstraeger = 0;
-            SelectedItem_Vertrag_Thema = 1;
             # endregion
         }
         # endregion
@@ -111,7 +109,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Tbx_Vertrag_Vorname = "";
             Tbx_Vertrag_Firma = "";
             Tbx_Vertrag_Nummer = "";
-            Tbx_Vertrag_Datum = "";
+            Dp_Vertrag_Datum = "";
             Tbx_Vertrag_Auftrag = "";
             Chkbx_Vertrag_Gedruckt = false;
             Chkbx_Vertrag_400 = false;
@@ -120,13 +118,34 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         public void Search()
         {
-            HonorarListe = hDAO.VertragsdatenSuche(this);
+            
+
+            // Wir erwarten eine längere Aktion. Also ein Busy signalisieren:
+            this.IsBusy = true;
+
+            // Die UI kann nur aktualisiert werden (für den Busy Indicator), wenn
+            // die weitere Bearbeitung in einem weiteren Thread läuft. Also einen
+            // Backgroundworker anlegen und ihn die Arbeit tun lassen:
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += delegate(object sender, DoWorkEventArgs e)
+            {
+                HonorarListe = hDAO.VertragsdatenSuche(this);
+            };
+
+            // wird ausgeführt, wenn der Worker fertig ist:
+            worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs e)
+            {
+                this.IsBusy = false;
+            };
+            // den Worker nun starten:
+            worker.RunWorkerAsync();
         }
 
         private void OpenEditView(object dataObj)
         {
             var navigationParameters = new NavigationParameters();
-            navigationParameters.Add("ID", ((wt2_honorarkraft)dataObj).hk_ident);
+            navigationParameters.Add("ID", ((wt2_honorarkraft_vertrag)dataObj).wt2_honorarkraft.hk_ident);
             regionManager.RequestNavigate(CompositionPoints.Regions.MainWorkspace, new Uri("/EditView" + navigationParameters.ToString(), UriKind.Relative));
         }
 

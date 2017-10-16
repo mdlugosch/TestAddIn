@@ -16,18 +16,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TIS3_WPF_TestMusterAddIn.ViewModels;
+using TIS3_Base;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
     /// <summary>
-    /// Interaktionslogik für BewertungsbogenView.xaml
+    /// Interaktionslogik für UeberpruefungsView.xaml
     /// </summary>
-   [Export("BewertungsbogenView"), PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class BewertungsbogenView : TIS3_Base.TIS3ActiveView
+    [Export("UeberpruefungsView"), PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class UeberpruefungsView : TIS3ActiveView
     {
-       public RelayCommand OpenEditViewCommand { get; set; }
-        public BewertungsbogenView()
+        public RelayCommand OpenEditViewCommand { get; set; }
+        public UeberpruefungsView()
         {
             InitializeComponent();
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditViewCommandMethode(), _canExecute => true);
@@ -50,7 +50,7 @@ namespace TIS3_WPF_TestMusterAddIn.Views
             ICommand command = (ICommand)CommandPropertyInfo.GetValue(DataContext);
             if (command != null)
             {
-                command.Execute(this.dg_Bewertungsbogen.SelectedItem);
+                command.Execute(this.dg_Pruefbogen.SelectedItem);
             }
         }
     }

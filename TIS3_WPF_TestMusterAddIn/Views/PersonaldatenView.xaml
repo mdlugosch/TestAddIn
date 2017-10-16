@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" 
              mc:Ignorable="d">
 
+    <base:TIS3ActiveView.Resources>
+        <ValueConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></ValueConverters:BooleanToVisibilityConverter>
+    </base:TIS3ActiveView.Resources>
+    
     <!-- *** Suchmaske: Personaldaten *** -->
     <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
@@ -33,7 +38,6 @@
                 <RowDefinition Height="22" />
                 <RowDefinition Height="210" />
                 <RowDefinition Height="*" />
-                <!--<RowDefinition Height="20" />-->
             </Grid.RowDefinitions>
 
             
@@ -117,13 +121,20 @@
                     </Style>
                 </Syncfusion:SfDataGrid.RowStyle>
                 
-                        <Syncfusion:SfDataGrid.Columns>
+                 <Syncfusion:SfDataGrid.Columns>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Anrede" HeaderText="Anrede"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
                     <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_firma" HeaderText="Firma"/>
                 </Syncfusion:SfDataGrid.Columns>
             </Syncfusion:SfDataGrid>
+            
+            <!-- Grid-Overlay für Datenladeanimation -->
+            <Grid Name="BusyOverlay" Background="White" Grid.Row="2"
+            Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+            Grid.ZIndex="99999">
+                <Syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ZIndex="99999" />
+            </Grid>
             
         </Grid>
     </Border>

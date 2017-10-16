@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.ZahlungsanweisungView"
              mc:Ignorable="d" 
              d:DesignHeight="350" d:DesignWidth="670">
+
+    <base:TIS3ActiveView.Resources>
+        <ValueConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></ValueConverters:BooleanToVisibilityConverter>
+    </base:TIS3ActiveView.Resources>
+
     <!-- *** Suchmaske: Zahlungsanweisungen *** -->
     <Border Margin="5" Padding="5"
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
@@ -49,7 +55,7 @@
                 <!-- Suchmaske Zahlungsanweisung: Spalte 2 -->
                 <StackPanel Margin="10 0 0 10" Grid.Column="1" MinWidth="200">
                     <Label Content="Datum" />
-                    <TextBox Name="tbx_Zahlung_Datum" Text="{Binding Path=Tbx_Zahlung_Datum,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
+                    <DatePicker x:Name="dp_Zahlung_Datum" Text="{Binding Dp_Zahlung_Datum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Width="200"/>
                     <Label Content="Auftrag" />
                     <TextBox Name="tbx_Zahlung_Auftrag" Text="{Binding Path=Tbx_Zahlung_Auftrag,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  MaxWidth="200"/>
                     <Label Content="Bildungsträger" />
@@ -86,13 +92,20 @@
                 </Syncfusion:SfDataGrid.RowStyle>
 
                 <Syncfusion:SfDataGrid.Columns>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nr."/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Datum"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Nachname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_vorname" HeaderText="Vorname"/>
-                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hk_nachname" HeaderText="Firma"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkz_ident" HeaderText="Nr."/>
+                    <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkz_datum" HeaderText="Datum"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_nachname" HeaderText="Nachname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_vorname" HeaderText="Vorname"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft.hk_firma" HeaderText="Firma"/>
             </Syncfusion:SfDataGrid.Columns>
         </Syncfusion:SfDataGrid>
-    </Grid>
+
+            <!-- Grid-Overlay für Datenladeanimation -->
+            <Grid Name="BusyOverlay" Background="White" Grid.Row="2"
+            Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibilityConverter}}"
+            Grid.ZIndex="99999">
+                <Syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy}" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ZIndex="99999" />
+            </Grid>
+        </Grid>
     </Border>
 </base:TIS3ActiveView>
