@@ -4,11 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
+             xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.EditView" 
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1500">
 
     <base:TIS3ActiveView.Resources>
+    
+            <ValueConverters:JNToBooleanConverter x:Key="JNToBool"></ValueConverters:JNToBooleanConverter>
+    
         <!-- Style für ListBox-Einsatzgebiete -->
         <Style x:Key="CheckBoxListBoxEinsatzgebiete" TargetType="{x:Type ListBox}">
             <Setter Property="ItemContainerStyle"
@@ -73,7 +77,7 @@
                     <StackPanel>
                         <!-- Menuzeile Personaldaten -->
                         <Menu IsMainMenu="True">
-                            <MenuItem Name="mnu_Personal_Speichern" Header="_Speichern"  />
+                            <MenuItem Name="mnu_Personal_Speichern" Header="_Speichern" Command="{Binding SaveCommand}" />
                             <Separator />
                             <MenuItem Name="mnu_Personal_Reset" Header="_Reset" />
                         </Menu>
@@ -92,13 +96,14 @@
                                     <Label Content="Anrede" />
                                     <Label Content="Vorname" Margin="0 10 0 0"/>
                                     <Label Content="Nachname" Margin="0 10 0 0"/>
-                                    <Label Content="Firma" Height="50" Margin="0 10 0 0"/>
-                                    <Label Content="Strasse" Margin="0 15 0 0"/>
+                                    <Label Content="Firma" Height="25" Margin="0 10 0 0"/>
+                                    <Label Content="Firma2" Height="25" Margin="0 10 0 0"/>
+                                    <Label Content="Strasse" Margin="0 10 0 0"/>
                                     <Label Content="PLZ" Margin="0 10 0 0"/>
                                     <Label Content="Telefon" Margin="0 15 0 0"/>
                                     <Label Content="Tel. Firma" Margin="0 15 0 0"/>
                                     <Label Content="EMail" Margin="0 10 0 0"/>
-                                    <Label Content="BLZ" Margin="0 15 0 0"/>
+                                    <Label Content="BLZ" Margin="0 10 0 0"/>
                                     <Label Content="Konto" Margin="0 10 0 0"/>
                                     <Label Content="Honorar je UE" Margin="0 10 0 0"/>
                                     <Label Content="Ausbildung" Margin="0 2 0 0"/>
@@ -113,71 +118,71 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Syncfusion:ComboBoxAdv ItemsSource="{Binding Cbx_Personal_Anrede}"
                                 Name="cbx_Personal_Anrede" Width="100" Margin="0 5 0 10"   
-                                Syncfusion:SkinStorage.VisualStyle="Metro" />
+                                Syncfusion:SkinStorage.VisualStyle="Metro" SelectedIndex="{Binding SelectedItem_Personal_Anrede, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <Label Content="Titel" Margin="10 5 0 10" />
-                                        <Syncfusion:ComboBoxAdv ItemsSource="{Binding Cbx_Personal_Titel}"
-                                Name="cbx_Personal_Titel" Width="100" Margin="25 5 0 10"   
-                                Syncfusion:SkinStorage.VisualStyle="Metro" />
+                                        <ComboBox Name="cbx_Personal_Titel" Text="{Binding Current_Personal_Titel}" ItemsSource="{Binding Cbx_Personal_Titel}" SelectedIndex="{Binding SelectedItem_Personal_Titel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Width="100" Height="25"  Margin="25 5 0 10"  IsEditable="True" />
                                     </StackPanel>
                                     <TextBox Name="tbx_Personal_Vorname" Margin="0 5 0 0"
-                             HorizontalAlignment="Left" Width="210" Text="{Binding Tbx_Personal_Vorname}"/>
+                             HorizontalAlignment="Left" Width="210" Text="{Binding EditViewDatensatz.hk_vorname}"/>
                                     <TextBox Name="tbx_Personal_Nachname" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="210" Text="{Binding Tbx_Personal_Nachname}"/>
-                                    <TextBox Name="tbx_Personal_Firma" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Height="50"  Width="265" Text="{Binding Tbx_Personal_Firma}"/>
+                             HorizontalAlignment="Left" Width="210" Text="{Binding EditViewDatensatz.hk_nachname}"/>
+                                    <TextBox Name="tbx_Personal_Firma" Margin="0 10 0 0"
+                             HorizontalAlignment="Left" Height="22"  Width="265" Text="{Binding EditViewDatensatz.hk_firma}"/>
+                                    <TextBox Name="tbx_Personal_Firma2" Margin="0 10 0 0"
+                             HorizontalAlignment="Left" Height="22"  Width="265" Text="{Binding EditViewDatensatz.hk_firma2}"/>
                                     <TextBox Name="tbx_Personal_Strasse" Margin="0 10 0 0"
-                             HorizontalAlignment="Left" Width="265" Text="{Binding Tbx_Personal_Strasse}"/>
+                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_strasse}"/>
                                     <!-- Stackpanel: Plz / Ort -->
                                     <StackPanel Orientation="Horizontal" Margin="0 10 10 0">
                                         <TextBox Name="tbx_Personal_Plz" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_Plz}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_plz}"/>
                                         <Label Content="Ort" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Ort" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="120" Text="{Binding Tbx_Personal_Ort}"/>
+                             HorizontalAlignment="Left" Width="120" Text="{Binding EditViewDatensatz.hk_ort}"/>
                                     </StackPanel>
                                     <!-- Stackpanel: Privattelefon/ Fax -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_PTel" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_PTel}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_telefon_privat}"/>
                                         <Label Content="Fax" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Fax" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="120" Text="{Binding Tbx_Personal_Fax}"/>
+                             HorizontalAlignment="Left" Width="120" Text="{Binding EditViewDatensatz.hk_fax}"/>
                                     </StackPanel>
                                     <!-- Stackpanel: Firmentelefon / Mobiltelefon -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_FTel" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_FTel}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_telefon_firma}"/>
                                         <Label Content="Mobil" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Mobil" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="105" Text="{Binding Tbx_Personal_Mobil}"/>
+                             HorizontalAlignment="Left" Width="105" Text="{Binding EditViewDatensatz.hk_telefon_mobil}"/>
                                     </StackPanel>
 
                                     <TextBox Name="tbx_Personal_EMail" Margin="0 15 10 0"
-                             HorizontalAlignment="Left" Width="265" Text="{Binding Tbx_Personal_EMail}"/>
+                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_email}"/>
                                     <!-- Stackpanel: Blz/ Bank -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_Blz" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_Blz}"/>
-                                        <Label Content="Bank" Margin="0 0 10 0"/>
-                                        <TextBox Name="tbx_Personal_Bank" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="110" Text="{Binding Tbx_Personal_Bank}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_blz}"/>
+                                        <Label Name="lbl_Personal_Bank" Margin="0 0 10 0" Foreground="Blue"
+                             HorizontalAlignment="Left" Width="180" Content="Royal International Bank of BFZ"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Personal_Konto" Margin="0 10 10 0"
-                             HorizontalAlignment="Left" Width="265" Text="{Binding Tbx_Personal_Konto}"/>
+                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_konto}"/>
                                     <TextBox Name="tbx_Personal_Ue" Margin="0 15 10 0"
-                             HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Personal_Ue}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_honorar_standard,StringFormat= c }"/>
 
                                     <TextBox Name="tbx_Personal_Ausbildung" Margin="0 5 0 0"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Ausbildung}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_ausbildung}"/>
                                     <TextBox Name="tbx_Personal_Studium" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Studium}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_studium}"/>
                                     <TextBox Name="tbx_Personal_Situation" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Situation}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_situation}"/>
                                     <TextBox Name="tbx_Personal_Fachgebiet" Margin="0 15 0 10"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Personal_Fachgebiet}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_fachgebiet}"/>
                                     <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
-                             Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 5 0 10" DisplayMemberPath="Name1"   
-                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Personal_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                             Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 5 0 10" DisplayMemberPath="Name1" SelectedValuePath="ID"  
+                             Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" SelectedValue="{Binding EditViewDatensatz.hk_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                                 <!-- Spalte 2 Labels -->
                                 <StackPanel Grid.Column="2" Margin="10 10 0 0">
@@ -205,7 +210,7 @@
                     <StackPanel>
                         <!-- Menuzeile Vertragsdaten -->
                         <Menu IsMainMenu="True">
-                            <MenuItem Name="mnu_Vertrag_Speichern" Header="_Speichern"  />
+                            <MenuItem Name="mnu_Vertrag_Speichern" Header="_Speichern" Command="{Binding SaveCommand}" />
                             <Separator />
                             <MenuItem Name="mnu_Vertrag_Reset" Header="_Reset" />
                         </Menu>
@@ -218,20 +223,19 @@
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <!-- Verträge Spalte 0 -->
-                                <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" Margin="10 10 0 10"
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewDatensatz.wt2_honorarkraft_vertrag}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Single"  ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" Margin="10 10 0 10" Height="300" 
+                                   SelectedItem="{Binding SelectedItem_Vertrag_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"> 
                  
                                     <Syncfusion:SfDataGrid.Columns>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Nr."/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Abteilung"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Datum"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="gedruckt"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Unterschrift"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="geändert"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Summe"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkv_zeile" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkv_ident" HeaderText="Nr."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkv_abt_bez" HeaderText="Abteilung"/>
+                                        <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkv_datum" HeaderText="Datum"/>
+                                        <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkv_druckdatum" HeaderText="gedruckt"/>
+                                        <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkv_aenderungsdatum" HeaderText="geändert"/>
+                                        <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkv_summe" HeaderText="Summe"/>
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
@@ -257,22 +261,30 @@
                                     <Label Content="Abteilung" Margin="0 5 0 0"/>
                                     <Label Content="Vertrags-Datum" Margin="0 5 0 0"/>
                                     <Label Content="Druckdatum" Margin="0 5 0 0"/>
-                                    <Label Content="Unterschriftendatum" Margin="0 5 0 0"/>
                                 </StackPanel>
                                 <!-- Vertrag Spalte 1 -->
                                 <StackPanel Grid.Column="1" Margin="5 0 0 0">
                                     <TextBox Name="tbx_Vertrag_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Nummer}"/>
-                                    <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
-                                Name="cbx_Vertrag_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Vertrag_Abteilung}" SelectedIndex="{Binding SelectedItem_Vertrag_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_ident}"/>
+
+                                    
+                                    <Syncfusion:ComboBoxAdv 
+                                        DisplayMemberPath="Bezeichnung"                              
+                                        Name="cbx_Vertrag_Abteilung" 
+                                        Width="200" 
+                                        Margin="0 10 0 0" 
+                                        Height="22"
+                                        Syncfusion:SkinStorage.VisualStyle="Metro" 
+                                        HorizontalAlignment="Left" 
+                                        SelectedValuePath="ID"
+                                        SelectedValue="{Binding SelectedItem_Vertrag_Grid.hkv_abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"           
+                                        ItemsSource="{Binding Cbx_Vertrag_Abteilung}" />
+                                    
+                                    
                                     <TextBox Name="tbx_Vertrag_Datum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Datum}"/>
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_datum, StringFormat=dd.MM.yyyy}"/>
                                     <TextBox Name="tbx_Vertrag_Druckdatum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Druckdatum}"/>
-                                    <TextBox Name="tbx_Vertrag_Unterschriftdatum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Vertrag_Unterschriftdatum}"/>
-                                    <Button x:Name="btn_Vertrag_Reset" Content="Reset" Width="100" Margin="0 10 0 10"/>
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_druckdatum, StringFormat=dd.MM.yyyy}"/>
                                 </StackPanel>
                                 <!-- Vertrag Spalte 2 -->
                                 <StackPanel Grid.Column="2"  Margin="5 0 0 0">
@@ -284,18 +296,27 @@
                                     <Syncfusion:ComboBoxAdv
                                 Name="cbx_Vertrag_Aussteller" Width="200" Margin="0 10 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left"/>
-                                    <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
-                                Name="cbx_Vertrag_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Vertrag_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Vertrag_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <CheckBox x:Name="chkbx_Vertrag_400" Margin="0 10 0 0" IsChecked="{Binding Path=Chkbx_Vertrag_400,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Vertrag auf 400 € Basis</CheckBox>
-                                    <CheckBox x:Name="chkbx_Vertrag_AZWV" Margin="0 10 0 0" IsChecked="{Binding Path=Chkbx_Vertrag_AZWV,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                    
+                                    <Syncfusion:ComboBoxAdv 
+                                        DisplayMemberPath="Name1" 
+                                        Name="cbx_Vertrag_Bildungstraeger"
+                                        Width="200" 
+                                        Margin="0 10 0 0" 
+                                        Height="22" 
+                                        Syncfusion:SkinStorage.VisualStyle="Metro" 
+                                        HorizontalAlignment="Left"
+                                        SelectedValuePath="ID"
+                                        SelectedValue="{Binding SelectedItem_Vertrag_Grid.hkv_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"           
+                                        ItemsSource="{Binding Cbx_Vertrag_Bildungstraeger}" />
+                                    <CheckBox x:Name="chkbx_Vertrag_400" Margin="0 10 0 0" IsChecked="{Binding Path=SelectedItem_Vertrag_Grid.hkv_400EuroBasis,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Vertrag auf 400 € Basis</CheckBox>
+                                    <CheckBox x:Name="chkbx_Vertrag_AZWV" Margin="0 10 0 0" IsChecked="{Binding Path=SelectedItem_Vertrag_Grid.hkv_umsatzsteuerfrei,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">
                                         <TextBlock>
                                     Es handelt sich um einen Auftrag<LineBreak/>
                                     in AZWV-zertifizierten Kursen     
                                     (Umsatzsteuerbefreiung)
                                         </TextBlock>
                                     </CheckBox>
-                                    <CheckBox x:Name="chkbx_Vertrag_Vermittlungsagentur" Margin="0 10 0 0" IsChecked="{Binding Path=Chkbx_Vertrag_Vermittlungsagentur,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Vermittlungsagentur</CheckBox>
+                                    <CheckBox x:Name="chkbx_Vertrag_Vermittlungsagentur" Margin="0 10 0 0" IsChecked="{Binding SelectedItem_Vertrag_Grid.hkv_vermittlungsagentur,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Vermittlungsagentur</CheckBox>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -307,21 +328,20 @@
                                     <ColumnDefinition  Width="auto"/>
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Syncfusion:SfDataGrid x:Name="dg_Vertrag_Positionen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Syncfusion:SfDataGrid x:Name="dg_Vertrag_Positionen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding Vertragspositionen}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Single" ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10">
                           
                                     <Syncfusion:SfDataGrid.Columns>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Kst."/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Auftrag"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Thema"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeitraum"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="UE"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Honorar"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Summe"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Provision"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_lfdnr" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_kostenstelle" HeaderText="Kst."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_auftrag" HeaderText="Auftrag"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_thema" HeaderText="Thema"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_zeitraum" HeaderText="Zeitraum"/>
+                                        <Syncfusion:GridNumericColumn NumberGroupSeparator="," AllowSorting="True" MappingName="hkvp_unterrichtseinheiten" HeaderText="UE"/>
+                                        <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkvp_honorar" HeaderText="Honorar"/>
+                                        <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkvp_summe" HeaderText="Summe"/>
+                                        <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkvp_provision" HeaderText="Provision"/>
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
@@ -339,7 +359,7 @@
                     <StackPanel>
                         <!-- Menuzeile Zahlungsanweisungen -->
                         <Menu IsMainMenu="True">
-                            <MenuItem Name="mnu_Zahlung_Speichern" Header="_Speichern"  />
+                            <MenuItem Name="mnu_Zahlung_Speichern" Header="_Speichern"   Command="{Binding SaveCommand}" />
                             <Separator />
                             <MenuItem Name="mnu_Zahlung_Reset" Header="_Reset" />
                         </Menu>
@@ -350,19 +370,17 @@
                                     <ColumnDefinition  Width="auto"/>
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Syncfusion:SfDataGrid x:Name="dg_Zahlungsanweisungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
-                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    
+                                <Syncfusion:SfDataGrid x:Name="dg_Zahlungsanweisungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewDatensatz.wt2_honorarkraft_zahlungsanweisung}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False" SelectedItem="{Binding SelectedItem_Zahlung_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10"  Height="300" >         
                                     <Syncfusion:SfDataGrid.Columns>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Nr."/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Abteilung"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Monat"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="gedruckt"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Änderung"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Summe"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkz_zeile" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkz_ident" HeaderText="Nr."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkz_abt_bez" HeaderText="Abteilung"/>
+                                        <Syncfusion:GridDateTimeColumn CustomPattern="MM.yyyy"  Pattern="CustomPattern" AllowSorting="True" MappingName="hkz_datum" HeaderText="Monat"/>
+                                        <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkz_druckdatum" HeaderText="gedruckt"/>
+                                        <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkz_aenderungsdatum" HeaderText="Änderung"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkz_summe" HeaderText="Summe"/>
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
@@ -395,23 +413,46 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="0">
                                         <TextBox Name="tbx_Zahlung_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Zahlung_Nummer}"/>
-                                        <TextBox Name="tbx_Zahlung_Monat" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Zahlung_Monat}"/>
-                                        <TextBox Name="tbx_Zahlung_Druckdatum" Margin="0 10 0 10"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Zahlung_Druckdatum}"/>
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Zahlung_Grid.hkz_ident}"/>
+                                        <!-- Zum ändern des Datumformates bei einem DatePicker muss man auf das Template 
+                                             des Unterelements DatePickerTextBox zugreifen und kann dann StringFormat einsetzen. -->
+                                        <DatePicker Name="tbx_Zahlung_Monat" Margin="0 10 0 0" HorizontalAlignment="Left" Width="200" 
+                                                    SelectedDate="{Binding SelectedItem_Zahlung_Grid.hkz_datum}">
+                                            <DatePicker.Resources>
+                                                <Style TargetType="DatePickerTextBox">
+                                                    <Setter Property="Control.Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat = {}{0:MM-yyyy}, 
+                                                                 RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DatePicker.Resources>
+                                        </DatePicker>
+                                        <DatePicker Name="tbx_Zahlung_Druckdatum" Margin="0 10 0 10" HorizontalAlignment="Left" Width="200" 
+                                                    SelectedDate="{Binding SelectedItem_Zahlung_Grid.hkz_druckdatum}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Grid.Row="0">
                                         <Label Content="Bildungsträger" Margin="10 5 0 0"/>
                                         <Label Content="Abteilung" Margin="10 5 0 0"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="3" Grid.Row="0">
-                                        <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
-                                Name="cbx_Zahlung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Zahlung_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Zahlung_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Syncfusion:ComboBoxAdv 
+                                                    DisplayMemberPath="Name1"
+                                                    Name="cbx_Zahlung_Bildungstraeger" 
+                                                    Width="200" 
+                                                    Margin="0 10 0 0" 
+                                                    Height="22" 
+                                                    Syncfusion:SkinStorage.VisualStyle="Metro" 
+                                                    HorizontalAlignment="Left" 
+                                                    SelectedValuePath="ID" 
+                                                    SelectedValue="{Binding SelectedItem_Zahlung_Grid.hkz_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ItemsSource="{Binding Cbx_Zahlung_Bildungstraeger}" />
                                         <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
-                                Name="cbx_Zahlung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Zahlung_Abteilung}" SelectedIndex="{Binding SelectedItem_Zahlung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                Name="cbx_Zahlung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" SelectedValuePath="ID"
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Zahlung_Abteilung}" SelectedValue="{Binding SelectedItem_Zahlung_Grid.hkz_abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     </StackPanel>
                                 </Grid>
                                 <Grid>
@@ -424,18 +465,18 @@
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
                                     <Label Content="Positionen" Grid.Column="0" Grid.Row="0"/>
-                                    <Syncfusion:SfDataGrid x:Name="dg_Zahlung_Positionen" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
+                                    <Syncfusion:SfDataGrid x:Name="dg_Zahlung_Positionen" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding Zahlungspositionen}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" Grid.Column="0" Grid.Row="1"
                                    SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                   
                                         <Syncfusion:SfDataGrid.Columns>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Kst."/>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Auftrag"/>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Thema"/>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeitraum"/>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="UE"/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkzp_zeile" HeaderText="Zeile"/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft_vertrag_position.hkvp_kostenstelle" HeaderText="Kst."/>
+                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft_vertrag_position.hkvp_auftrag" HeaderText="Auftrag"/>
+                                            <Syncfusion:GridNumericColumn NumberGroupSeparator="," AllowSorting="True" MappingName="hkzp_unterrichtseinheiten" HeaderText="UE"/>
+                                            <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="wt2_honorarkraft_vertrag_position.hkvp_honorar" HeaderText="Honorar"/>
+                                            <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkzp_auszahlung" HeaderText="Auszahlung"/>
                                         </Syncfusion:SfDataGrid.Columns>
                                     </Syncfusion:SfDataGrid>
                                     <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
@@ -465,19 +506,19 @@
                                     <ColumnDefinition  Width="auto"/>
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Syncfusion:SfDataGrid x:Name="dg_Bewertungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding HonorarListe2}"
+                                <Syncfusion:SfDataGrid x:Name="dg_Bewertungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewDatensatz.wt2_honorarkraft_bewertung}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
                                    SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                     <Syncfusion:SfDataGrid.Columns>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Zeile"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Nr."/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Abteilung"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Datum"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Befr. TL"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Befr. TN"/>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="Test" HeaderText="Ergebnis"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkb_zeile" HeaderText="Zeile"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkb_lfdnr" HeaderText="Nr."/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkb_abt_bez" HeaderText="Abteilung"/>
+                                        <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkb_datum" HeaderText="Datum"/>
+                                        <Syncfusion:GridNumericColumn NumberGroupSeparator="," AllowSorting="True" MappingName="hkb_befragung_tl" HeaderText="Befr. TL"/>
+                                        <Syncfusion:GridNumericColumn NumberGroupSeparator="," AllowSorting="True" MappingName="hkb_befragung_tn" HeaderText="Befr. TN"/>
+                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkb_ergebnis" HeaderText="Ergebnis"/>
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
@@ -532,8 +573,8 @@
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Grid.Row="0">
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
-                                Name="cbx_Bewertung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Bildungstraeger}" SelectedIndex="{Binding SelectedItem_Bewertung_Bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                Name="cbx_Bewertung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" SelectedValuePath="ID"  SelectedValue="{Binding EditViewDatensatz.hk_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Bildungstraeger}" />
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
                                 Name="cbx_Bewertung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" SelectedIndex="{Binding SelectedItem_Bewertung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -606,15 +647,15 @@
                                                  HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Ort}"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Info_2Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_2Mail}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_email2}"/>
                                     <TextBox Name="tbx_Info_3Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_3Mail}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_email3}"/>
                                     <TextBox Name="tbx_Info_Web" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Web}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_web}"/>
                                     <TextBox Name="tbx_Info_Abteilung" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Abteilung}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_abteilung}"/>
                                     <TextBox Name="tbx_Info_Position" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Position}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_position}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>

@@ -128,8 +128,6 @@
     <Compile Include="Commands\OpenHonorarkraefteAppCommand.cs" />
     <Compile Include="Commands\OpenHonorarkraefteNeuaufnahmeCommand.cs" />
     <Compile Include="Commands\OpenTestMusterAppCommand.cs" />
-    <Compile Include="Infrastructure\DummyData.cs" />
-    <Compile Include="Infrastructure\DummyList.cs" />
     <Compile Include="Infrastructure\Einsatzgebiet_Check.cs" />
     <Compile Include="Infrastructure\HonorarkraefteDAO.cs" />
     <Compile Include="Infrastructure\SortedList_Thema.cs" />
@@ -199,10 +197,6 @@
     <ProjectReference Include="..\..\TIS3_WPF_Infrastructure\TIS3_WPF_Infrastructure.csproj">
       <Project>{03266cca-5322-4e4f-96d7-b1cde20a8d9d}</Project>
       <Name>TIS3_WPF_Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TIS3_WPF_TeilnehmerAddIn\TIS3_WPF_TeilnehmerAddIn.csproj">
-      <Project>{552758AF-6E10-4B61-BBAC-8AA0D7E70955}</Project>
-      <Name>TIS3_WPF_TeilnehmerAddIn</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

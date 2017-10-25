@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TIS3_LookupBL;
 using TIS3_WPF_TestMusterAddIn.ViewModels;
 using WinTIS30db_entwModel.Honorarkraefte;
+using WinTIS30db_entwModel.Lookup;
 
 namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 {
@@ -17,6 +19,8 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
      */
     public class HonorarkraefteDAO 
     {
+        LookupRepository LookRepo = new LookupRepository();
+
         # region Context für die Honorarkräfte-Tabellen holen
         public static HonorarkraefteDAO hDAO;
 
@@ -86,19 +90,24 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         }
 
         // Abruf Einsatzgebiete für ListBox mit Checkboxfunktion
-        public ObservableCollection<Einsatzgebiet_Check> HoleEinsatzgebieteListe()
+        public ObservableCollection<Einsatzgebiet_Check> HoleEinsatzgebieteListe(wt2_honorarkraft honorarkraftDaten = null)
         {
             ObservableCollection<Einsatzgebiet_Check> result = new ObservableCollection<Einsatzgebiet_Check>();
 
             CreateContext();
-
             using (context)
             {
+                // ID-Liste mit den Einsatzgebiete der HK
+                List<int> auswahl = new List<int>();
+                if (honorarkraftDaten != null)
+                    auswahl.AddRange(from eg in honorarkraftDaten.wt2_konst_honorarkraft_einsatzgebiet select eg.khke_ident);
+
+                // Wenn die ID der Standartliste gleich der ID-Liste ist wird IsChecked wahr
                 var query = (from einsatzGebiete in context.wt2_konst_honorarkraft_einsatzgebiet
                              orderby einsatzGebiete.khke_bezeichnung
                              select new Einsatzgebiet_Check()
                              {
-                                 IsChecked = false,
+                                 IsChecked = auswahl.Contains(einsatzGebiete.khke_ident),
                                  Einsatzgebiet = einsatzGebiete
                              }).ToList();
 
@@ -158,36 +167,194 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
             return result;
         }
 
-        // ThemaListe aufbereiten für TreeView
-        public ObservableCollection<SortedList_Thema> HoleThemaListe()
+        public LookupCollectionBO HoleAbteilungsListe(bool leeresElement, wt2_honorarkraft honorarkraftDaten = null)
         {
-            // Result mit IsChecked Property
-            ObservableCollection<Thema_Check>result = new ObservableCollection<Thema_Check>();
-            // Result als sortierte Liste
-            ObservableCollection<SortedList_Thema> sortedResult = new ObservableCollection<SortedList_Thema>();
+            LookupCollectionBO boResult = new LookupCollectionBO();
+            boResult = LookRepo.GetAbteilungen(leeresElement); 
+
+            List<int> auswahl = new List<int>();
+            if (honorarkraftDaten != null) 
+            { 
+                auswahl.AddRange(from abteilung in honorarkraftDaten.wt2_honorarkraft_cluster select abteilung.hkc_cl_ident);
+
+            foreach (int id in auswahl)
+            {
+                foreach (LookupBO element in boResult) 
+                {
+                    if (Convert.ToInt32(element.ID) == id) element.IsChecked = true;
+                }
+            }
+            }
+
+            return boResult;
+        }
+
+        # region (EditView) Ablegen von temporären Daten die zur Laufzeit ermittelt werden.
+        public void HoleVertraege(wt2_honorarkraft honorarkraftDaten,LookupCollectionBO abteilungsListe)
+        {
+            int i = 1;
+
+            CreateContext();
             
+            using (context)
+            {
+                honorarkraftDaten.wt2_honorarkraft_vertrag.ToList().ForEach(a => 
+                { a.hkv_zeile = i++;
+                a.hkv_abt_bez = (from element in abteilungsListe
+                                where Convert.ToInt32(element.ID) == a.hkv_abteilung
+                                select element.Bezeichnung).FirstOrDefault();
+                  a.hkv_summe = (from element in context.wt2_honorarkraft_vertrag_position
+                                where element.hkvp_hkv_ident == a.hkv_ident
+                                select element.hkvp_honorar * element.hkvp_unterrichtseinheiten).Sum();
+                });
+
+            }
+        }
+
+        public void HoleBewertungen(wt2_honorarkraft honorarkraftDaten)
+        {
+            int i = 1;
+
             CreateContext();
 
             using (context)
             {
-                // Erstellen einer unsortierten Liste mit zusätzlicher IsChecked Property
-                var query = (from hThema in context.wt2_konst_honorarkraft_thema
-                             where !String.IsNullOrEmpty(hThema.khkth_gruppe) || 
-                                   !String.IsNullOrEmpty(hThema.khkth_bezeichnung)
-                             orderby hThema.khkth_bezeichnung
-                             select new Thema_Check() 
-                             {
-                                 IsChecked = false,
-                                 Thema = hThema
-                             }).ToList();
+                honorarkraftDaten.wt2_honorarkraft_bewertung.ToList().ForEach(a =>
+                {
+                    a.hkb_zeile = i++;
+                    a.hkb_abt_bez = (LookupHelper.Abteilung(Convert.ToInt32(a.hkb_abteilung))).Displayname;
+                });
 
-                // Ablegen der LinQ Ergebnisse in die Result Collection
-                foreach (Thema_Check t in query) { result.Add(t); }
+            }
+        }
+
+        public void HoleZahlungsanweisungen(wt2_honorarkraft honorarkraftDaten)
+        {
+            int i = 1;
+
+            CreateContext();
+
+            using (context)
+            {
+                honorarkraftDaten.wt2_honorarkraft_zahlungsanweisung.ToList().ForEach(a =>
+                {
+                    a.hkz_zeile = i++;
+                    a.hkz_summe = (from element in context.wt2_honorarkraft_zahlungsanweisung_position
+                                   where element.hkzp_hkz_ident == a.hkz_ident
+                                   select element.hkzp_unterrichtseinheiten * element.wt2_honorarkraft_vertrag_position.hkvp_honorar).Sum();
+                    if (!a.hkz_summe.HasValue) a.hkz_summe = 0;
+                });
+
+            }
+        }
+        # endregion
+
+        public ObservableCollection<wt2_honorarkraft_vertrag_position> HoleVertragsPositionen(wt2_honorarkraft_vertrag vertragsdaten)
+        {
+            CreateContext();
+            ObservableCollection<wt2_honorarkraft_vertrag_position> result;
+
+            using (context)
+            {
+                if (vertragsdaten != null)
+                {
+                    IEnumerable<wt2_honorarkraft_vertrag_position> query = from positionen in vertragsdaten.wt2_honorarkraft_vertrag_position
+                                                                           select positionen;
+                    result = new ObservableCollection<wt2_honorarkraft_vertrag_position>(query);
+                }
+                else return null;
+            }
+
+            return result;
+        }
+
+        public ObservableCollection<wt2_honorarkraft_zahlungsanweisung_position> HoleZahlungsPositionen(wt2_honorarkraft_zahlungsanweisung zahlungsdaten)
+        {
+            CreateContext();
+            ObservableCollection<wt2_honorarkraft_zahlungsanweisung_position> result;
+            int i = 1;
+
+            using (context)
+            {
+                if (zahlungsdaten != null)
+                {
+                    IEnumerable<wt2_honorarkraft_zahlungsanweisung_position> query = from positionen in zahlungsdaten.wt2_honorarkraft_zahlungsanweisung_position
+                                                                             select positionen;
+
+
+                    query.ToList().ForEach(a =>
+                    {
+                        a.hkzp_zeile = i++;
+
+                        a.hkzp_auszahlung = ((from hkvp in context.wt2_honorarkraft_vertrag_position
+                                              where hkvp.hkvp_hkv_ident == a.hkzp_hkv_ident
+                                              select hkvp.hkvp_honorar).FirstOrDefault()) * a.hkzp_unterrichtseinheiten;
+                        if (!a.hkzp_auszahlung.HasValue) a.hkzp_auszahlung = 0;
+                    });
+                                                                               
+                    result = new ObservableCollection<wt2_honorarkraft_zahlungsanweisung_position>(query);
+                }
+                else return null;
+            }
+
+            return result;
+        }
+
+        public LookupCollectionBO HoleTeamListe(bool nurGueltig, string aktuellesTeam, bool leeresElement,  bool mitNummerInBezeichnung = false, wt2_honorarkraft honorarkraftDaten = null)
+        {
+            LookupCollectionBO boResult = new LookupCollectionBO();
+            boResult = LookRepo.GetTeams(nurGueltig, aktuellesTeam, leeresElement, mitNummerInBezeichnung);
+
+            List<string> auswahl = new List<string>();
+            if (honorarkraftDaten != null)
+            {
+                auswahl.AddRange(from team in honorarkraftDaten.wt2_honorarkraft_team select team.hkt_team_nr);
+
+                foreach (string id in auswahl)
+                {
+                    foreach (LookupBO element in boResult)
+                    {
+                        if (element.ID.Equals(id)) element.IsChecked = true;
+                    }
+                }
+            }
+
+            return boResult;
+        }
+
+        // ThemaListe aufbereiten für TreeView
+        public ObservableCollection<SortedList_Thema> HoleThemaListe(wt2_honorarkraft honorarkraftDaten=null)
+        {
+            // Result als sortierte Liste
+            ObservableCollection<SortedList_Thema> sortedResult = new ObservableCollection<SortedList_Thema>();
+
+            CreateContext();
+
+            using (context)
+            {
+                List<Thema_Check> result;
+
+                List<int> auswahl = new List<int>();
+                if(honorarkraftDaten != null)
+                    auswahl.AddRange(from thema in honorarkraftDaten.wt2_konst_honorarkraft_thema select thema.khkth_ident);
+
+                // Erstellen einer unsortierten Liste mit zusätzlicher IsChecked Property
+                result = (from hThema in context.wt2_konst_honorarkraft_thema
+                         where !String.IsNullOrEmpty(hThema.khkth_gruppe) ||
+                               !String.IsNullOrEmpty(hThema.khkth_bezeichnung)
+                                      orderby hThema.khkth_bezeichnung
+                                      select new Thema_Check()
+                                        {
+                                        IsChecked = auswahl.Contains(hThema.khkth_ident),
+                                        Thema = hThema
+                                        }).ToList();
+
+
 
                 // Gruppenliste für anschließende Sortierung erstellen
                 var groupQuery = from q in result
                                  group q by q.Thema.khkth_gruppe;
-
+                
                 // Alle Gruppen durchgehen und Themen nach Gruppen sortiert in die Struktur speichern
                 foreach (var element in groupQuery)
                 {
@@ -571,7 +738,111 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         }
         # endregion
 
+        # region LinQ-Abfragen für die EditView
+        public wt2_honorarkraft FillEditView(string personId)
+        {
+            wt2_honorarkraft result = null;
+            int id = int.Parse(personId);
+
+            CreateContext();
+
+                var query = (from row in context.wt2_honorarkraft
+                                         where row.hk_ident.Equals(id)
+                                         select row).SingleOrDefault();
+
+                result = (wt2_honorarkraft)query;
+
+            return result;
+        }
+
+        // Setzen der Checkboxharken-Einsatzgebiete in der EditView
+        public ObservableCollection<Einsatzgebiet_Check> CheckEinsatzgebiete(string personId, ObservableCollection<Einsatzgebiet_Check> checkList)
+        {
+            int id = int.Parse(personId);
+
+            CreateContext();
+
+            using (context)
+            {
+
+                var query = (from row in context.wt2_honorarkraft
+                            where row.hk_ident.Equals(id)
+                            select row).SingleOrDefault();
+ 
+                foreach (Einsatzgebiet_Check element in checkList)
+                {
+                    foreach (wt2_konst_honorarkraft_einsatzgebiet eg in query.wt2_konst_honorarkraft_einsatzgebiet) 
+                    {
+                        if (eg.khke_ident == element.Einsatzgebiet.khke_ident) 
+                            element.IsChecked = true;
+                    }
+
+
+                }
+            }
+            return checkList;
+        }
+
+        // Setzen der Checkboxharken-Teams in der EditView
+        public LookupCollectionBO CheckTeams(string personId, LookupCollectionBO checkList)
+        {
+            int id = int.Parse(personId);
+
+            CreateContext();
+
+            using (context)
+            {
+
+                var query = (from row in context.wt2_honorarkraft
+                             where row.hk_ident.Equals(id)
+                             select row).SingleOrDefault(); ;
+
+                foreach (LookupBO element in checkList)
+                {
+                    foreach (wt2_honorarkraft_team eg in query.wt2_honorarkraft_team)
+                    {
+                        if (eg.hkt_team_nr == element.ID) element.IsChecked = true;
+                    }
+
+                }
+            }
+            return checkList;
+        }
+
+        # endregion
+
         # region Hilfsmethoden
+
+        public int GetBildungstraegerNummer(int? flag, ObservableCollection<Bildungstraeger> checkList)
+        {
+            int result=0;
+            if (flag != null) 
+            { 
+            foreach (Bildungstraeger element in checkList)
+            {
+                if (element.ID == Convert.ToInt32(flag)) return result;
+                result++;
+            }
+            }
+            return result;
+        }
+
+        public int ConvertAnrede(String flag)
+        {
+            if (!string.IsNullOrWhiteSpace(flag))
+            {
+                if (flag.Equals("W")) return 1;
+                else if (flag.Equals("M")) return 2;
+                else return 3;
+            }
+            else return 0;
+        }
+
+        public string DecimalToString(Decimal number)
+        {
+            return string.Format("{0:C}", number);
+        }
+
         // Umwandlung deutsche dezimalnotation in englische
         private static decimal Parse(string s)
         {
@@ -579,23 +850,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
             return decimal.Parse(s);
         }
 
-        public ObservableCollection<wt2_honorarkraft> LoadTestdata()
-        {
-            ObservableCollection<wt2_honorarkraft> result = null;
-            CreateContext();
-     
-            using (context)
-            {
-                var query =
-                (from row in context.wt2_honorarkraft
-                 where row.hk_nachname != "" && row.hk_vorname != ""
-                 orderby row.hk_nachname
-                 select row).ToList();
-
-                result = new ObservableCollection<wt2_honorarkraft>(query);
-            }
-               return result;   
-        }
 # endregion
+
     }
 }

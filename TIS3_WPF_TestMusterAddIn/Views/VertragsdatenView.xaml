@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
-             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" xmlns:Views="clr-namespace:TIS3_WPF_TeilnehmerAddIn.Views;assembly=TIS3_WPF_TeilnehmerAddIn" x:Class="TIS3_WPF_TestMusterAddIn.Views.VertragsdatenView"
-             mc:Ignorable="d">
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.VertragsdatenView"        
+    mc:Ignorable="d">
 
     <base:TIS3ActiveView.Resources>
         <ValueConverters:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"></ValueConverters:BooleanToVisibilityConverter>
