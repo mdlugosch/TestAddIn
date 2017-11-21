@@ -1,0 +1,100 @@
+﻿<base:TIS3ActiveView x:Class="TIS3_WPF_TestMusterAddIn.Views.AddVertragspositionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="800">
+    <StackPanel>
+        <Label Content="Vertragsdaten" />
+        <Separator />
+        <!-- Zeile 1 -->
+        <StackPanel Orientation="Horizontal">
+            <Label Content="VertragNr." />
+            <TextBox Background="Beige"  x:Name="dp_Avp_VertNr" Width="50" Height="22" Text="{Binding ReceiveObj.hkvp_hkv_ident, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Label Content="vom:"/>
+            <DatePicker Background="Beige" Width="200" x:Name="dp_Avp_VertragVom" Text="{Binding ReceiveObj.wt2_honorarkraft_vertrag.hkv_datum, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>       
+        </StackPanel>
+        <!-- Zeile 2 -->
+        <StackPanel Orientation="Horizontal">
+            <Label Content="zwischen :" />
+            <TextBox Background="Beige" x:Name="tbx_Avp_Aussteller" Height="80" Width="250" Text="{Binding Tbx_Avp_Aussteller, Mode=OneWay}" />
+            <Label Content="und :"/>
+            <TextBox Background="Beige" x:Name="tbx_Avp_Auftragnehmer" Height="80" Width="250" Text="{Binding Tbx_Avp_Auftragnehmer, Mode=OneWay}" />
+        </StackPanel>
+        <Label Content="Positionsdaten" />
+        <Separator />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="Pos. Nr." />
+            <Label Grid.Column="0" Grid.Row="1" Content="Kostenstelle" />
+            <Label Grid.Column="0" Grid.Row="2" Content="Auftrag" />
+            <Label Grid.Column="0" Grid.Row="3" Content="Zeitraum" />
+            <Label Grid.Column="0" Grid.Row="4" Content="Thema" />
+
+            <TextBox Background="Beige" Grid.Column="1"  Grid.Row="0" Width="180" Height="22" HorizontalAlignment="Left" x:Name="tbx_Avp_PosNr" Text="{Binding ReceiveObj.hkvp_lfdnr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            <TextBox Grid.Column="1"  Grid.Row="1" Width="180" Height="22" HorizontalAlignment="Left" x:Name="tbx_Avp_Kostenstelle" Text="{Binding Tbx_Avp_Kostenstelle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"/>
+            <TextBox Grid.Column="1"  Grid.Row="2" Width="180" Height="22" HorizontalAlignment="Left" x:Name="tbx_Avp_Auftrag" Text="{Binding Tbx_Avp_Auftrag, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <DatePicker Grid.Column="1"  Grid.Row="3" Margin="0 0 5 0" x:Name="dp_Avp_VonZeitr" Text="{Binding Dp_Avp_VonZeitr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Validation.ErrorTemplate="{x:Null}"/>
+            <TextBox Grid.Column="1"  Grid.Row="4" Grid.ColumnSpan="4" Height="80"  x:Name="tbx_Avp_Thema" Text="{Binding Tbx_Avp_Thema, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+            <Label Grid.Column="2"  Grid.Row="1" Content="Bezeichnung :" />
+            <Label Grid.Column="2"  Grid.Row="2" Content="Bezeichnung :" />
+
+            <TextBox Background="Beige" Grid.Column="3"  Grid.Row="1" Width="250" Height="22" HorizontalAlignment="Left" x:Name="tbx_Avp_KstBez" Text="{Binding Tbx_Avp_KstBez, Mode=OneWay}" />
+            <TextBox Background="Beige" Grid.Column="3"  Grid.Row="2" Width="250" Height="22" HorizontalAlignment="Left" x:Name="tbx_Avp_AufBez" Text="Platzhalter Bezeichnung" />
+            <DatePicker Grid.Column="3" Grid.Row="3" Width="200" HorizontalAlignment="Left" x:Name="dp_Avp_BisZeitr" Text="{Binding Dp_Avp_BisZeitr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Validation.ErrorTemplate="{x:Null}" />
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="170" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+           </Grid.RowDefinitions>
+            
+            <Label Grid.Column="0" Grid.Row="0" Content="AnzahlUE" />
+            <Label Grid.Column="0" Grid.Row="1" Margin="0 0 0 5" Content="Honorar" />
+            <Separator Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" />
+            <Label Grid.Column="0" Grid.Row="2" Content="Gesamthonorar" />
+            <TextBox x:Name="tbx_Avp_UE" Grid.Column="1" Grid.Row="0" Height="22" Text="{Binding Tbx_Avp_UE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=F2}"/>
+            <Syncfusion:CurrencyTextBox x:Name="tbx_Avp_Honorar" Grid.Column="1" Grid.Row="1" Height="22" Value="{Binding Tbx_Avp_Honorar, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Avp_Gesamt" Grid.Column="1" Grid.Row="2" Height="22" Value="{Binding Tbx_Avp_Gesamt, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <Syncfusion:ComboBoxAdv x:Name="cbx_Avp_Zeiteinheiten" Width="200" Margin="5 0 0 0" Height="22" ItemsSource="{Binding Cbx_Avp_Zeiteinheiten}"
+                                Grid.Column="2" Grid.Row="0" Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" SelectedIndex="{Binding SelectedItem_avp_zeiteinheit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <CheckBox Grid.Column="2" Grid.Row="1" Margin="10 10 0 0" x:Name="chkbx_Avp_Selbstlernphase" IsChecked="{Binding Chkbx_Avp_Selbstlernphase, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Selbstlerphase</CheckBox>
+
+            <Label Grid.Column="3" Grid.Row="0" Content="Vermittlungsprovision pro Stunde" />
+            <Label Grid.Column="3" Grid.Row="1" Margin="0 0 0 5" Content="durchgeführte Stunden" />
+            <Separator Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Bottom" />
+            <Label Grid.Column="3" Grid.Row="2" Content="Gesamtprovision (inkl. MWSt)" />
+
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Avp_VermProStd" Grid.Column="4" Grid.Row="0" Height="22" Value="{Binding ReceiveObj.hkvp_honorar_vermittlungsagentur}"/>
+            <TextBox Background="Beige" x:Name="tbx_Avp_dStd" Grid.Column="4" Grid.Row="1" Height="22" Text="{Binding ReceiveObj.hkvp_stunden_vermittlungsagentur, StringFormat=F1}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Avp_VermGesamt" Grid.Column="4" Grid.Row="2" Height="22" Value="{Binding ReceiveObj.hkvp_provision, Mode=OneWay}"/>
+        </Grid>
+        <Button Content="Reset" Width="200" Margin="5 5 2 2" HorizontalAlignment="Left" Command="{Binding ResetCommand}" />
+    </StackPanel>
+</base:TIS3ActiveView>

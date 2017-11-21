@@ -13,19 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TIS3_Base;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
     /// <summary>
-    /// Interaktionslogik für EditView.xaml
+    /// Interaktionslogik für AddVertragspositionView.xaml
     /// </summary>
-    [Export("EditView"), PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class EditView : TIS3ActiveView
+    [Export("AddVertragspositionView"), PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class AddVertragspositionView : TIS3_Base.TIS3ActiveView
     {
-        public EditView()
+        public AddVertragspositionView()
         {
-            
             InitializeComponent();
         }
     }

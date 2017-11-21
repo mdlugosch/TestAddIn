@@ -13,19 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TIS3_Base;
 
 namespace TIS3_WPF_TestMusterAddIn.Views
 {
     /// <summary>
-    /// Interaktionslogik für EditView.xaml
+    /// Interaktionslogik für AddZahlungsanweisungspositionView.xaml
     /// </summary>
-    [Export("EditView"), PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class EditView : TIS3ActiveView
+    [Export("AddZahlungsanweisungspositionView"), PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class AddZahlungsanweisungspositionView : TIS3_Base.TIS3ActiveView
     {
-        public EditView()
+        public AddZahlungsanweisungspositionView()
         {
-            
             InitializeComponent();
         }
     }

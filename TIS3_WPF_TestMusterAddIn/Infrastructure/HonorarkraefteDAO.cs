@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PostSharp.Patterns.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -68,10 +69,10 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         {
             ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> result = null;
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 var query = (from einsatzGebiete in context.wt2_konst_honorarkraft_einsatzgebiet
                              orderby einsatzGebiete.khke_bezeichnung
                              select einsatzGebiete).ToList();
@@ -85,7 +86,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 }
 
                 result = new ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet>(query);
-            }
+            //}
             return result;
         }
 
@@ -94,9 +95,9 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         {
             ObservableCollection<Einsatzgebiet_Check> result = new ObservableCollection<Einsatzgebiet_Check>();
 
-            CreateContext();
-            using (context)
-            {
+            //CreateContext();
+            //using (context)
+            //{
                 // ID-Liste mit den Einsatzgebiete der HK
                 List<int> auswahl = new List<int>();
                 if (honorarkraftDaten != null)
@@ -115,17 +116,17 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 {
                     result.Add(c);
                 }
-            }
+            //}
             return result;
         }
 
         public ObservableCollection<wt2_konst_honorarkraft_thema> HoleThema(Boolean leeresElement)
         {
             ObservableCollection<wt2_konst_honorarkraft_thema> result = null;
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 var query = (from hThema in context.wt2_konst_honorarkraft_thema
                              orderby hThema.khkth_gruppe
                              select hThema).ToList();
@@ -137,7 +138,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     query.Insert(0, thema);
                 }
                 result = new ObservableCollection<wt2_konst_honorarkraft_thema>(query);
-            }
+            //}
             return result;
         }
 
@@ -149,10 +150,10 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
             result.Clear();
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 // Gruppenliste für anschließende Sortierung erstellen
                 var groupQuery = from themaTab in context.wt2_konst_honorarkraft_thema
                                  group themaTab by themaTab.khkth_gruppe;
@@ -162,9 +163,18 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 {
                     result.Add(t.Key);
                 }
-            }
+            //}
 
             return result;
+        }
+
+        // Thema hinzufügen
+        public void AddNewTheme(wt2_konst_honorarkraft_thema newTheme)
+        {        
+            //CreateContext();
+            context.wt2_konst_honorarkraft_thema.Add(newTheme);
+            context.SaveChanges();
+            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
         }
 
         public LookupCollectionBO HoleAbteilungsListe(bool leeresElement, wt2_honorarkraft honorarkraftDaten = null)
@@ -194,10 +204,10 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         {
             int i = 1;
 
-            CreateContext();
+            //CreateContext();
             
-            using (context)
-            {
+            //using (context)
+            //{
                 honorarkraftDaten.wt2_honorarkraft_vertrag.ToList().ForEach(a => 
                 { a.hkv_zeile = i++;
                 a.hkv_abt_bez = (from element in abteilungsListe
@@ -205,37 +215,69 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                                 select element.Bezeichnung).FirstOrDefault();
                   a.hkv_summe = (from element in context.wt2_honorarkraft_vertrag_position
                                 where element.hkvp_hkv_ident == a.hkv_ident
-                                select element.hkvp_honorar * element.hkvp_unterrichtseinheiten).Sum();
+                                select (decimal?)element.hkvp_honorar * (decimal?)element.hkvp_unterrichtseinheiten).Sum();
+                  if (!a.hkv_summe.HasValue) a.hkv_summe = 0;
                 });
 
-            }
+            //}
         }
 
         public void HoleBewertungen(wt2_honorarkraft honorarkraftDaten)
         {
             int i = 1;
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 honorarkraftDaten.wt2_honorarkraft_bewertung.ToList().ForEach(a =>
                 {
                     a.hkb_zeile = i++;
                     a.hkb_abt_bez = (LookupHelper.Abteilung(Convert.ToInt32(a.hkb_abteilung))).Displayname;
                 });
 
-            }
+            //}
+        }
+
+        public wt2_konst_honorarkraft_bewertung_vorgabe HoleBerwertungsvorgaben() 
+        {
+          wt2_konst_honorarkraft_bewertung_vorgabe result;
+
+          //CreateContext();
+
+          //using (context)
+          //{
+              result = (from row in context.wt2_konst_honorarkraft_bewertung_vorgabe
+                       orderby row.khkbv_gueltig_ab descending
+                       select row).FirstOrDefault();                                                          
+          //}
+          return result;
+        }
+
+        public wt2_honorarkraft_status HoleStatus(wt2_honorarkraft honorarkraftDaten)
+        {
+            wt2_honorarkraft_status result;
+            int ident = honorarkraftDaten.hk_ident;
+
+            //CreateContext();
+
+            //using (context)
+            //{
+                result = (from row in context.wt2_honorarkraft_status
+                          where row.hks_hk_ident == honorarkraftDaten.hk_ident
+                          select row).FirstOrDefault();
+            //}
+            return result;
         }
 
         public void HoleZahlungsanweisungen(wt2_honorarkraft honorarkraftDaten)
         {
             int i = 1;
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 honorarkraftDaten.wt2_honorarkraft_zahlungsanweisung.ToList().ForEach(a =>
                 {
                     a.hkz_zeile = i++;
@@ -245,60 +287,15 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     if (!a.hkz_summe.HasValue) a.hkz_summe = 0;
                 });
 
-            }
+            //}
         }
         # endregion
 
-        public ObservableCollection<wt2_honorarkraft_vertrag_position> HoleVertragsPositionen(wt2_honorarkraft_vertrag vertragsdaten)
+        public wt2_honorarkraft_zahlungsanweisung_position NeueZahlungsanweisungsposition()
         {
-            CreateContext();
-            ObservableCollection<wt2_honorarkraft_vertrag_position> result;
-
-            using (context)
-            {
-                if (vertragsdaten != null)
-                {
-                    IEnumerable<wt2_honorarkraft_vertrag_position> query = from positionen in vertragsdaten.wt2_honorarkraft_vertrag_position
-                                                                           select positionen;
-                    result = new ObservableCollection<wt2_honorarkraft_vertrag_position>(query);
-                }
-                else return null;
-            }
-
-            return result;
+            return context.wt2_honorarkraft_zahlungsanweisung_position.Create();
         }
 
-        public ObservableCollection<wt2_honorarkraft_zahlungsanweisung_position> HoleZahlungsPositionen(wt2_honorarkraft_zahlungsanweisung zahlungsdaten)
-        {
-            CreateContext();
-            ObservableCollection<wt2_honorarkraft_zahlungsanweisung_position> result;
-            int i = 1;
-
-            using (context)
-            {
-                if (zahlungsdaten != null)
-                {
-                    IEnumerable<wt2_honorarkraft_zahlungsanweisung_position> query = from positionen in zahlungsdaten.wt2_honorarkraft_zahlungsanweisung_position
-                                                                             select positionen;
-
-
-                    query.ToList().ForEach(a =>
-                    {
-                        a.hkzp_zeile = i++;
-
-                        a.hkzp_auszahlung = ((from hkvp in context.wt2_honorarkraft_vertrag_position
-                                              where hkvp.hkvp_hkv_ident == a.hkzp_hkv_ident
-                                              select hkvp.hkvp_honorar).FirstOrDefault()) * a.hkzp_unterrichtseinheiten;
-                        if (!a.hkzp_auszahlung.HasValue) a.hkzp_auszahlung = 0;
-                    });
-                                                                               
-                    result = new ObservableCollection<wt2_honorarkraft_zahlungsanweisung_position>(query);
-                }
-                else return null;
-            }
-
-            return result;
-        }
 
         public LookupCollectionBO HoleTeamListe(bool nurGueltig, string aktuellesTeam, bool leeresElement,  bool mitNummerInBezeichnung = false, wt2_honorarkraft honorarkraftDaten = null)
         {
@@ -325,13 +322,15 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         // ThemaListe aufbereiten für TreeView
         public ObservableCollection<SortedList_Thema> HoleThemaListe(wt2_honorarkraft honorarkraftDaten=null)
         {
+            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+
             // Result als sortierte Liste
             ObservableCollection<SortedList_Thema> sortedResult = new ObservableCollection<SortedList_Thema>();
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 List<Thema_Check> result;
 
                 List<int> auswahl = new List<int>();
@@ -363,7 +362,9 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                                      select q;
                     sortedResult.Add(new SortedList_Thema() { Gruppe = element.Key, ThemeGroup = new ObservableCollection<Thema_Check>(themeQuery) });
                 } 
-            }
+            //}
+                Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+
             return sortedResult;
         }
         # endregion
@@ -371,13 +372,15 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         # region LinQ-Abfragen der verschiedenen Suchmasken
         public ObservableCollection<wt2_honorarkraft> PersonendatenSuche(PersonaldatenViewModel vm)
         {
+            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+
             ObservableCollection<wt2_honorarkraft> result = null;
-            CreateContext();
+            //CreateContext();
 
             vm.HonorarListe = null;
 
-            using (context)
-            {
+            //using (context)
+            //{
                 # region Standardabfrage
                 IEnumerable<wt2_honorarkraft> query = from perso in context.wt2_honorarkraft
                                                           .Include("wt2_honorarkraft_team")
@@ -390,11 +393,11 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
                 # region Prüfe Textboxen auf Suchparameter
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Personal_Name))
-                    query = query.Where(row => row.hk_nachname.Contains(vm.Tbx_Personal_Name));
+                    query = query.Where(row => row.hk_nachname.ToLower().Contains(vm.Tbx_Personal_Name.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Personal_Vorname))
-                    query = query.Where(row => row.hk_vorname.Contains(vm.Tbx_Personal_Vorname));
+                    query = query.Where(row => row.hk_vorname.ToLower().Contains(vm.Tbx_Personal_Vorname.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Personal_Firma))
-                    query = query.Where(row => row.hk_firma.Contains(vm.Tbx_Personal_Firma));
+                    query = query.Where(row => row.hk_firma.ToLower().Contains(vm.Tbx_Personal_Firma.ToLower().Trim()));
                 # endregion
 
                 # region Prüfe Comboboxen auf Suchparameter
@@ -449,18 +452,18 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft>(query);
-            }
+            //}
             return result;
         }
         public ObservableCollection<wt2_honorarkraft_vertrag> VertragsdatenSuche(VertragsdatenViewModel vm)
         {
             ObservableCollection<wt2_honorarkraft_vertrag> result = null;
-            CreateContext();
+            //CreateContext();
 
             vm.HonorarListe = null;
 
-            using (context)
-            {
+            //using (context)
+            //{
                 # region Standardabfrage
                 IEnumerable<wt2_honorarkraft_vertrag> query = from vertrag in context.wt2_honorarkraft_vertrag
                                                           .Include("wt2_honorarkraft.wt2_honorarkraft_team")
@@ -473,15 +476,15 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
                 # region Prüfe Textboxen auf Suchparameter
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Name))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.Contains(vm.Tbx_Vertrag_Name));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.ToLower().Contains(vm.Tbx_Vertrag_Name.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Vorname))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.Contains(vm.Tbx_Vertrag_Vorname));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.ToLower().Contains(vm.Tbx_Vertrag_Vorname.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Firma))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.Contains(vm.Tbx_Vertrag_Firma));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.ToLower().Contains(vm.Tbx_Vertrag_Firma.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Nummer))
-                    query = query.Where(row => row.hkv_ident.Equals(Convert.ToInt32(vm.Tbx_Vertrag_Nummer)));
+                    query = query.Where(row => row.hkv_ident.Equals(Convert.ToInt32(vm.Tbx_Vertrag_Nummer.Trim())));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Auftrag))
-                    query = query.Where(row => row.wt2_honorarkraft_vertrag_position.Any(a => a.hkvp_auftrag.Contains(vm.Tbx_Vertrag_Auftrag)));
+                    query = query.Where(row => row.wt2_honorarkraft_vertrag_position.Any(a => a.hkvp_auftrag.Contains(vm.Tbx_Vertrag_Auftrag.Trim())));
                 # endregion
 
                 # region Prüfe Comboboxen auf Suchparameter
@@ -499,7 +502,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 }
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Vertrag_Thema))
                 {
-                    query = query.Where(row => row.wt2_honorarkraft_vertrag_position.Any(a => a.hkvp_thema.Equals(vm.Tbx_Vertrag_Thema)));
+                    query = query.Where(row => row.wt2_honorarkraft_vertrag_position.Any(a => a.hkvp_thema.ToLower().Contains(vm.Tbx_Vertrag_Thema.ToLower().Trim())));
                 }
                 if (!string.IsNullOrWhiteSpace(vm.Dp_Vertrag_Datum))
                 {
@@ -529,7 +532,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft_vertrag>(query);
-            }
+            //}
 
             return result;
         }
@@ -537,12 +540,12 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         public ObservableCollection<wt2_honorarkraft_zahlungsanweisung> ZahlungsanweisungSuche(ZahlungsanweisungViewModel vm)
         {
             ObservableCollection<wt2_honorarkraft_zahlungsanweisung> result = null;
-            CreateContext();
+            //CreateContext();
 
             vm.HonorarListe = null;
 
-            using (context)
-            {
+            //using (context)
+            //{
                 # region Standardabfrage
                 IEnumerable<wt2_honorarkraft_zahlungsanweisung> query = from zahlung in context.wt2_honorarkraft_zahlungsanweisung
                                                           .Include("wt2_honorarkraft")
@@ -552,13 +555,13 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
                 # region Prüfe Textboxen auf Suchparameter
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Name))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.Contains(vm.Tbx_Zahlung_Name));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.ToLower().Contains(vm.Tbx_Zahlung_Name.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Vorname))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.Contains(vm.Tbx_Zahlung_Vorname));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.ToLower().Contains(vm.Tbx_Zahlung_Vorname.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Firma))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.Contains(vm.Tbx_Zahlung_Firma));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.ToLower().Contains(vm.Tbx_Zahlung_Firma.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Zahlung_Nummer))
-                    query = query.Where(row => row.hkz_ident.Equals(Convert.ToInt32(vm.Tbx_Zahlung_Nummer)));
+                    query = query.Where(row => row.hkz_ident.Equals(Convert.ToInt32(vm.Tbx_Zahlung_Nummer.Trim())));
                 if (!string.IsNullOrWhiteSpace(vm.Dp_Zahlung_Datum))
                 {
                     DateTime dt = DateTime.Parse(vm.Dp_Zahlung_Datum);
@@ -568,7 +571,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     query = query.Where(row => row.wt2_honorarkraft_zahlungsanweisung_position.Any(a => 
                     {
                         if (a.wt2_honorarkraft_vertrag_position != null)
-                            return a.wt2_honorarkraft_vertrag_position.hkvp_auftrag.Contains(vm.Tbx_Zahlung_Auftrag);
+                            return a.wt2_honorarkraft_vertrag_position.hkvp_auftrag.Contains(vm.Tbx_Zahlung_Auftrag.Trim());
                         else return false;
                     }));
 
@@ -613,19 +616,19 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft_zahlungsanweisung>(query);
-            }
+            //}
             return result;
         }
 
         public ObservableCollection<wt2_honorarkraft_bewertung> BewertungbogenSuche(BewertungsbogenViewModel vm)
         {
             ObservableCollection<wt2_honorarkraft_bewertung> result = null;
-            CreateContext();
+            //CreateContext();
 
             vm.HonorarListe = null;
 
-            using (context)
-            {
+            //using (context)
+            //{
                 # region Standardabfrage
                 IEnumerable<wt2_honorarkraft_bewertung> query = from bewertung in context.wt2_honorarkraft_bewertung
                                                           .Include("wt2_honorarkraft")
@@ -634,11 +637,11 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
                 # region Prüfe Textboxen auf Suchparameter
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_Name))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.Contains(vm.Tbx_Bewertung_Name));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_nachname.ToLower().Contains(vm.Tbx_Bewertung_Name.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_Vorname))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.Contains(vm.Tbx_Bewertung_Vorname));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_vorname.ToLower().Contains(vm.Tbx_Bewertung_Vorname.ToLower().Trim()));
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_Firma))
-                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.Contains(vm.Tbx_Bewertung_Firma));
+                    query = query.Where(row => row.wt2_honorarkraft.hk_firma.ToLower().Contains(vm.Tbx_Bewertung_Firma.ToLower().Trim()));
                 # endregion
 
                 # region Prüfe Comboboxen auf Suchparameter
@@ -660,20 +663,25 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     if(TerminVon<=TerminBis)
                         query = query.Where(row => row.hkb_verbesserung_termin >= TerminVon && row.hkb_verbesserung_termin <= TerminBis); 
                 }
+
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TLVon) && !string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TLBis))
                 {
-                    Decimal TLVon = Parse(vm.Tbx_Bewertung_TLVon);
-                    Decimal TLBis = Parse(vm.Tbx_Bewertung_TLBis);
+                    Decimal TLVon = Convert.ToDecimal(vm.Tbx_Bewertung_TLVon.Trim());
+                    Decimal TLBis = Convert.ToDecimal(vm.Tbx_Bewertung_TLBis.Trim());
                     if (TLVon <= TLBis)
-                        query = query.Where(row => row.hkb_befragung_tl >= TLVon && row.hkb_befragung_tl <= TLBis); 
-                }
+                        query = query.Where(row => row.hkb_befragung_tl >= TLVon && row.hkb_befragung_tl <= TLBis);
+                    else return null;
+                } 
+
                 if (!string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TNVon) && !string.IsNullOrWhiteSpace(vm.Tbx_Bewertung_TNBis))
                 {
-                    Decimal TNVon = Parse(vm.Tbx_Bewertung_TNVon);
-                    Decimal TNBis = Parse(vm.Tbx_Bewertung_TNBis);
+                    Decimal TNVon = Convert.ToDecimal(vm.Tbx_Bewertung_TNVon.Trim());
+                    Decimal TNBis = Convert.ToDecimal(vm.Tbx_Bewertung_TNBis.Trim());
                     if (TNVon <= TNBis)
-                        query = query.Where(row => row.hkb_befragung_tl >= TNVon && row.hkb_befragung_tl <= TNBis); 
-                } 
+                        query = query.Where(row => row.hkb_befragung_tn >= TNVon && row.hkb_befragung_tn <= TNBis);
+                    else return null;
+                }
+                
                 # endregion
 
                 # region Daten Vorsortieren
@@ -686,17 +694,17 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft_bewertung>(query);
-            }
+            //}
             return result;
         }
 
         public ObservableCollection<wt2_honorarkraft> UeberpruefungsSuche(UeberpruefungsViewModel vm)
         {
             ObservableCollection<wt2_honorarkraft> result = null;
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
                 if (vm.SelectedItem_Pruefung_Jahr != 0)
                 {
                     int auswahlJahr = Convert.ToInt32(vm.Cbx_Pruefung_Jahr[vm.SelectedItem_Pruefung_Jahr]);
@@ -733,7 +741,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
                     result = new ObservableCollection<wt2_honorarkraft>(honorar);
                 }           
-            }
+            //}
             return result;
         }
         # endregion
@@ -742,17 +750,18 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         public wt2_honorarkraft FillEditView(string personId)
         {
             wt2_honorarkraft result = null;
+            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
             int id = int.Parse(personId);
 
-            CreateContext();
+            //CreateContext();
 
                 var query = (from row in context.wt2_honorarkraft
                                          where row.hk_ident.Equals(id)
                                          select row).SingleOrDefault();
 
                 result = (wt2_honorarkraft)query;
-
-            return result;
+                Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+                return result;
         }
 
         // Setzen der Checkboxharken-Einsatzgebiete in der EditView
@@ -760,10 +769,10 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         {
             int id = int.Parse(personId);
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
 
                 var query = (from row in context.wt2_honorarkraft
                             where row.hk_ident.Equals(id)
@@ -779,7 +788,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
 
 
                 }
-            }
+            //}
             return checkList;
         }
 
@@ -788,10 +797,10 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         {
             int id = int.Parse(personId);
 
-            CreateContext();
+            //CreateContext();
 
-            using (context)
-            {
+            //using (context)
+            //{
 
                 var query = (from row in context.wt2_honorarkraft
                              where row.hk_ident.Equals(id)
@@ -805,8 +814,26 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     }
 
                 }
-            }
+            //}
             return checkList;
+        }
+
+        public ObservableCollection<wt2_honorarkraft_vertrag_position> Hole_AZP_Vertragspositionen(DateTime datum, int hk_ident)
+        {
+            ObservableCollection<wt2_honorarkraft_vertrag_position> result = null;
+
+            //CreateContext();
+
+            //using (context)
+            //{
+                var query = from row in context.wt2_honorarkraft_vertrag_position
+                            where row.wt2_honorarkraft_vertrag.hkv_hk_ident.Equals(hk_ident)
+                            && row.hkvp_datum_beginn <= datum && row.hkvp_datum_ende >= datum
+                            select row;
+                result = new ObservableCollection<wt2_honorarkraft_vertrag_position>(query);
+            //}
+
+            return result;
         }
 
         # endregion
@@ -818,11 +845,11 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
             int result=0;
             if (flag != null) 
             { 
-            foreach (Bildungstraeger element in checkList)
-            {
-                if (element.ID == Convert.ToInt32(flag)) return result;
-                result++;
-            }
+                foreach (Bildungstraeger element in checkList)
+                {
+                    if (element.ID == Convert.ToInt32(flag)) return result;
+                    result++;
+                }
             }
             return result;
         }

@@ -1,0 +1,114 @@
+﻿<base:TIS3ActiveView x:Class="TIS3_WPF_TestMusterAddIn.Views.AddZahlungsanweisungspositionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
+             xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             Height="680" Width="580">
+    <StackPanel>
+            <Label Content="Auszahlungsdaten" />
+            <Separator />
+            <!-- Zeile 1 -->
+            <StackPanel Orientation="Horizontal">
+            <Label Content=" Auszahlung Nr." />
+            <TextBox Background="Beige"  x:Name="tbx_Avp_VertNr" Width="50" Height="22" Text="{Binding ReceiveObj.wt2_honorarkraft_zahlungsanweisung.hkz_ident, Mode=OneWay}"/>
+                <Label Content="für Monat:"/>
+                
+            <DatePicker Name="dp_Avp_VertragVom" HorizontalAlignment="Left" Width="200" 
+                                                     Validation.ErrorTemplate="{x:Null}" SelectedDate="{Binding ReceiveObj.wt2_honorarkraft_zahlungsanweisung.hkz_datum, Mode=OneWay}">
+                <DatePicker.Resources>
+                    <Style TargetType="DatePickerTextBox">
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBox x:Name="PART_TextBox" Text="{Binding Path=SelectedDate, StringFormat = {}{0:MM-yyyy}, 
+                                                                 RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DatePicker.Resources>
+            </DatePicker>
+                
+        </StackPanel>
+            <!-- Zeile 2 -->
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                <Label Content="von :" />
+                <TextBox Background="Beige"  x:Name="tbx_Azp_Aussteller" Height="80" Width="250" Text="{Binding Tbx_Azp_Aussteller, Mode=OneWay}"/>
+                <Label Content="an :"/>
+                <TextBox Background="Beige"  x:Name="tbx_Azp_Auftragnehmer" Height="80" Width="250" Text="{Binding Tbx_Azp_Auftragnehmer, Mode=OneWay}" />
+            </StackPanel>
+        <Label Content="Positionsdaten" />
+        <Separator />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="Pos. Nr." Margin="0 0 0 0"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="Vertrag"/>
+            <TextBox Background="Beige" Grid.Column="1" Grid.Row="0" Height="22" Width="100"  HorizontalAlignment="Left" x:Name="tbx_Azp_Auszahlungsposition" Text="{Binding ReceiveObj.hkzp_lfdnr, Mode=OneWay}"/>
+            <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding Dg_Vertraege}"
+                                   AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Single"  ColumnSizer="None" AllowEditing="False"
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" Height="300" SelectedItem="{Binding SelectedItem_Dg_Vertraege, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <Syncfusion:SfDataGrid.Columns>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_zeitraum" HeaderText="Zeitraum"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_thema" HeaderText="Thema"/>
+                    <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_kostenstelle" HeaderText="Kostenstelle"/>
+                    <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkvp_auftrag" HeaderText="Auftrag"/>
+                    <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkvp_unterrichtseinheiten_zeiteinheit" HeaderText="UE"/>
+                    <Syncfusion:GridDateTimeColumn AllowSorting="True" MappingName="hkvp_unterrichtseinheiten" HeaderText="Honorar je UE"/>
+                    <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkvp_summe" HeaderText="Honorargesamt"/>
+                    <Syncfusion:GridCurrencyColumn AllowSorting="True" MappingName="hkvp_bisherige_auszahlung" HeaderText="bereits ausgezahlt"/>
+                </Syncfusion:SfDataGrid.Columns>
+            </Syncfusion:SfDataGrid>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+             <Label Grid.Column="2" Grid.Row="0" Content="Gesamt" />
+             <Label Grid.Column="3" Grid.Row="0" Content="bisher" />
+             <Label Grid.Column="4" Grid.Row="0" Content="Rest" />
+             <Label Grid.Column="0" Grid.Row="1" Margin="0 0 0 5" Content="Anzahl UE" />
+             <Label Grid.Column="0" Grid.Row="2" Margin="0 0 0 5" Content="Honorar je UE" />
+             <Separator Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" VerticalAlignment="Bottom" />
+             <Label Grid.Column="0" Grid.Row="3" Margin="0 0 0 5" Content="Auszahlung" />
+
+            <TextBox x:Name="tbx_Azp_UE" Grid.Column="1" Grid.Row="1" Height="22" Text="{Binding Tbx_Azp_UE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=F2}"/>
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Honorar" Grid.Column="1" Grid.Row="2" Height="22" Value="{Binding SelectedItem_Dg_Vertraege.hkvp_honorar}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Auszahlung" Grid.Column="1" Grid.Row="3" Height="22" Value="{Binding ReceiveObj.hkzp_auszahlung, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <TextBox Background="Beige" x:Name="tbx_Azp_UE_Gesamt" Grid.Column="2" Grid.Row="1" Height="22" Margin="5 0 0 0" Text="{Binding SelectedItem_Dg_Vertraege.hkvp_unterrichtseinheiten, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=F2}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Honorar_Gesamt" Grid.Column="2" Grid.Row="2" Height="22" Margin="5 0 0 0" Value="{Binding SelectedItem_Dg_Vertraege.hkvp_honorar, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Gesamt_Gesamt" Grid.Column="2" Grid.Row="3" Height="22" Margin="5 0 0 0"  Value="{Binding SelectedItem_Dg_Vertraege.hkvp_summe, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+            <TextBox Background="Beige" x:Name="tbx_Azp_UE_bisher" Grid.Column="3" Grid.Row="1" Height="22" Margin="5 0 0 0" Text="{Binding SelectedItem_Dg_Vertraege.hkvp_bisherige_UE, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=F2}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Honorar_bisher" Grid.Column="3" Grid.Row="2" Height="22" Margin="5 0 0 0" Value="{Binding SelectedItem_Dg_Vertraege.hkvp_honorar, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Gesamt_bisher" Grid.Column="3" Grid.Row="3" Height="22" Margin="5 0 0 0" Value="{Binding SelectedItem_Dg_Vertraege.hkvp_bisherige_auszahlung, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+
+            <TextBox Background="Beige" x:Name="tbx_Azp_UE_Rest" Grid.Column="4" Grid.Row="1" Height="22" Margin="5 0 0 0"  Text="{Binding SelectedItem_Dg_Vertraege.hkvp_rest_UE, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat=F2}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Honorar_Rest" Grid.Column="4" Grid.Row="2" Height="22" Margin="5 0 0 0" Value="{Binding SelectedItem_Dg_Vertraege.hkvp_honorar, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+            <Syncfusion:CurrencyTextBox Background="Beige" x:Name="tbx_Azp_Gesamt_Rest" Grid.Column="4" Grid.Row="3" Height="22"  Margin="5 0 0 0"  Value="{Binding SelectedItem_Dg_Vertraege.hkvp_rest_summe, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+      
+        </Grid>
+        <Label Content="{Binding Lbl_Azp_Meldung}" Foreground="Red" FontWeight="SemiBold" x:Name="lbl_Azp_Meldung" />
+        <Button Content="Reset" Width="200" Margin="5 5 2 2" HorizontalAlignment="Left" Command="{Binding ResetCommand}" />
+    </StackPanel>
+</base:TIS3ActiveView>

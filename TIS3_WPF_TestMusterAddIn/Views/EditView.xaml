@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:base="clr-namespace:TIS3_Base;assembly=TIS3_Base"
              xmlns:ValueConverters="clr-namespace:BFZ_Common_Lib.ValueConverters;assembly=BFZ_Common_Lib"
+             xmlns:Infrastructure="clr-namespace:TIS3_WPF_TestMusterAddIn.Infrastructure"
              xmlns:Syncfusion="http://schemas.syncfusion.com/wpf" x:Class="TIS3_WPF_TestMusterAddIn.Views.EditView" 
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1500">
@@ -12,6 +13,7 @@
     <base:TIS3ActiveView.Resources>
     
             <ValueConverters:JNToBooleanConverter x:Key="JNToBool"></ValueConverters:JNToBooleanConverter>
+            <Infrastructure:EnumMatchToBooleanConverter x:Key="enumConverter" />
     
         <!-- Style für ListBox-Einsatzgebiete -->
         <Style x:Key="CheckBoxListBoxEinsatzgebiete" TargetType="{x:Type ListBox}">
@@ -67,7 +69,7 @@
                     </CheckBox>
                 </HierarchicalDataTemplate>
 
-                <HierarchicalDataTemplate x:Key="Parent_template"  ItemsSource="{Binding ThemeGroup}" ItemTemplate="{StaticResource Child_template}">
+                <HierarchicalDataTemplate x:Key="Parent_template"  ItemsSource="{Binding ThemeGroup}" ItemTemplate="{StaticResource Child_template}" >
                     <TextBlock Text="{Binding Gruppe}"/>
                 </HierarchicalDataTemplate>
             </Grid.Resources>
@@ -124,62 +126,62 @@
                                                   Width="100" Height="25"  Margin="25 5 0 10"  IsEditable="True" />
                                     </StackPanel>
                                     <TextBox Name="tbx_Personal_Vorname" Margin="0 5 0 0"
-                             HorizontalAlignment="Left" Width="210" Text="{Binding EditViewDatensatz.hk_vorname}"/>
+                             HorizontalAlignment="Left" Width="210" Text="{Binding EditViewDatensatz.hk_vorname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Nachname" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="210" Text="{Binding EditViewDatensatz.hk_nachname}"/>
+                             HorizontalAlignment="Left" Width="210" Text="{Binding EditViewDatensatz.hk_nachname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Firma" Margin="0 10 0 0"
-                             HorizontalAlignment="Left" Height="22"  Width="265" Text="{Binding EditViewDatensatz.hk_firma}"/>
+                             HorizontalAlignment="Left" Height="22"  Width="265" Text="{Binding EditViewDatensatz.hk_firma, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Firma2" Margin="0 10 0 0"
-                             HorizontalAlignment="Left" Height="22"  Width="265" Text="{Binding EditViewDatensatz.hk_firma2}"/>
+                             HorizontalAlignment="Left" Height="22"  Width="265" Text="{Binding EditViewDatensatz.hk_firma2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Strasse" Margin="0 10 0 0"
-                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_strasse}"/>
+                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_strasse, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <!-- Stackpanel: Plz / Ort -->
                                     <StackPanel Orientation="Horizontal" Margin="0 10 10 0">
                                         <TextBox Name="tbx_Personal_Plz" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_plz}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_plz, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         <Label Content="Ort" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Ort" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="120" Text="{Binding EditViewDatensatz.hk_ort}"/>
+                             HorizontalAlignment="Left" Width="120" Text="{Binding EditViewDatensatz.hk_ort, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!-- Stackpanel: Privattelefon/ Fax -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_PTel" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_telefon_privat}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_telefon_privat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         <Label Content="Fax" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Fax" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="120" Text="{Binding EditViewDatensatz.hk_fax}"/>
+                             HorizontalAlignment="Left" Width="120" Text="{Binding EditViewDatensatz.hk_fax, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <!-- Stackpanel: Firmentelefon / Mobiltelefon -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_FTel" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_telefon_firma}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_telefon_firma, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         <Label Content="Mobil" Margin="0 0 10 0"/>
                                         <TextBox Name="tbx_Personal_Mobil" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="105" Text="{Binding EditViewDatensatz.hk_telefon_mobil}"/>
+                             HorizontalAlignment="Left" Width="105" Text="{Binding EditViewDatensatz.hk_telefon_mobil, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
 
                                     <TextBox Name="tbx_Personal_EMail" Margin="0 15 10 0"
-                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_email}"/>
+                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <!-- Stackpanel: Blz/ Bank -->
                                     <StackPanel Orientation="Horizontal" Margin="0 15 10 0">
                                         <TextBox Name="tbx_Personal_Blz" Margin="0 0 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_blz}"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding Tbx_Personal_Blz, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         <Label Name="lbl_Personal_Bank" Margin="0 0 10 0" Foreground="Blue"
-                             HorizontalAlignment="Left" Width="180" Content="Royal International Bank of BFZ"/>
+                             HorizontalAlignment="Left" Width="180" Content="{Binding Lbl_Personal_Bank, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Personal_Konto" Margin="0 10 10 0"
-                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_konto}"/>
+                             HorizontalAlignment="Left" Width="265" Text="{Binding EditViewDatensatz.hk_konto, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Ue" Margin="0 15 10 0"
-                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_honorar_standard,StringFormat= c }"/>
+                             HorizontalAlignment="Left" Width="100" Text="{Binding EditViewDatensatz.hk_honorar_standard, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,StringFormat= c }"/>
 
                                     <TextBox Name="tbx_Personal_Ausbildung" Margin="0 5 0 0"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_ausbildung}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_ausbildung, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Studium" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_studium}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_studium, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Situation" Margin="0 15 0 0"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_situation}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_situation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Personal_Fachgebiet" Margin="0 15 0 10"
-                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_fachgebiet}"/>
+                             HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_fachgebiet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <Syncfusion:ComboBoxAdv HorizontalAlignment="Left"
                              Name="cbx_Personal_Bildungstraeger" Width="200" Margin="0 5 0 10" DisplayMemberPath="Name1" SelectedValuePath="ID"  
                              Syncfusion:SkinStorage.VisualStyle="Metro" ItemsSource="{Binding Cbx_Personal_Bildungstraeger}" SelectedValue="{Binding EditViewDatensatz.hk_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -195,9 +197,9 @@
                                 <StackPanel Grid.Column="3" Margin="10 10 0 0">
                                     <ListBox Name="lbx_Personal_Abteilung" Height="115" Width="250" Margin="0 10 0 0" ItemsSource="{Binding Lbx_Personal_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxListBoxAbteilungen}" />
                                     <ListBox Name="lbx_Personal_Teams" Height="115" Width="250" Margin="0 10 0 0" ItemsSource="{Binding Lbx_Personal_Teams, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxListBoxTeam}" />
-                                    <ListBox Name="lbx_Einsatzgebiete" Height="115" Width="250" Margin="0 15 0 0" ItemsSource="{Binding Lbx_Einsatzgebiete}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}"/>
+                                    <ListBox Name="lbx_Einsatzgebiete" Height="115" Width="250" Margin="0 15 0 0" ItemsSource="{Binding Lbx_Einsatzgebiete, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource CheckBoxListBoxEinsatzgebiete}"/>
 
-                                    <TreeView Name="tv_Themen" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Themen}" Width="250" Height="270" Margin="0 15 0 0"/>
+                                    <TreeView Name="tv_Themen" ItemTemplate="{StaticResource Parent_template}" ItemsSource="{Binding Tv_Themen}"  Width="250" Height="270" Margin="0 15 0 0"/>
                                     <Button Name="btn_Personal_AddTheme" Grid.Column="1" Grid.Row="5" Width="250" Content="Thema hinzufügen" Command="{Binding AddThemeCommand}" Margin="0 5" HorizontalAlignment="Left"/>
                                 </StackPanel>
                             </Grid>
@@ -223,7 +225,7 @@
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <!-- Verträge Spalte 0 -->
-                                <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewDatensatz.wt2_honorarkraft_vertrag}"
+                                <Syncfusion:SfDataGrid x:Name="dg_Vertraege" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewVerträge}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Single"  ColumnSizer="None" AllowEditing="False"
                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False" Margin="10 10 0 10" Height="300" 
                                    SelectedItem="{Binding SelectedItem_Vertrag_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"> 
@@ -239,8 +241,8 @@
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
-                                    <Button x:Name="btn_Vertraege_Neu" Content="Neu" Width="100"/>
-                                    <Button x:Name="btn_Vertraege_Löschen" Content="Löschen" Width="100" />
+                                    <Button x:Name="btn_Vertraege_Neu" Content="Neu" Width="100" Command="{Binding NewVertragCommand}"/>
+                                    <Button x:Name="btn_Vertraege_Löschen" Content="Löschen" Width="100" Command="{Binding DeleteVertragCommand}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -265,9 +267,8 @@
                                 <!-- Vertrag Spalte 1 -->
                                 <StackPanel Grid.Column="1" Margin="5 0 0 0">
                                     <TextBox Name="tbx_Vertrag_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_ident}"/>
-
-                                    
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_ident, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+          
                                     <Syncfusion:ComboBoxAdv 
                                         DisplayMemberPath="Bezeichnung"                              
                                         Name="cbx_Vertrag_Abteilung" 
@@ -279,12 +280,12 @@
                                         SelectedValuePath="ID"
                                         SelectedValue="{Binding SelectedItem_Vertrag_Grid.hkv_abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"           
                                         ItemsSource="{Binding Cbx_Vertrag_Abteilung}" />
-                                    
-                                    
-                                    <TextBox Name="tbx_Vertrag_Datum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_datum, StringFormat=dd.MM.yyyy}"/>
-                                    <TextBox Name="tbx_Vertrag_Druckdatum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_druckdatum, StringFormat=dd.MM.yyyy}"/>
+
+
+                                    <DatePicker Name="tbx_Vertrag_Datum" Margin="0 10 0 0"  Validation.ErrorTemplate="{x:Null}"
+                                        HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_datum, StringFormat=dd.MM.yyyy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <DatePicker Name="tbx_Vertrag_Druckdatum" Margin="0 10 0 0"  Validation.ErrorTemplate="{x:Null}"
+                                        HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Vertrag_Grid.hkv_druckdatum, StringFormat=dd.MM.yyyy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </StackPanel>
                                 <!-- Vertrag Spalte 2 -->
                                 <StackPanel Grid.Column="2"  Margin="5 0 0 0">
@@ -330,10 +331,10 @@
                                 </Grid.ColumnDefinitions>
                                 <Syncfusion:SfDataGrid x:Name="dg_Vertrag_Positionen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding Vertragspositionen}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Single" ColumnSizer="None" AllowEditing="False"
-                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10">
+                                   IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10"
+                                   SelectedItem="{Binding SelectedItem_VertragPosition_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                           
                                     <Syncfusion:SfDataGrid.Columns>
-                                        <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_lfdnr" HeaderText="Zeile"/>
                                         <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_kostenstelle" HeaderText="Kst."/>
                                         <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_auftrag" HeaderText="Auftrag"/>
                                         <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkvp_thema" HeaderText="Thema"/>
@@ -345,9 +346,9 @@
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
-                                    <Button x:Name="btn_Vertrag_Neu" Content="Neu" Width="100"/>
-                                    <Button x:Name="btn_Vertrag_Aendern" Content="Ändern" Width="100"/>
-                                    <Button x:Name="btn_Vertrag_Löschen" Content="Löschen" Width="100" />
+                                    <Button x:Name="btn_Vertrag_Neu" Content="Neu" Width="100"  Command="{Binding NewVertragsPositionCommand}" />
+                                    <Button x:Name="btn_Vertrag_Aendern" Content="Ändern" Width="100" Command="{Binding EditVertragsPositionCommand}" />
+                                    <Button x:Name="btn_Vertrag_Löschen" Content="Löschen" Width="100" Command="{Binding DeleteVertragPositionCommand}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -370,7 +371,7 @@
                                     <ColumnDefinition  Width="auto"/>
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Syncfusion:SfDataGrid x:Name="dg_Zahlungsanweisungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewDatensatz.wt2_honorarkraft_zahlungsanweisung}"
+                                <Syncfusion:SfDataGrid x:Name="dg_Zahlungsanweisungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewZahlungsanweisungen}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False" SelectedItem="{Binding SelectedItem_Zahlung_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10"  Height="300" >         
                                     <Syncfusion:SfDataGrid.Columns>
@@ -384,8 +385,8 @@
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
-                                    <Button x:Name="btn_Zahlungen_Neu" Content="Neu" Width="100"/>
-                                    <Button x:Name="btn_Zahlungen_Löschen" Content="Löschen" Width="100" />
+                                    <Button x:Name="btn_Zahlungen_Neu" Content="Neu" Width="100" Command="{Binding NewZahlungsanweisungCommand}"/>
+                                    <Button x:Name="btn_Zahlungen_Löschen" Content="Löschen" Width="100" Command="{Binding DeleteZahlungsanweisungCommand}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -407,17 +408,17 @@
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Column="0" Grid.Row="0">
-                                        <Label Content="Nr." Margin="0 5 0 0"/>
-                                        <Label Content="Monat" Margin="0 5 0 0"/>
-                                        <Label Content="Druckdatum" Margin="0 5 0 0"/>
+                                        <Label Content="Nr." Margin="0 7 0 0"/>
+                                        <Label Content="Monat" Margin="0 12 0 0"/>
+                                        <Label Content="Druckdatum" Margin="0 10 0 0"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="0">
                                         <TextBox Name="tbx_Zahlung_Nummer" Margin="0 10 0 0"
                                 HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Zahlung_Grid.hkz_ident}"/>
                                         <!-- Zum ändern des Datumformates bei einem DatePicker muss man auf das Template 
                                              des Unterelements DatePickerTextBox zugreifen und kann dann StringFormat einsetzen. -->
-                                        <DatePicker Name="tbx_Zahlung_Monat" Margin="0 10 0 0" HorizontalAlignment="Left" Width="200" 
-                                                    SelectedDate="{Binding SelectedItem_Zahlung_Grid.hkz_datum}">
+                                        <DatePicker Name="dp_Zahlung_Monat" Margin="0 10 0 0" HorizontalAlignment="Left" Width="200" 
+                                                     Validation.ErrorTemplate="{x:Null}" SelectedDate="{Binding SelectedItem_Zahlung_Grid.hkz_datum, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <DatePicker.Resources>
                                                 <Style TargetType="DatePickerTextBox">
                                                     <Setter Property="Control.Template">
@@ -431,8 +432,8 @@
                                                 </Style>
                                             </DatePicker.Resources>
                                         </DatePicker>
-                                        <DatePicker Name="tbx_Zahlung_Druckdatum" Margin="0 10 0 10" HorizontalAlignment="Left" Width="200" 
-                                                    SelectedDate="{Binding SelectedItem_Zahlung_Grid.hkz_druckdatum}"/>
+                                        <DatePicker Name="dp_Zahlung_Druckdatum" Margin="0 10 0 10" HorizontalAlignment="Left" Width="200" 
+                                                     Validation.ErrorTemplate="{x:Null}" SelectedDate="{Binding SelectedItem_Zahlung_Grid.hkz_druckdatum, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Grid.Row="0">
                                         <Label Content="Bildungsträger" Margin="10 5 0 0"/>
@@ -468,10 +469,9 @@
                                     <Syncfusion:SfDataGrid x:Name="dg_Zahlung_Positionen" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding Zahlungspositionen}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" Grid.Column="0" Grid.Row="1"
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                   SelectedItem="{Binding SelectedItem_ZahlungsanweisungsPosition_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                   
                                         <Syncfusion:SfDataGrid.Columns>
-                                            <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkzp_zeile" HeaderText="Zeile"/>
                                             <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft_vertrag_position.hkvp_kostenstelle" HeaderText="Kst."/>
                                             <Syncfusion:GridTextColumn AllowSorting="True" MappingName="wt2_honorarkraft_vertrag_position.hkvp_auftrag" HeaderText="Auftrag"/>
                                             <Syncfusion:GridNumericColumn NumberGroupSeparator="," AllowSorting="True" MappingName="hkzp_unterrichtseinheiten" HeaderText="UE"/>
@@ -480,9 +480,9 @@
                                         </Syncfusion:SfDataGrid.Columns>
                                     </Syncfusion:SfDataGrid>
                                     <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
-                                        <Button x:Name="btn_Zahlung_Neu" Content="Neu" Width="100"/>
-                                        <Button x:Name="btn_Zahlung_Aendern" Content="Ändern" Width="100"/>
-                                        <Button x:Name="btn_Zahlung_Löschen" Content="Löschen" Width="100" />
+                                        <Button x:Name="btn_Zahlung_Neu" Content="Neu" Width="100" Command="{Binding NewZahlungsanweisungsPositionCommand}"/>
+                                        <Button x:Name="btn_Zahlung_Aendern" Content="Ändern" Width="100" Command="{Binding EditZahlungsanweisungsPositionCommand}"/>
+                                        <Button x:Name="btn_Zahlung_Löschen" Content="Löschen" Width="100" Command="{Binding DeleteZahlungsanweisungsPositionCommand}"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -495,7 +495,7 @@
                     <StackPanel>
                         <!-- Menuzeile Bewertung -->
                         <Menu IsMainMenu="True">
-                            <MenuItem Name="mnu_Bewertung_Speichern" Header="_Speichern"  />
+                            <MenuItem Name="mnu_Bewertung_Speichern" Header="_Speichern"  Command="{Binding SaveCommand}"/>
                             <Separator />
                             <MenuItem Name="mnu_Bewertung_Reset" Header="_Reset" />
                         </Menu>
@@ -506,10 +506,10 @@
                                     <ColumnDefinition  Width="auto"/>
                                     <ColumnDefinition  Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Syncfusion:SfDataGrid x:Name="dg_Bewertungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewDatensatz.wt2_honorarkraft_bewertung}"
+                                <Syncfusion:SfDataGrid x:Name="dg_Bewertungen" Grid.Column="0" AutoGenerateColumns="False" AllowResizingColumns="True" ItemsSource="{Binding EditViewBewertungen}"
                                    AllowSorting="True" AddNewRowPosition ="None" SelectionUnit="Row" SelectionMode="Extended" ColumnSizer="None" AllowEditing="False"
                                    IsDynamicItemsSource="False" Focusable="True" EditTrigger="OnTap" AllowGrouping="False"  Margin="10 10 0 10" 
-                                   SelectedItem="{Binding SelectedHonorar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                   SelectedItem="{Binding SelectedItem_Bewertung_Grid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                                     <Syncfusion:SfDataGrid.Columns>
                                         <Syncfusion:GridTextColumn AllowSorting="True" MappingName="hkb_zeile" HeaderText="Zeile"/>
@@ -522,8 +522,8 @@
                                     </Syncfusion:SfDataGrid.Columns>
                                 </Syncfusion:SfDataGrid>
                                 <StackPanel Grid.Column="1" Margin="10">
-                                    <Button x:Name="btn_Bewertung_Neu" Content="Neu" Width="100"/>
-                                    <Button x:Name="btn_Bewertung_Löschen" Content="Löschen" Width="100" />
+                                    <Button x:Name="btn_Bewertung_Neu" Content="Neu" Width="100" Command="{Binding NewBewertungCommand}" />
+                                    <Button x:Name="btn_Bewertung_Löschen" Content="Löschen" Width="100" Command="{Binding DeleteBewertungCommand}" />
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -549,21 +549,21 @@
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Grid.Row="0" Margin="5 0 0 0">
                                     <TextBox Name="tbx_Bewertung_Nummer" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Nummer}"/>
-                                    <TextBox Name="tbx_Bewertung_Datum" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Datum}"/>
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Bewertung_Grid.hkb_lfdnr}"/>
+                                    <DatePicker Name="dp_Bewertung_Datum" Margin="0 10 0 0" Validation.ErrorTemplate="{x:Null}"
+                                HorizontalAlignment="Left" Width="200" Text="{Binding SelectedItem_Bewertung_Grid.hkb_datum, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <!-- Bewertungsspanne von/bis als zusätzliche StackPanels -->
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBox Name="tbx_Bewertung_TLvon" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TLvon}"/>
+                                        <TextBox Name="tbx_Bewertung_TLvon" Margin="0 10 0 0" HorizontalAlignment="Left" Width="50" 
+                                         Text="{Binding SelectedItem_Bewertung_Grid.hkb_befragung_tl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=F1 }" />
                                         <TextBox Name="tbx_Bewertung_TLbis" Margin="5 10 0 0"
-                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TLbis}"/>
+                                HorizontalAlignment="Left" Width="50" Text="{Binding Bewertungsbogen_Berwertungsvorgaben.khkbv_befragung_tl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=F1}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox Name="tbx_Bewertung_TNvon" Margin="0 10 0 10"
-                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TNvon}"/>
+                                HorizontalAlignment="Left" Width="50" Text="{Binding SelectedItem_Bewertung_Grid.hkb_befragung_tn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=F1}"/>
                                         <TextBox Name="tbx_Bewertung_TNbis" Margin="5 10 0 10"
-                                HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_TNbis}"/>
+                                HorizontalAlignment="Left" Width="50" Text="{Binding Bewertungsbogen_Berwertungsvorgaben.khkbv_befragung_tn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=F1}"/>
                                     </StackPanel>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2" Grid.Row="0">
@@ -573,13 +573,13 @@
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Grid.Row="0">
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Name1"
-                                Name="cbx_Bewertung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" SelectedValuePath="ID"  SelectedValue="{Binding EditViewDatensatz.hk_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Name="cbx_Bewertung_Bildungstraeger" Width="200" Margin="0 10 0 0" Height="22" SelectedValuePath="ID"  SelectedValue="{Binding SelectedItem_Bewertung_Grid.hkb_bildungstraeger, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Bildungstraeger}" />
                                     <Syncfusion:ComboBoxAdv DisplayMemberPath="Bezeichnung"
-                                Name="cbx_Bewertung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" 
-                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" SelectedIndex="{Binding SelectedItem_Bewertung_Abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBox Name="tbx_Bewertung_Kommentar" Margin="0 10 0 0"
-                                HorizontalAlignment="Left" Width="200" Height="60" Text="{Binding Tbx_Bewertung_Kommentar}"/>
+                                Name="cbx_Bewertung_Abteilung" Width="200" Margin="0 10 0 0" Height="22" SelectedValuePath="ID"
+                                Syncfusion:SkinStorage.VisualStyle="Metro" HorizontalAlignment="Left" ItemsSource="{Binding Cbx_Bewertung_Abteilung}" SelectedValue="{Binding SelectedItem_Bewertung_Grid.hkb_abteilung, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Name="tbx_Bewertung_Kommentar" Margin="0 10 0 0" TextWrapping="Wrap"
+                                HorizontalAlignment="Left" Width="200" Height="60" Text="{Binding SelectedItem_Bewertung_Grid.hkb_ergebnis, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -598,11 +598,11 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="5 0 0 0">
                                         <TextBox Name="tbx_Bewertung_Was" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="800" Text="{Binding Tbx_Bewertung_Was}"/>
+                                                 HorizontalAlignment="Left" Width="800" Text="{Binding SelectedItem_Bewertung_Grid.hkb_verbesserung_aktion}"/>
                                         <TextBox Name="tbx_Bewertung_Wer" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="800" Text="{Binding Tbx_Bewertung_Wer}"/>
-                                        <TextBox Name="tbx_Bewertung_Wann" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="800" Text="{Binding Tbx_Bewertung_Wann}"/>
+                                                 HorizontalAlignment="Left" Width="800" Text="{Binding SelectedItem_Bewertung_Grid.hkb_verbesserung_durch}"/>
+                                        <DatePicker Name="dp_Bewertung_Wann" Margin="0 10 0 10" Validation.ErrorTemplate="{x:Null}"
+                                                 HorizontalAlignment="Left" Width="150" Text="{Binding SelectedItem_Bewertung_Grid.hkb_verbesserung_termin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -614,7 +614,7 @@
                     <StackPanel>
                         <!-- Menuzeile Info -->
                         <Menu IsMainMenu="True">
-                            <MenuItem Name="mnu_Info_Speichern" Header="_Speichern"  />
+                            <MenuItem Name="mnu_Info_Speichern" Header="_Speichern"  Command="{Binding SaveCommand}"/>
                             <Separator />
                             <MenuItem Name="mnu_Info_Reset" Header="_Reset" />
                         </Menu>
@@ -636,26 +636,26 @@
                                     <Label Content="Position" Margin="0 5 0 0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Margin="5 0 0 0">
-                                    <TextBox Name="rtbx_Bewertung_Info" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Height="100"  Width="400" Text="{Binding Tbx_Bewertung_Info}"/>
+                                    <TextBox Name="tbx_Bewertung_Info" Margin="0 10 0 0" TextWrapping="Wrap"
+                                                 HorizontalAlignment="Left" Height="100"  Width="400" Text="{Binding EditViewDatensatz.hk_info, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Bewertung_Strasse" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Strasse}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_strasse_privat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBox Name="tbx_Bewertung_Plz" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="50" Text="{Binding Tbx_Bewertung_Plz}"/>
+                                                 HorizontalAlignment="Left" Width="50" Text="{Binding EditViewDatensatz.hk_plz_privat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         <TextBox Name="tbx_Bewertung_Ort" Margin="5 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Bewertung_Ort}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_ort_privat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Info_2Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_email2}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_email2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Info_3Mail" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_email3}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_email3, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Info_Web" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_web}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_web, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Info_Abteilung" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_abteilung}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_abteilung, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <TextBox Name="tbx_Info_Position" Margin="0 10 0 10"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_position}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding EditViewDatensatz.hk_position, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -666,7 +666,7 @@
                     <StackPanel>
                         <!-- Menuzeile Statusprüfung -->
                         <Menu IsMainMenu="True">
-                            <MenuItem Name="mnu_Status_Speichern" Header="_Speichern"  />
+                            <MenuItem Name="mnu_Status_Speichern" Header="_Speichern"  Command="{Binding SaveCommand}"/>
                             <Separator />
                             <MenuItem Name="mnu_Status_Reset" Header="_Reset" />
                         </Menu>
@@ -691,68 +691,69 @@
                                     <Label Content="ArbN beschäftigt" Margin="0 5 0 0"/>
                                     <Label Content="Umsatzsteuerpflichtige Unternehmen" Margin="0 5 0 0"/>
                                     <Label Content="Rechtsform" Margin="0 5 0 0"/>
+                                    <Label Content="SV-Befreiung für Lehrkräfte" Margin="0 12 0 0"/>
                                     <Label Content="SV Befreiung für Selbstständige" Margin="0 5 0 0"/>
-                                    <Label Content="Einsatzvolumen > 80 Std. / Monat" Margin="0 75 0 0"/>
+                                    <Label Content="Einsatzvolumen > 80 Std. / Monat" Margin="0 42 0 0"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="1" Grid.Row="0">
-                                    <TextBox Name="tbx_Info_BogenVon" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_BogenVon}"/>
-                                    <TextBox Name="tbx_Info_CheckVon" Margin="0 5 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_CheckVon}"/>
+                                    <DatePicker Name="dp_Info_BogenVon" Margin="0 10 0 0" Validation.ErrorTemplate="{x:Null}" 
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Honorarkraft_Status.hks_personalbogen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <DatePicker Name="dp_Info_CheckVon" Margin="0 5 0 0"  Validation.ErrorTemplate="{x:Null}"
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Honorarkraft_Status.hks_checkliste, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="Regelung" Content="Ja" x:Name="rb_Regelung_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_Regelung_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="Regelung" Content="Nein" x:Name="rb_Regelung_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Regelung_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="Regelung" Content="Keine Angaben" x:Name="rb_Regelung_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Regelung_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Ja" x:Name="rb_Regelung_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=RegelungOption,  Converter={StaticResource enumConverter}, ConverterParameter=J, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Nein" x:Name="rb_Regelung_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=RegelungOption,  Converter={StaticResource enumConverter}, ConverterParameter=N,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Keine Angaben" x:Name="rb_Regelung_ka" Margin="5 15 0 0" IsChecked="{Binding Path=RegelungOption,  Converter={StaticResource enumConverter}, ConverterParameter=X,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="ArbN" Content="Ja" x:Name="rb_ArbN_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_ArbN_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="ArbN" Content="Nein" x:Name="rb_ArbN_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_ArbN_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                        <RadioButton GroupName="ArbN" Content="Keine Angaben" x:Name="rb_ArbN_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_ArbN_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Ja" x:Name="rb_ArbN_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=ArbNOption,  Converter={StaticResource enumConverter}, ConverterParameter=J, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Nein" x:Name="rb_ArbN_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=ArbNOption,  Converter={StaticResource enumConverter}, ConverterParameter=N, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Keine Angaben" x:Name="rb_ArbN_ka" Margin="5 15 0 0" IsChecked="{Binding Path=ArbNOption,  Converter={StaticResource enumConverter}, ConverterParameter=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="Umst" Content="Ja" x:Name="rb_Umst_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_Umst_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="Umst" Content="Nein" x:Name="rb_Umst_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Umst_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="Umst" Content="Keine Angaben" x:Name="rb_Umst_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_Umst_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <StackPanel Orientation="Horizontal">
+                                        <RadioButton Content="Ja" x:Name="rb_Umst_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=UmstOption,  Converter={StaticResource enumConverter}, ConverterParameter=J, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Nein" x:Name="rb_Umst_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=UmstOption,  Converter={StaticResource enumConverter}, ConverterParameter=N, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Keine Angaben" x:Name="rb_Umst_ka" Margin="5 15 0 0" IsChecked="{Binding Path=UmstOption,  Converter={StaticResource enumConverter}, ConverterParameter=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     <TextBox Name="tbx_Info_Rechtsform" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Rechtsform}"/>
+                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Honorarkraft_Status.hks_rechtsform, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="SVPflicht" Content="Ja" x:Name="rb_SVPflicht_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=Rb_SVPflicht_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="SVPflicht" Content="Nein" x:Name="rb_SVPflicht_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_SVPflicht_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="SVPflicht" Content="Keine Angaben" x:Name="rb_SVPflicht_ka" Margin="5 15 0 0" IsChecked="{Binding Path=Rb_SVPflicht_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Ja" x:Name="rb_SVPflicht_Ja" Margin="0 15 0 0" IsChecked="{Binding Path=SVPflichtOption,  Converter={StaticResource enumConverter}, ConverterParameter=J, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Nein" x:Name="rb_SVPflicht_Nein" Margin="5 15 0 0" IsChecked="{Binding Path=SVPflichtOption,  Converter={StaticResource enumConverter}, ConverterParameter=N, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Keine Angaben" x:Name="rb_SVPflicht_ka" Margin="5 15 0 0" IsChecked="{Binding Path=SVPflichtOption,  Converter={StaticResource enumConverter}, ConverterParameter=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
-                                    <CheckBox x:Name="chkbx_Info_DRV" Margin="0 15 0 0" IsChecked="{Binding Path=Chkbx_Info_DRV,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Statusfeststellung durch DRV...</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_DRV" Margin="0 15 0 0" IsChecked="{Binding Path=Binding Honorarkraft_Status.hks_statusfeststellung_drv,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Statusfeststellung durch DRV...</CheckBox>
                                     <CheckBox x:Name="chkbx_Info_SVBefreiung" Margin="0 15 0 0" IsChecked="{Binding Path=Chkbx_Info_SVBefreiung,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">SV Befreiung für Selbstständige</CheckBox>
-                                    <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="SVBefreiung" Content="...ist beantragt" x:Name="rb_SVBefreiung_beantragt" Margin="0 0 0 0" IsEnabled="{Binding ElementName=Rb_SVBefreiung_beantragt, Path=IsChecked}" />
-                                        <RadioButton GroupName="SVBefreiung" Content="...liegt vor" x:Name="rb_SVBefreiung_liegtvor" Margin="5 0 0 0" IsEnabled="{Binding ElementName=Rb_SVBefreiung_liegtvor, Path=IsChecked}" />
+                                    <StackPanel Orientation="Horizontal" IsEnabled="{Binding ElementName=chkbx_Info_SVBefreiung, Path=IsChecked}">
+                                        <RadioButton Content="...ist beantragt" x:Name="rb_SVBefreiung_beantragt" Margin="0 0 0 0"  IsChecked="{Binding Path=SVBefreiungOption,  Converter={StaticResource enumConverter}, ConverterParameter=beantragt, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <RadioButton Content="...liegt vor" x:Name="rb_SVBefreiung_liegtvor" Margin="5 0 0 0" IsChecked="{Binding Path=SVBefreiungOption,  Converter={StaticResource enumConverter}, ConverterParameter=liegtvor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <RadioButton GroupName="Einsatzvolumen" Content="Ja" x:Name="rb_Einsatzvolument_Ja" Margin="0 5 0 0" IsChecked="{Binding Path=Rb_Einsatzvolument_Ja,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="Einsatzvolumen" Content="Nein" x:Name="rb_Einsatzvolumen_Nein" Margin="5 5 0 0" IsChecked="{Binding Path=Rb_Einsatzvolumen_Nein,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        <RadioButton GroupName="Einsatzvolumen" Content="Keine Angaben" x:Name="rb_Einsatzvolumen_ka" Margin="5 5 0 0" IsChecked="{Binding Path=Rb_Einsatzvolumen_ka,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Ja" x:Name="rb_Einsatzvolument_Ja" Margin="0 5 0 0" IsChecked="{Binding Path=EinsatzvolumenOption,  Converter={StaticResource enumConverter}, ConverterParameter=J, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Nein" x:Name="rb_Einsatzvolumen_Nein" Margin="5 5 0 0" IsChecked="{Binding Path=EinsatzvolumenOption,  Converter={StaticResource enumConverter}, ConverterParameter=N, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <RadioButton Content="Keine Angaben" x:Name="rb_Einsatzvolumen_ka" Margin="5 5 0 0" IsChecked="{Binding Path=EinsatzvolumenOption,  Converter={StaticResource enumConverter}, ConverterParameter=X, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </StackPanel>
                                     
                                 </StackPanel>
                                 <StackPanel Grid.Column="2"  Grid.Row="0" Margin="5 0 0 0">
-                                    <CheckBox x:Name="chkbx_Info_Selbst" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_Selbst,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Selbstständigenstatus ist gegeben</CheckBox>
-                                    <CheckBox x:Name="chkbx_Info_Verfolgen" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_Verfolgen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Weiterverfolgung ist erforderlich</CheckBox>
-                                    <CheckBox x:Name="chkbx_Info_OffzVerfolgen" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_OffzVerfolgen,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Offizielle Statusprüfung ist erforderlich</CheckBox>
-                                    <CheckBox x:Name="chkbx_Info_Bedenklich" Margin="5 15 0 0" IsChecked="{Binding Path=Chkbx_Info_Bedenklich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">Einsatz als Honorarkraft bedenklich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Selbst" Margin="5 15 0 0" IsChecked="{Binding Honorarkraft_Status.hks_selbstaendigenstatus,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Selbstständigenstatus ist gegeben</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Verfolgen" Margin="5 15 0 0" IsChecked="{Binding Honorarkraft_Status.hks_weiterverfolgung,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Weiterverfolgung ist erforderlich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_OffzVerfolgen" Margin="5 15 0 0" IsChecked="{Binding Honorarkraft_Status.hks_statusueberpruefung,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Offizielle Statusprüfung ist erforderlich</CheckBox>
+                                    <CheckBox x:Name="chkbx_Info_Bedenklich" Margin="5 15 0 0" IsChecked="{Binding Honorarkraft_Status.hks_einsatz_bedenklich,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource JNToBool}}">Einsatz als Honorarkraft bedenklich</CheckBox>
                                     <Label Content="Datum der letzten Überprüfung" Margin="0 5 0 0" />
                                 </StackPanel>
                                 <StackPanel Grid.Column="3"  Grid.Row="0" Margin="5 0 0 0">
-                                    <TextBox Name="tbx_Info_Verfolgung" Margin="0 45 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_Verfolgung}"/>
-                                    <TextBox Name="tbx_Info_OffzVerfolgung" Margin="0 10 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_OffzVerfolgung}"/>
-                                    <TextBox Name="tbx_Info_DatumUederpruefung" Margin="0 35 0 0"
-                                                 HorizontalAlignment="Left" Width="200" Text="{Binding Tbx_Info_DatumUederpruefung}"/>
+                                    <DatePicker Name="dp_Info_Verfolgung" Margin="0 45 0 0" IsEnabled="{Binding ElementName=chkbx_Info_Verfolgen, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                 Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Left" Width="200" Text="{Binding Honorarkraft_Status.hks_weiterverfolgung_datum, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <DatePicker Name="dp_Info_OffzVerfolgung" Margin="0 8 0 0" IsEnabled="{Binding ElementName=chkbx_Info_OffzVerfolgen, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                 Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Left" Width="200" Text="{Binding Honorarkraft_Status.hks_statusueberpruefung_datum, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    <DatePicker Name="dp_Info_DatumUederpruefung" Margin="0 30 0 0"
+                                                 Validation.ErrorTemplate="{x:Null}" HorizontalAlignment="Left" Width="200" Text="{Binding Honorarkraft_Status.hks_letzte_ueberpruefung, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </StackPanel>
                                 <StackPanel Margin="5 0 0 0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
                                     <Label Content="Info" Margin="0 5 0 0"/>
-                                <TextBox Name="rtbx_Status_Info" Margin="0 0 0 10"
-                                         HorizontalAlignment="Left" Height="100"  Width="860" Text="{Binding Tbx_Status_Info}"/>
+                                    <TextBox Name="rtbx_Status_Info" Margin="0 0 0 10" TextWrapping="Wrap"
+                                         HorizontalAlignment="Left" Height="100"  Width="860" Text="{Binding Honorarkraft_Status.hks_bemerkungen}"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
