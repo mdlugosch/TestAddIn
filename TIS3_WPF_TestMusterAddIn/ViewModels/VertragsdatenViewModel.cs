@@ -26,7 +26,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         # region Data Access Objecte für Honorarkraefte Tabellen
         LookupRepository LookRepo = new LookupRepository();
-        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+        HonorarkraefteDAO hDAO;
         # endregion
 
         # region Auswahlliste
@@ -63,13 +63,24 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # endregion
 
         # region Initialisierung VertragsdatenViewModel
+        public VertragsdatenViewModel() : base() 
+        {
+            // Aktuelle Guid übergeben um ViewModel und Dao mit einem Context zu verbinden.
+            hDAO = new HonorarkraefteDAO(this.ViewModelGuid);
+            /*
+             * InitComboBoxes muss im Konstruktor stehen damit die Guid nicht null ist.
+             * Die Init-Methode wäre der falsche Ort für InitComboBoxes da diese zu früh
+             * initialisiert werden würde zu einem Zeitpunkt an dem die Guid noch Null ist.
+             */
+            InitComboBoxes();
+        }
+
         public override void Init()
         {
             this.IsBusy = false;
             this.OpenEditViewCommand = new RelayCommand(_execute => this.OpenEditView(_execute), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => { Reset(); }, _canExecute => { return true; });
-            SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; }); 
-            InitComboBoxes();
+            SearchCommand = new RelayCommand(_execute => { Search(); }, _canExecute => { return true; });           
         }
         # endregion
 
@@ -130,7 +141,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
             worker.DoWork += delegate(object sender, DoWorkEventArgs e)
             {
-                HonorarListe = hDAO.VertragsdatenSuche(this);
+                HonorarListe = hDAO.VertragsdatenSuche(this, this.ViewModelGuid);
             };
 
             // wird ausgeführt, wenn der Worker fertig ist:

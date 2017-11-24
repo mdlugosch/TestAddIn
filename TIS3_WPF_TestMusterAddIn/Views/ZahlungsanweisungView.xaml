@@ -18,7 +18,13 @@
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
         <Grid>
-        <Grid.RowDefinitions>
+
+            <!-- Zahlungsanweisungssuche mit F3 starten -->
+            <Grid.InputBindings>
+                <KeyBinding Command="{Binding SearchCommand}" Key="F3" />
+            </Grid.InputBindings>
+            
+            <Grid.RowDefinitions>
             <RowDefinition Height="22" />
             <RowDefinition Height="210" />
             <RowDefinition Height="*" />

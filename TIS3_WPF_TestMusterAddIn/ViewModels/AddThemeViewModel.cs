@@ -32,7 +32,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         # region Data Access Objecte für Honorarkraefte Tabellen
         LookupRepository LookRepo = new LookupRepository();
-        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+        HonorarkraefteDAO hDAO;
         # endregion
 
         # region Elemente der Neuaufnahmemaske
@@ -41,19 +41,30 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public string Tbx_AddTheme_Thema { get; set; }
         # endregion
 
+        public AddThemeViewModel() : base()
+        {
+            // Aktuelle Guid übergeben um ViewModel und Dao mit einem Context zu verbinden.
+            hDAO = new HonorarkraefteDAO(this.ViewModelGuid);
+
+            /*
+             * InitComboBoxes muss im Konstruktor stehen damit die Guid nicht null ist.
+             * Die Init-Methode wäre der falsche Ort für InitComboBoxes da diese zu früh
+             * initialisiert werden würde zu einem Zeitpunkt an dem die Guid noch Null ist.
+             */
+            InitComboBoxes();
+        }
+
         public override void Init()
         {
             // Event subscribtion
-            _aggregator.GetEvent<ThemePostedEvent>().Subscribe(GetDataMessage);
-
-            InitComboBoxes();  
+            //_aggregator.GetEvent<ThemePostedEvent>().Subscribe(GetDataMessage);
         }
 
         public void InitComboBoxes()
         {
             Cbx_AddTheme_Gruppe = new ObservableCollection<string>();
 
-            Cbx_AddTheme_Gruppe = hDAO.HoleThemaGruppen();
+            Cbx_AddTheme_Gruppe = hDAO.HoleThemaGruppen(this.ViewModelGuid);
         }
 
         public bool CancelAction()
@@ -69,8 +80,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 !string.IsNullOrWhiteSpace(Tbx_AddTheme_Thema)) 
                 {
                     newLine.khkth_gruppe = SelectedItem_AddTheme_Gruppe;
-                    newLine.khkth_bezeichnung = Tbx_AddTheme_Thema;    
-                    hDAO.AddNewTheme(newLine);
+                    newLine.khkth_bezeichnung = Tbx_AddTheme_Thema;
+                    hDAO.AddNewTheme(newLine, this.ViewModelGuid);
+                    _aggregator.GetEvent<ThemePostedEvent>().Publish(null);
                     return true;
                 }
             return false;
@@ -93,13 +105,13 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         }
 
         // Parameter des Events auslesen
-        private void GetDataMessage(Message<wt2_konst_honorarkraft_thema> messageObj)
-        {
-            if (messageObj.Sender == ParentViewModelGuid)
-            {
-                receiveObj = messageObj.Payload;
-            }
-        }
+        //private void GetDataMessage(Message<wt2_konst_honorarkraft_thema> messageObj)
+        //{
+        //    if (messageObj.Sender == ParentViewModelGuid)
+        //    {
+        //        receiveObj = messageObj.Payload;
+        //    }
+        //}
 
         public override void ApplyNavigationParameters(Microsoft.Practices.Prism.Regions.NavigationParameters navigationParameters)
         {

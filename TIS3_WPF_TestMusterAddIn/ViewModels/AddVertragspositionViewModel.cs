@@ -181,8 +181,9 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         }
         # endregion    
 
-        public AddVertragspositionViewModel() 
-        { }
+        public AddVertragspositionViewModel() : base()
+        {
+        }
 
         public override void Init()
         {

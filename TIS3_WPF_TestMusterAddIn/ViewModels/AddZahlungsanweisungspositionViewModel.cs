@@ -41,7 +41,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public wt2_honorarkraft_zahlungsanweisung_position ReceiveObj { get { return receiveObj; } set { receiveObj = value; } }
 
         # region Data Access Objecte für Honorarkraefte Tabellen
-        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+        HonorarkraefteDAO hDAO;
         # endregion
 
         public ObservableCollection<wt2_honorarkraft_vertrag_position> Dg_Vertraege 
@@ -155,6 +155,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             set;
         }
 
+        public AddZahlungsanweisungspositionViewModel() : base()
+        {
+            // Aktuelle Guid übergeben um ViewModel und Dao mit einem Context zu verbinden.
+            hDAO = new HonorarkraefteDAO(this.ViewModelGuid);
+        }
+
         public override void Init()
         {
             // Meldungsfeld ohne Inhalt initialisieren
@@ -170,7 +176,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             ObservableCollection<wt2_honorarkraft_vertrag_position> result;
             if (receiveObj != null && receiveObj.wt2_honorarkraft_zahlungsanweisung != null)
             {
-                result = hDAO.Hole_AZP_Vertragspositionen(receiveObj.wt2_honorarkraft_zahlungsanweisung.hkz_datum.Value, receiveObj.wt2_honorarkraft_zahlungsanweisung.hkz_hk_ident.Value);
+                result = hDAO.Hole_AZP_Vertragspositionen(receiveObj.wt2_honorarkraft_zahlungsanweisung.hkz_datum.Value, receiveObj.wt2_honorarkraft_zahlungsanweisung.hkz_hk_ident.Value, this.ViewModelGuid);
 
                 // Aktuell zugeordnete Vertragsposition holen.
                 var query = (from row in result

@@ -11,8 +11,8 @@
              d:DesignHeight="900" d:DesignWidth="1500">
 
     <base:TIS3ActiveView.Resources>
-    
-            <ValueConverters:JNToBooleanConverter x:Key="JNToBool"></ValueConverters:JNToBooleanConverter>
+        
+        <ValueConverters:JNToBooleanConverter x:Key="JNToBool"></ValueConverters:JNToBooleanConverter>
             <Infrastructure:EnumMatchToBooleanConverter x:Key="enumConverter" />
     
         <!-- Style für ListBox-Einsatzgebiete -->
@@ -24,7 +24,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding Einsatzgebiet.khke_bezeichnung}"/>
+                        <CheckBox IsChecked="{Binding IsChecked}" Content="{Binding khke_bezeichnung}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -61,14 +61,14 @@
     </base:TIS3ActiveView.Resources>
     
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
-    <Grid>
-            <Grid.Resources>
+        <Grid>
+            <!-- Style für TreeView Themen (tv_Themen) -->
+            <Grid.Resources> 
                 <HierarchicalDataTemplate x:Key="Child_template">
                     <CheckBox IsChecked="{Binding IsChecked}">
-                        <TextBlock Text="{Binding Thema.khkth_bezeichnung}"/>
+                        <TextBlock Text="{Binding khkth_bezeichnung}"/>
                     </CheckBox>
-                </HierarchicalDataTemplate>
-
+                </HierarchicalDataTemplate>         
                 <HierarchicalDataTemplate x:Key="Parent_template"  ItemsSource="{Binding ThemeGroup}" ItemTemplate="{StaticResource Child_template}" >
                     <TextBlock Text="{Binding Gruppe}"/>
                 </HierarchicalDataTemplate>
@@ -83,8 +83,13 @@
                             <Separator />
                             <MenuItem Name="mnu_Personal_Reset" Header="_Reset" />
                         </Menu>
-                        <Label Content="Personaldaten" />
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Personaldaten : " />
+                            <Label Foreground="Green" Content="Letzte Speicherung : " />
+                            <Label Foreground="Red" Content="{Binding Lbl_SaveDateTime}" x:Name="lbl_Personal_SaveDateTime" />
+                        </StackPanel>
                         <Border BorderBrush="Black" Margin="0 0 0 0" BorderThickness="1">
+
                             <!-- Personaldaten Haupt-Grid-Aufteilung -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -216,7 +221,13 @@
                             <Separator />
                             <MenuItem Name="mnu_Vertrag_Reset" Header="_Reset" />
                         </Menu>
-                        <Label Content="Verträge" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Verträge : " />
+                            <Label Foreground="Green" Content="Letzte Speicherung : " />
+                            <Label Foreground="Red" Content="{Binding Lbl_SaveDateTime}" x:Name="lbl_Vertraege_SaveDateTime" />
+                        </StackPanel>
+ 
                         <!-- Verträge Haupt-Grid-Aufteilung -->
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid>
@@ -364,7 +375,13 @@
                             <Separator />
                             <MenuItem Name="mnu_Zahlung_Reset" Header="_Reset" />
                         </Menu>
-                        <Label Content="Zahlungsanweisungen" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Zahlungsanweisungen : " />
+                            <Label Foreground="Green" Content="Letzte Speicherung : " />
+                            <Label Foreground="Red" Content="{Binding Lbl_SaveDateTime}" x:Name="lbl_Zahlung_SaveDateTime" />
+                        </StackPanel>
+
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -499,7 +516,13 @@
                             <Separator />
                             <MenuItem Name="mnu_Bewertung_Reset" Header="_Reset" />
                         </Menu>
-                        <Label Content="Bewertungen" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Bewertungen : " />
+                            <Label Foreground="Green" Content="Letzte Speicherung : " />
+                            <Label Foreground="Red" Content="{Binding Lbl_SaveDateTime}" x:Name="lbl_Bewertungen_SaveDateTime" />
+                        </StackPanel>
+
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -618,7 +641,13 @@
                             <Separator />
                             <MenuItem Name="mnu_Info_Reset" Header="_Reset" />
                         </Menu>
-                        <Label Content="Infos" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Infos : " />
+                            <Label Foreground="Green" Content="Letzte Speicherung : " />
+                            <Label Foreground="Red" Content="{Binding Lbl_SaveDateTime}" x:Name="lbl_Info_SaveDateTime" />
+                        </StackPanel>
+
                         <Border BorderBrush="Black" Margin="0 0 0 0"  BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -670,7 +699,13 @@
                             <Separator />
                             <MenuItem Name="mnu_Status_Reset" Header="_Reset" />
                         </Menu>
-                        <Label Content="Statusprüfung" Margin="0 0 0 0"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Statusprüfung : " />
+                            <Label Foreground="Green" Content="Letzte Speicherung : " />
+                            <Label Foreground="Red" Content="{Binding Lbl_SaveDateTime}" x:Name="lbl_Status_SaveDateTime" />
+                        </StackPanel>
+
                         <Border BorderBrush="Black" Margin="0 5 0 0" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>

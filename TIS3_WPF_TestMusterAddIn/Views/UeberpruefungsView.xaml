@@ -14,6 +14,12 @@
     </base:TIS3ActiveView.Resources>
     
     <Grid>
+        
+        <!-- Ueberprüfungssuche mit F3 starten -->
+        <Grid.InputBindings>
+            <KeyBinding Command="{Binding SearchCommand}" Key="F3" />
+        </Grid.InputBindings>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="22"/>
             <RowDefinition Height="60"/>

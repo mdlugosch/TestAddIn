@@ -6,6 +6,7 @@ using PostSharp.Patterns.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         # region Data Access Objecte für Honorarkraefte Tabellen
         LookupRepository LookRepo = new LookupRepository();
-        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+        HonorarkraefteDAO hDAO;
         # endregion
 
         // Personal-Id zur Dublikatvermeidung 
@@ -298,6 +299,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             set;
         }
 
+        public string Lbl_SaveDateTime 
+        { 
+            get; 
+            set; 
+        }
+
         public string Tbx_Personal_Blz 
         {
             get
@@ -458,17 +465,17 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 selectedItem_Bewertung_Grid = value;
             } 
         }
-     
+
         public wt2_honorarkraft_status Honorarkraft_Status { get; set; }
 
         # endregion
 
         public IEnumerable<object> Hk_Vertraege { get; set; }
         public ObservableCollection<SortedList_Thema> Tv_Themen { get; set; }
-        public ObservableCollection<Einsatzgebiet_Check> Lbx_Einsatzgebiete { get; set; }
+        public CheckedLookupCollection<wt2_konst_honorarkraft_einsatzgebiet> Lbx_Einsatzgebiete { get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Personal_Bildungstraeger { get; set; }
-        public LookupCollectionBO Lbx_Personal_Abteilung { get; set; }
-        public LookupCollectionBO Lbx_Personal_Teams { get; set; }
+        public CheckedLookupCollectionBO Lbx_Personal_Abteilung { get; set; }
+        public CheckedLookupCollectionBO Lbx_Personal_Teams { get; set; }
         public ObservableCollection<Bildungstraeger> Cbx_Vertrag_Bildungstraeger { get; set; }
         public LookupCollectionBO Cbx_Vertrag_Abteilung { get; set; }
         public LookupCollectionBO Cbx_Zahlung_Abteilung { get; set; }
@@ -479,10 +486,39 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public bool Chkbx_Vertrag_400 { get; set; }
 
         # region Editview Init
+        public EditViewModel() : base() 
+        {
+            // Aktuelle Guid übergeben um ViewModel und Dao mit einem Context zu verbinden.
+            hDAO = new HonorarkraefteDAO(this.ViewModelGuid);
+
+            /*
+             * InitComboBoxes muss im Konstruktor stehen damit die Guid nicht null ist.
+             * Die Init-Methode wäre der falsche Ort für InitComboBoxes da diese zu früh
+             * initialisiert werden würde zu einem Zeitpunkt an dem die Guid noch Null ist.
+             */
+            InitComboBoxes();
+
+            /*
+             * Die Vorgabewerte des Bewertungsbogens werden über eine Tabelle festgelegt.
+             * Diese Daten werden hier für das Formularblatt geladen.
+             */
+            Bewertungsbogen_Berwertungsvorgaben = hDAO.HoleBerwertungsvorgaben(this.ViewModelGuid);
+
+            // Event subscribtion
+            _aggregator.GetEvent<ThemePostedEvent>().Subscribe(GetDataMessage);
+        }
+
+        private void GetDataMessage(Message<wt2_konst_honorarkraft_thema> obj)
+        {
+            TV_Themen_aktualisieren();
+        }
+
         public override void Init()
         {
             Header.Title = "Änderungsbogen";                         // Header Attribut zum bestimmen des Tab-Namens
             Header.Group = "Honorarkräfteverwaltung";                // Gruppenname der Anwendungs-Tabs
+
+            Lbl_SaveDateTime = "---";
 
             # region Commands-Initialisieren
                 AddThemeCommand = new RelayCommand(_execute => this.AddTheme(), _canExecute => true);
@@ -501,15 +537,8 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 DeleteBewertungCommand = new RelayCommand(_execute => this.DeleteBewertung(), _canExecute => { if (SelectedItem_Bewertung_Grid!= null) return true; else return false; });
             # endregion
 
-            /*
-             * Die Vorgabewerte des Bewertungsbogens werden über eine Tabelle festgelegt.
-             * Diese Daten werden hier für das Formularblatt geladen.
-             */
-            Bewertungsbogen_Berwertungsvorgaben = hDAO.HoleBerwertungsvorgaben();
-
             // Hauptdatensatz für die EditView initialisieren
-            EditViewDatensatz = new wt2_honorarkraft();             
-            InitComboBoxes();
+            EditViewDatensatz = new wt2_honorarkraft(); 
         }
         # endregion
 
@@ -517,10 +546,10 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         {
             # region Combobox-Properties deklarieren
                 Tv_Themen = new ObservableCollection<SortedList_Thema>();
-                Lbx_Einsatzgebiete = new ObservableCollection<Einsatzgebiet_Check>();
+                Lbx_Einsatzgebiete = new CheckedLookupCollection<wt2_konst_honorarkraft_einsatzgebiet>();
                 Cbx_Personal_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
-                Lbx_Personal_Abteilung = new LookupCollectionBO();
-                Lbx_Personal_Teams = new LookupCollectionBO();
+                Lbx_Personal_Abteilung = new CheckedLookupCollectionBO();
+                Lbx_Personal_Teams = new CheckedLookupCollectionBO();
                 Cbx_Vertrag_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
                 Cbx_Vertrag_Abteilung = new LookupCollectionBO();
                 Cbx_Zahlung_Abteilung = new LookupCollectionBO();
@@ -530,7 +559,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             # endregion
 
             # region Daten in Comboboxen laden
-                Tv_Themen = hDAO.HoleThemaListe();
+                Tv_Themen = hDAO.HoleThemaListe(this.ViewModelGuid);
             
                 Cbx_Personal_Bildungstraeger = LookRepo.GetBildungstraeger(true);          
                 Cbx_Vertrag_Bildungstraeger = LookRepo.GetBildungstraeger(true);
@@ -560,20 +589,21 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         public bool TV_Themen_aktualisieren()
         {
-            Tv_Themen = hDAO.HoleThemaListe();
+            Tv_Themen = hDAO.HoleThemaListe(this.ViewModelGuid);
             return true;
         }
 
         private void SaveChanges()
         {
-            MessageBox.Show("It works!");         
+            hDAO.SaveChanges(this.ViewModelGuid);
+            Lbl_SaveDateTime = DateTime.Now.ToString("HH:mm:ss");
         }
 
         private void NewVertrag()
         {
             wt2_honorarkraft_vertrag newLine = new wt2_honorarkraft_vertrag();
-            newLine.hkv_ident = EditViewVerträge.Last().hkv_ident + 1;
-            newLine.hkv_zeile = EditViewVerträge.Last().hkv_zeile + 1;
+            //newLine.hkv_ident = EditViewVerträge.Last().hkv_ident + 1;
+            newLine.hkv_zeile = EditViewVerträge.Max(a => a.hkv_zeile) + 1;
             newLine.hkv_datum = DateTime.Now;
             newLine.hkv_aenderungsdatum = DateTime.Now;
             /*
@@ -592,12 +622,10 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
             if (EditViewZahlungsanweisungen.Count > 0) 
             { 
-                newLine.hkz_ident = EditViewZahlungsanweisungen.Last().hkz_ident + 1;
-                newLine.hkz_zeile = EditViewZahlungsanweisungen.Last().hkz_zeile + 1;
+                newLine.hkz_zeile = EditViewZahlungsanweisungen.Max(a => a.hkz_zeile) + 1;
             }
             else 
             {
-                newLine.hkz_ident = 1;
                 newLine.hkz_zeile = 1;
             }
             newLine.hkz_datum = DateTime.Now;
@@ -618,7 +646,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             newLine.hkvp_hkv_ident = SelectedItem_Vertrag_Grid.hkv_ident;
 
             if (Vertragspositionen.Count > 0)
-                newLine.hkvp_lfdnr = Vertragspositionen.Last().hkvp_lfdnr + 1;
+                newLine.hkvp_lfdnr = Vertragspositionen.Max(a => a.hkvp_lfdnr) + 1;
             else newLine.hkvp_lfdnr = 1;
             newLine.wt2_honorarkraft_zahlungsanweisung_position = new List<wt2_honorarkraft_zahlungsanweisung_position>();
             newLine.wt2_honorarkraft_vertrag = SelectedItem_Vertrag_Grid;
@@ -635,8 +663,8 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         private void NewBewertung() 
         {
             wt2_honorarkraft_bewertung newLine = new wt2_honorarkraft_bewertung();
-            newLine.hkb_zeile = EditViewBewertungen.Last().hkb_zeile + 1;
-            newLine.hkb_lfdnr = EditViewBewertungen.Last().hkb_lfdnr + 1;
+            newLine.hkb_zeile = EditViewBewertungen.Max(a => a.hkb_zeile) + 1;
+            newLine.hkb_lfdnr = EditViewBewertungen.Max(a => a.hkb_lfdnr) + 1;
             newLine.hkb_datum = DateTime.Now;
             EditViewBewertungen.Add(newLine);
         }
@@ -663,13 +691,12 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             navigationParameters.Add("guid", this.ViewModelGuid);
 
             // Neue Zahlungsanweisungsposition generieren
-            // wt2_honorarkraft_zahlungsanweisung_position newLine = new wt2_honorarkraft_zahlungsanweisung_position();
             wt2_honorarkraft_zahlungsanweisung_position newLine = hDAO.NeueZahlungsanweisungsposition();
             newLine.hkzp_hkz_ident = SelectedItem_Zahlung_Grid.hkz_ident;
 
             if (Zahlungspositionen.Count > 0)
             {
-                newLine.hkzp_lfdnr = Zahlungspositionen.Last().hkzp_lfdnr + 1;
+                newLine.hkzp_lfdnr = Zahlungspositionen.Max(a => a.hkzp_lfdnr) + 1;
             }
             else newLine.hkzp_lfdnr = 1;
 
@@ -740,7 +767,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 personId = (navigationParameters["ID"]).ToString();
 
                 // Empfangenen Datensatz in Property ablegen
-                EditViewDatensatz = hDAO.FillEditView(personId);
+                EditViewDatensatz = hDAO.FillEditView(personId, this.ViewModelGuid);
 
                 // Initiales laden des Banknamens
                 Lbl_Personal_Bank = Check_BLZ(EditViewDatensatz.hk_blz);
@@ -757,18 +784,104 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
                 SelectedItem_Personal_Anrede = hDAO.ConvertAnrede(EditViewDatensatz.hk_anrede);
 
                 Current_Personal_Titel = EditViewDatensatz.hk_titel;
-      
-                Lbx_Personal_Teams = hDAO.CheckTeams(personId, Lbx_Personal_Teams);
-                Tv_Themen = hDAO.HoleThemaListe(EditViewDatensatz);
-                Lbx_Einsatzgebiete = hDAO.HoleEinsatzgebieteListe(EditViewDatensatz);
+
+                Lbx_Personal_Teams = hDAO.CheckTeams(personId, Lbx_Personal_Teams, this.ViewModelGuid);
+                
+
+                Tv_Themen = hDAO.HoleThemaListe(this.ViewModelGuid, EditViewDatensatz);
+                Tv_Themen.ToList().ForEach(a => a.ThemeGroup.ItemCheckedChanged += ThemeGroup_ItemCheckedChanged);
+
+                Lbx_Einsatzgebiete = hDAO.HoleEinsatzgebieteListe(this.ViewModelGuid, EditViewDatensatz);
+                // Methode mit dem ItemCheckedChanged Event verbinden um auf Änderungen zu reagieren
+                Lbx_Einsatzgebiete.ItemCheckedChanged += Lbx_Einsatzgebiete_ItemCheckedChanged;  
+
                 Lbx_Personal_Abteilung = hDAO.HoleAbteilungsListe(false, EditViewDatensatz);
+                // Methode mit dem ItemCheckedChanged Event verbinden um auf Änderungen zu reagieren
+                Lbx_Personal_Abteilung.ItemCheckedChanged += Lbx_Personal_Abteilung_ItemCheckedChanged;
+
                 Lbx_Personal_Teams = hDAO.HoleTeamListe(true, "", false, true, EditViewDatensatz);
-            
+                // Methode mit dem ItemCheckedChanged Event verbinden um auf Änderungen zu reagieren
+                Lbx_Personal_Teams.ItemCheckedChanged += Lbx_Personal_Teams_ItemCheckedChanged;
+
                 // Um Abteilungsnamen zuzuweisen, muss HoleVerträge nach der initialisierung von Lbx_Personal_Abteilung aufgerufen werden
-                hDAO.HoleVertraege(EditViewDatensatz, Lbx_Personal_Abteilung);
-                hDAO.HoleZahlungsanweisungen(EditViewDatensatz);
-                hDAO.HoleBewertungen(EditViewDatensatz);
-                Honorarkraft_Status = hDAO.HoleStatus(EditViewDatensatz);
+                hDAO.HoleVertraege(EditViewDatensatz, Lbx_Personal_Abteilung, this.ViewModelGuid);
+                hDAO.HoleZahlungsanweisungen(EditViewDatensatz, this.ViewModelGuid);
+                hDAO.HoleBewertungen(EditViewDatensatz, this.ViewModelGuid);
+                Honorarkraft_Status = hDAO.HoleStatus(EditViewDatensatz, this.ViewModelGuid);
+        }
+
+        private void ThemeGroup_ItemCheckedChanged(wt2_konst_honorarkraft_thema item)
+        {
+            if (item.IsChecked && EditViewDatensatz.wt2_konst_honorarkraft_thema.Any(a => a.khkth_ident.Equals(item.khkth_ident)) == false)
+            {
+                EditViewDatensatz.wt2_konst_honorarkraft_thema.Add(item);
+            }
+            if (!item.IsChecked)
+            {
+                wt2_konst_honorarkraft_thema del = EditViewDatensatz.wt2_konst_honorarkraft_thema.Where(a => a.khkth_ident.Equals(item.khkth_ident)).FirstOrDefault();
+                if (del != null)
+                    EditViewDatensatz.wt2_konst_honorarkraft_thema.Remove(del);
+            }
+        }
+
+        private void Lbx_Einsatzgebiete_ItemCheckedChanged(wt2_konst_honorarkraft_einsatzgebiet item)
+        {
+            /* 
+             * Es wird ein Item übergeben das geändert wurde. Je nachdem ob ein Harken gesetzt wurde
+             * oder entfernt wird der Honorarkraft eine Abteilung hinzugefügt oder entfernt.
+             */
+            if (item.IsChecked && EditViewDatensatz.wt2_konst_honorarkraft_einsatzgebiet.Any(a => a.khke_ident.Equals(item.khke_ident)) == false)
+            {
+                EditViewDatensatz.wt2_konst_honorarkraft_einsatzgebiet.Add(item);
+            }
+            if (!item.IsChecked)
+            {
+                wt2_konst_honorarkraft_einsatzgebiet del = EditViewDatensatz.wt2_konst_honorarkraft_einsatzgebiet.Where(a => a.khke_ident.Equals(item.khke_ident)).FirstOrDefault();
+                if (del != null)
+                EditViewDatensatz.wt2_konst_honorarkraft_einsatzgebiet.Remove(del);
+            }
+        }
+
+        private void Lbx_Personal_Abteilung_ItemCheckedChanged(LookupBO item)
+        {
+            /* 
+             * Es wird ein Item übergeben das geändert wurde. Je nachdem ob ein Harken gesetzt wurde
+             * oder entfernt wird der Honorarkraft eine Abteilung hinzugefügt oder entfernt.
+             */
+            if (item.IsChecked && EditViewDatensatz.wt2_honorarkraft_cluster.Any(a => a.hkc_cl_ident.Equals(item.ID)) == false)
+            {
+                wt2_honorarkraft_cluster abteilung = new wt2_honorarkraft_cluster();
+                abteilung.hkc_hk_ident = EditViewDatensatz.hk_ident;
+                abteilung.hkc_cl_ident = Convert.ToInt32(item.ID);
+                EditViewDatensatz.wt2_honorarkraft_cluster.Add(abteilung);
+            }
+            if (!item.IsChecked)
+            {
+                wt2_honorarkraft_cluster del = EditViewDatensatz.wt2_honorarkraft_cluster.Where(a => a.hkc_cl_ident == Convert.ToInt32(item.ID)).FirstOrDefault();
+                if (del != null)
+                EditViewDatensatz.wt2_honorarkraft_cluster.Remove(del);
+            }
+        }
+
+        private void Lbx_Personal_Teams_ItemCheckedChanged(LookupBO item)
+        {
+            /* 
+             * Es wird ein Item übergeben das geändert wurde. Je nachdem ob ein Harken gesetzt wurde
+             * oder entfernt wird der Honorarkraft ein Team hinzugefügt oder entfernt.
+             */
+            if (item.IsChecked && EditViewDatensatz.wt2_honorarkraft_team.Any(a => a.hkt_team_nr.Equals(item.ID)) == false)
+            {
+                wt2_honorarkraft_team team = new wt2_honorarkraft_team();
+                team.hkt_hk_ident = EditViewDatensatz.hk_ident;
+                team.hkt_team_nr = item.ID;
+                EditViewDatensatz.wt2_honorarkraft_team.Add(team);
+            }
+            if (!item.IsChecked)
+            {
+                wt2_honorarkraft_team del = EditViewDatensatz.wt2_honorarkraft_team.Where(a => a.hkt_team_nr == item.ID).FirstOrDefault();
+                if(del!=null)
+                EditViewDatensatz.wt2_honorarkraft_team.Remove(del);
+            }            
         }
         # endregion
     }

@@ -23,7 +23,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
     {
         # region Data Access Objecte für Honorarkraefte Tabellen
         LookupRepository LookRepo = new LookupRepository();
-        HonorarkraefteDAO hDAO = HonorarkraefteDAO.DAOFactory();
+        HonorarkraefteDAO hDAO;
         # endregion
 
         #region Listen für Anrede und Titel die direkt in dieser Klasse generiert werden.
@@ -35,7 +35,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
 
         # region Elemente der Neuaufnahmemaske 
         public ObservableCollection<SortedList_Thema> Tv_Neu_Themen { get; set; }
-        public ObservableCollection<Einsatzgebiet_Check> Lbx_Neu_Einsatzgebiete { get; set; }
+        public ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> Lbx_Neu_Einsatzgebiete { get; set; }
         public int SelectedItem_Neu_Abteilung { get; set; }
         public LookupCollectionBO Cbx_Neu_Abteilung { get; set; }
         public int SelectedItem_Neu_Bildungstraeger { get; set; }
@@ -68,15 +68,26 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         public RelayCommand AddThemeCommand { get; set; }
         # endregion
 
+        public NeuaufnahmeViewModel() : base() 
+        {
+            // Aktuelle Guid übergeben um ViewModel und Dao mit einem Context zu verbinden.
+            hDAO = new HonorarkraefteDAO(this.ViewModelGuid);
+
+            /*
+             * InitComboBoxes muss im Konstruktor stehen damit die Guid nicht null ist.
+             * Die Init-Methode wäre der falsche Ort für InitComboBoxes da diese zu früh
+             * initialisiert werden würde zu einem Zeitpunkt an dem die Guid noch Null ist.
+             */
+            InitComboBoxes();
+        }
+
         public override void Init()
         {
             Header.Title = "Neuaufnahme";                         // Header Attribut zum bestimmen des Tab-Namens
             Header.Group = "Honorarkräfteverwaltung";             // Gruppenname der Anwendungs-Tabs
             SaveCommand = new RelayCommand(_execute => this.Neuanlegen(), _canExecute => true);
             ResetCommand = new RelayCommand(_execute => this.Zureucksetzen(), _canExecute => true);
-            AddThemeCommand = new RelayCommand(_execute => this.AddTheme(), _canExecute => true);
-
-            InitComboBoxes();
+            AddThemeCommand = new RelayCommand(_execute => this.AddTheme(), _canExecute => true);    
         }
 
         public void InitComboBoxes()
@@ -85,11 +96,11 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
             Cbx_Neu_Abteilung = new LookupCollectionBO();
             Cbx_Neu_Bildungstraeger = new ObservableCollection<Bildungstraeger>();
             Tv_Neu_Themen = new ObservableCollection<SortedList_Thema>();
-            Lbx_Neu_Einsatzgebiete = new ObservableCollection<Einsatzgebiet_Check>();
+            Lbx_Neu_Einsatzgebiete = new ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet>();
 
             # region Daten in Comboboxen laden
-            Tv_Neu_Themen = hDAO.HoleThemaListe();
-            Lbx_Neu_Einsatzgebiete = hDAO.HoleEinsatzgebieteListe();
+            Tv_Neu_Themen = hDAO.HoleThemaListe(this.ViewModelGuid);
+            Lbx_Neu_Einsatzgebiete = hDAO.HoleEinsatzgebieteListe(this.ViewModelGuid);
             Cbx_Neu_Teams = LookRepo.GetTeams(true, "", true,true);
             Cbx_Neu_Abteilung = LookRepo.GetAbteilungen(true);
             Cbx_Neu_Bildungstraeger = LookRepo.GetBildungstraeger(true);

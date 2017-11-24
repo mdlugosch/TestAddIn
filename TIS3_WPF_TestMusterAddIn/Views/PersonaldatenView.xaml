@@ -17,6 +17,12 @@
                           BorderBrush="Black" BorderThickness="1,1,1,1" 
                           CornerRadius="3" VerticalAlignment="Top">
         <Grid>
+            
+            <!-- Personalsuche mit F3 starten -->
+            <Grid.InputBindings>
+                <KeyBinding Command="{Binding SearchCommand}" Key="F3" />
+            </Grid.InputBindings>
+            
             <Grid.Resources>
                 <Style TargetType="Syncfusion:GridHeaderCellControl" x:Key="noHeaderStyle">
                     <Setter Property="Height" Value="0" />

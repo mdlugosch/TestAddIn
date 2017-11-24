@@ -137,12 +137,12 @@
     <Compile Include="Events\ThemePostedEvent.cs" />
     <Compile Include="Events\VertragPositionPostedEvent.cs" />
     <Compile Include="Events\ZahlungsanweisungsPositionPostEvent.cs" />
-    <Compile Include="Infrastructure\Einsatzgebiet_Check.cs" />
+    <Compile Include="Infrastructure\CheckedLookupCollection.cs" />
+    <Compile Include="Infrastructure\ContextLocator.cs" />
     <Compile Include="Infrastructure\EnumMatchToBooleanConverter.cs" />
     <Compile Include="Infrastructure\HonorarAddInAggregatorList.cs" />
     <Compile Include="Infrastructure\HonorarkraefteDAO.cs" />
     <Compile Include="Infrastructure\SortedList_Thema.cs" />
-    <Compile Include="Infrastructure\Thema_Check.cs" />
     <Compile Include="MenuItems\HonorarkraefteNeuaufnahmeMenuItem.cs" />
     <Compile Include="MenuItems\OpenTestMusterAppMenuItem.cs" />
     <Compile Include="MenuItems\TestMusterRootMenuItem.cs" />

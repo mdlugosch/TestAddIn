@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TIS3_Base.DataAccess;
 using TIS3_LookupBL;
 using TIS3_WPF_TestMusterAddIn.ViewModels;
 using WinTIS30db_entwModel.Honorarkraefte;
@@ -18,62 +19,35 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
      * Data Access Object - HonorarkraefteDAO
      * Sammelklasse für LinQ-Befehle die die Honorarkräftetabellen nutzen
      */
-    public class HonorarkraefteDAO 
+    public class HonorarkraefteDAO : RepositoryBase<WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities>
     {
         LookupRepository LookRepo = new LookupRepository();
 
-        # region Context für die Honorarkräfte-Tabellen holen
-        public static HonorarkraefteDAO hDAO;
+        # region Context für die Honorarkräfte-Tabellen erstellen
+        //WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities context;
 
-        // Datenbank-Context für die Honorarkräfte-Tabellen
-        protected static WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities context;
-                                                  
-        // Alle Elemente sollen die Inhalte über die selbe Klasse bzw. den selben Context beziehen
-        public static HonorarkraefteDAO DAOFactory()
+        public HonorarkraefteDAO(string guid) : base(ContextLocator.GetContext(guid))
         {
-            if (hDAO == null)
-            {
-                hDAO = new HonorarkraefteDAO();
-                return hDAO;
-            }
-            else return hDAO;
+            //Datenbank-Context für die Honorarkräfte-Tabellen
+            //ContextLocator.CreateContext(guid);
         }
 
-        // Über den Konstruktor einen neuen Context laden.
-        private HonorarkraefteDAO()
+        public void GetContext(string guid) 
         {
-            LookupRepository(new WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities());
-        }
-
-        // Schlägt die initialisierung des Context fehl, führt dies zu einem Fehler.
-        public void LookupRepository(WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities newContext)
-        {
-            if (newContext == null)
-            {
-                Debug.WriteLine("DB-Context ist null!");
-                throw new ArgumentNullException("context");
-            }
-    
-                context = newContext;    
-        }
-
-        public void CreateContext()
-        {
-            LookupRepository(new WinTIS30db_entwModel.Honorarkraefte.WinTIS30db_entwEntities());
+            if(Context==null)
+            Context = ContextLocator.GetContext(guid);         
         }
         # endregion
 
         # region Abfragen die Daten für Steuerelemente liefern
         // Auslesen von Daten mit Hilfe des Context
-        public ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> HoleEinsatzgebiete(Boolean leeresElement)
+        public ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> HoleEinsatzgebiete(Boolean leeresElement, string guid)
         {
             ObservableCollection<wt2_konst_honorarkraft_einsatzgebiet> result = null;
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
-                var query = (from einsatzGebiete in context.wt2_konst_honorarkraft_einsatzgebiet
+                var query = (from einsatzGebiete in Context.wt2_konst_honorarkraft_einsatzgebiet
                              orderby einsatzGebiete.khke_bezeichnung
                              select einsatzGebiete).ToList();
 
@@ -91,43 +65,37 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         }
 
         // Abruf Einsatzgebiete für ListBox mit Checkboxfunktion
-        public ObservableCollection<Einsatzgebiet_Check> HoleEinsatzgebieteListe(wt2_honorarkraft honorarkraftDaten = null)
+        public CheckedLookupCollection<wt2_konst_honorarkraft_einsatzgebiet> HoleEinsatzgebieteListe(string guid, wt2_honorarkraft honorarkraftDaten = null)
         {
-            ObservableCollection<Einsatzgebiet_Check> result = new ObservableCollection<Einsatzgebiet_Check>();
+            CheckedLookupCollection<wt2_konst_honorarkraft_einsatzgebiet> result = new CheckedLookupCollection<wt2_konst_honorarkraft_einsatzgebiet>();
 
-            //CreateContext();
-            //using (context)
-            //{
-                // ID-Liste mit den Einsatzgebiete der HK
+            GetContext(guid);
+
                 List<int> auswahl = new List<int>();
                 if (honorarkraftDaten != null)
                     auswahl.AddRange(from eg in honorarkraftDaten.wt2_konst_honorarkraft_einsatzgebiet select eg.khke_ident);
 
-                // Wenn die ID der Standartliste gleich der ID-Liste ist wird IsChecked wahr
-                var query = (from einsatzGebiete in context.wt2_konst_honorarkraft_einsatzgebiet
-                             orderby einsatzGebiete.khke_bezeichnung
-                             select new Einsatzgebiet_Check()
-                             {
-                                 IsChecked = auswahl.Contains(einsatzGebiete.khke_ident),
-                                 Einsatzgebiet = einsatzGebiete
-                             }).ToList();
 
-                foreach (Einsatzgebiet_Check c in query)
+                var query = (from einsatzGebiete in Context.wt2_konst_honorarkraft_einsatzgebiet
+                             orderby einsatzGebiete.khke_bezeichnung
+                             select einsatzGebiete).ToList(); 
+
+                query.ForEach(a => a.IsChecked= auswahl.Contains(a.khke_ident));
+
+                foreach (wt2_konst_honorarkraft_einsatzgebiet c in query)
                 {
                     result.Add(c);
                 }
-            //}
             return result;
         }
 
-        public ObservableCollection<wt2_konst_honorarkraft_thema> HoleThema(Boolean leeresElement)
+        public ObservableCollection<wt2_konst_honorarkraft_thema> HoleThema(Boolean leeresElement, string guid)
         {
             ObservableCollection<wt2_konst_honorarkraft_thema> result = null;
-            //CreateContext();
 
-            //using (context)
-            //{
-                var query = (from hThema in context.wt2_konst_honorarkraft_thema
+            GetContext(guid);
+
+                var query = (from hThema in Context.wt2_konst_honorarkraft_thema
                              orderby hThema.khkth_gruppe
                              select hThema).ToList();
 
@@ -138,24 +106,22 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     query.Insert(0, thema);
                 }
                 result = new ObservableCollection<wt2_konst_honorarkraft_thema>(query);
-            //}
+
             return result;
         }
 
         // Holt Bezeichnungen für Themengruppen als Stringliste
-        public ObservableCollection<string> HoleThemaGruppen()
+        public ObservableCollection<string> HoleThemaGruppen(string guid)
         {
             // Result mit IsChecked Property
             ObservableCollection<string> result = new ObservableCollection<string>();
 
             result.Clear();
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
                 // Gruppenliste für anschließende Sortierung erstellen
-                var groupQuery = from themaTab in context.wt2_konst_honorarkraft_thema
+                var groupQuery = from themaTab in Context.wt2_konst_honorarkraft_thema
                                  group themaTab by themaTab.khkth_gruppe;
 
                 // Ablegen der LinQ Ergebnisse in die Result Collection
@@ -163,24 +129,30 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 {
                     result.Add(t.Key);
                 }
-            //}
 
             return result;
         }
 
         // Thema hinzufügen
-        public void AddNewTheme(wt2_konst_honorarkraft_thema newTheme)
+        public void AddNewTheme(wt2_konst_honorarkraft_thema newTheme, string guid)
         {        
-            //CreateContext();
-            context.wt2_konst_honorarkraft_thema.Add(newTheme);
-            context.SaveChanges();
-            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+            GetContext(guid);
+
+            Context.wt2_konst_honorarkraft_thema.Add(newTheme);
+            
+            this.SaveChanges();
         }
 
-        public LookupCollectionBO HoleAbteilungsListe(bool leeresElement, wt2_honorarkraft honorarkraftDaten = null)
+        public void SaveChanges(string guid) 
         {
-            LookupCollectionBO boResult = new LookupCollectionBO();
-            boResult = LookRepo.GetAbteilungen(leeresElement); 
+            GetContext(guid);
+            this.SaveChanges();
+            // Context.SaveChanges();
+        }
+
+        public CheckedLookupCollectionBO HoleAbteilungsListe(bool leeresElement, wt2_honorarkraft honorarkraftDaten = null)
+        {
+            CheckedLookupCollectionBO boResult = new CheckedLookupCollectionBO(LookRepo.GetAbteilungen(leeresElement));
 
             List<int> auswahl = new List<int>();
             if (honorarkraftDaten != null) 
@@ -200,107 +172,93 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         }
 
         # region (EditView) Ablegen von temporären Daten die zur Laufzeit ermittelt werden.
-        public void HoleVertraege(wt2_honorarkraft honorarkraftDaten,LookupCollectionBO abteilungsListe)
+        public void HoleVertraege(wt2_honorarkraft honorarkraftDaten, LookupCollectionBO abteilungsListe, string guid)
         {
             int i = 1;
 
-            //CreateContext();
-            
-            //using (context)
-            //{
+            GetContext(guid);
+
                 honorarkraftDaten.wt2_honorarkraft_vertrag.ToList().ForEach(a => 
                 { a.hkv_zeile = i++;
                 a.hkv_abt_bez = (from element in abteilungsListe
                                 where Convert.ToInt32(element.ID) == a.hkv_abteilung
                                 select element.Bezeichnung).FirstOrDefault();
-                  a.hkv_summe = (from element in context.wt2_honorarkraft_vertrag_position
+                  a.hkv_summe = (from element in Context.wt2_honorarkraft_vertrag_position
                                 where element.hkvp_hkv_ident == a.hkv_ident
                                 select (decimal?)element.hkvp_honorar * (decimal?)element.hkvp_unterrichtseinheiten).Sum();
                   if (!a.hkv_summe.HasValue) a.hkv_summe = 0;
                 });
 
-            //}
         }
 
-        public void HoleBewertungen(wt2_honorarkraft honorarkraftDaten)
+        public void HoleBewertungen(wt2_honorarkraft honorarkraftDaten, string guid)
         {
             int i = 1;
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
                 honorarkraftDaten.wt2_honorarkraft_bewertung.ToList().ForEach(a =>
                 {
                     a.hkb_zeile = i++;
                     a.hkb_abt_bez = (LookupHelper.Abteilung(Convert.ToInt32(a.hkb_abteilung))).Displayname;
                 });
 
-            //}
         }
 
-        public wt2_konst_honorarkraft_bewertung_vorgabe HoleBerwertungsvorgaben() 
+        public wt2_konst_honorarkraft_bewertung_vorgabe HoleBerwertungsvorgaben(string guid) 
         {
           wt2_konst_honorarkraft_bewertung_vorgabe result;
 
-          //CreateContext();
+          GetContext(guid);
 
-          //using (context)
-          //{
-              result = (from row in context.wt2_konst_honorarkraft_bewertung_vorgabe
+              result = (from row in Context.wt2_konst_honorarkraft_bewertung_vorgabe
                        orderby row.khkbv_gueltig_ab descending
                        select row).FirstOrDefault();                                                          
-          //}
+ 
           return result;
         }
 
-        public wt2_honorarkraft_status HoleStatus(wt2_honorarkraft honorarkraftDaten)
+        public wt2_honorarkraft_status HoleStatus(wt2_honorarkraft honorarkraftDaten, string guid)
         {
             wt2_honorarkraft_status result;
             int ident = honorarkraftDaten.hk_ident;
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
-                result = (from row in context.wt2_honorarkraft_status
+                result = (from row in Context.wt2_honorarkraft_status
                           where row.hks_hk_ident == honorarkraftDaten.hk_ident
                           select row).FirstOrDefault();
-            //}
+
             return result;
         }
 
-        public void HoleZahlungsanweisungen(wt2_honorarkraft honorarkraftDaten)
+        public void HoleZahlungsanweisungen(wt2_honorarkraft honorarkraftDaten, string guid)
         {
             int i = 1;
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
                 honorarkraftDaten.wt2_honorarkraft_zahlungsanweisung.ToList().ForEach(a =>
                 {
                     a.hkz_zeile = i++;
-                    a.hkz_summe = (from element in context.wt2_honorarkraft_zahlungsanweisung_position
+                    a.hkz_summe = (from element in Context.wt2_honorarkraft_zahlungsanweisung_position
                                    where element.hkzp_hkz_ident == a.hkz_ident
                                    select element.hkzp_unterrichtseinheiten * element.wt2_honorarkraft_vertrag_position.hkvp_honorar).Sum();
                     if (!a.hkz_summe.HasValue) a.hkz_summe = 0;
                 });
 
-            //}
         }
         # endregion
 
         public wt2_honorarkraft_zahlungsanweisung_position NeueZahlungsanweisungsposition()
         {
-            return context.wt2_honorarkraft_zahlungsanweisung_position.Create();
+            return Context.wt2_honorarkraft_zahlungsanweisung_position.Create();
         }
 
 
-        public LookupCollectionBO HoleTeamListe(bool nurGueltig, string aktuellesTeam, bool leeresElement,  bool mitNummerInBezeichnung = false, wt2_honorarkraft honorarkraftDaten = null)
+        public CheckedLookupCollectionBO HoleTeamListe(bool nurGueltig, string aktuellesTeam, bool leeresElement, bool mitNummerInBezeichnung = false, wt2_honorarkraft honorarkraftDaten = null)
         {
-            LookupCollectionBO boResult = new LookupCollectionBO();
-            boResult = LookRepo.GetTeams(nurGueltig, aktuellesTeam, leeresElement, mitNummerInBezeichnung);
+            CheckedLookupCollectionBO boResult = new CheckedLookupCollectionBO(LookRepo.GetTeams(nurGueltig, aktuellesTeam, leeresElement, mitNummerInBezeichnung));
 
             List<string> auswahl = new List<string>();
             if (honorarkraftDaten != null)
@@ -320,69 +278,47 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
         }
 
         // ThemaListe aufbereiten für TreeView
-        public ObservableCollection<SortedList_Thema> HoleThemaListe(wt2_honorarkraft honorarkraftDaten=null)
+        public ObservableCollection<SortedList_Thema> HoleThemaListe(string guid, wt2_honorarkraft honorarkraftDaten = null)
         {
-            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
-
             // Result als sortierte Liste
             ObservableCollection<SortedList_Thema> sortedResult = new ObservableCollection<SortedList_Thema>();
 
-            //CreateContext();
-
-            //using (context)
-            //{
-                List<Thema_Check> result;
+            GetContext(guid);
 
                 List<int> auswahl = new List<int>();
                 if(honorarkraftDaten != null)
                     auswahl.AddRange(from thema in honorarkraftDaten.wt2_konst_honorarkraft_thema select thema.khkth_ident);
 
-                // Erstellen einer unsortierten Liste mit zusätzlicher IsChecked Property
-                result = (from hThema in context.wt2_konst_honorarkraft_thema
-                         where !String.IsNullOrEmpty(hThema.khkth_gruppe) ||
-                               !String.IsNullOrEmpty(hThema.khkth_bezeichnung)
-                                      orderby hThema.khkth_bezeichnung
-                                      select new Thema_Check()
-                                        {
-                                        IsChecked = auswahl.Contains(hThema.khkth_ident),
-                                        Thema = hThema
-                                        }).ToList();
-
-
-
                 // Gruppenliste für anschließende Sortierung erstellen
-                var groupQuery = from q in result
-                                 group q by q.Thema.khkth_gruppe;
+                var groupQuery = (from q in Context.wt2_konst_honorarkraft_thema select q.khkth_gruppe).Distinct().ToList();
                 
                 // Alle Gruppen durchgehen und Themen nach Gruppen sortiert in die Struktur speichern
                 foreach (var element in groupQuery)
                 {
-                    var themeQuery = from q in result
-                                     where q.Thema.khkth_gruppe == element.Key
-                                     select q;
-                    sortedResult.Add(new SortedList_Thema() { Gruppe = element.Key, ThemeGroup = new ObservableCollection<Thema_Check>(themeQuery) });
+                    var themeQuery = (from q in Context.wt2_konst_honorarkraft_thema
+                                     where q.khkth_gruppe == element
+                                     select q).ToList();
+
+                    themeQuery.ForEach(a => a.IsChecked = auswahl.Contains(a.khkth_ident));
+
+                    sortedResult.Add(new SortedList_Thema() { Gruppe = element, ThemeGroup = new CheckedLookupCollection<wt2_konst_honorarkraft_thema>(themeQuery) });
                 } 
-            //}
-                Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
 
             return sortedResult;
         }
         # endregion
 
         # region LinQ-Abfragen der verschiedenen Suchmasken
-        public ObservableCollection<wt2_honorarkraft> PersonendatenSuche(PersonaldatenViewModel vm)
-        {
-            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
-
+        public ObservableCollection<wt2_honorarkraft> PersonendatenSuche(PersonaldatenViewModel vm, string guid)
+        { 
             ObservableCollection<wt2_honorarkraft> result = null;
-            //CreateContext();
+
+            GetContext(guid);
 
             vm.HonorarListe = null;
 
-            //using (context)
-            //{
                 # region Standardabfrage
-                IEnumerable<wt2_honorarkraft> query = from perso in context.wt2_honorarkraft
+                IEnumerable<wt2_honorarkraft> query = from perso in Context.wt2_honorarkraft
                                                           .Include("wt2_honorarkraft_team")
                                                           .Include("wt2_honorarkraft_cluster")
                                                           .Include("wt2_konst_honorarkraft_einsatzgebiet")
@@ -452,20 +388,19 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft>(query);
-            //}
+
             return result;
         }
-        public ObservableCollection<wt2_honorarkraft_vertrag> VertragsdatenSuche(VertragsdatenViewModel vm)
+        public ObservableCollection<wt2_honorarkraft_vertrag> VertragsdatenSuche(VertragsdatenViewModel vm, string guid)
         {
             ObservableCollection<wt2_honorarkraft_vertrag> result = null;
-            //CreateContext();
+     
+            GetContext(guid);
 
             vm.HonorarListe = null;
 
-            //using (context)
-            //{
                 # region Standardabfrage
-                IEnumerable<wt2_honorarkraft_vertrag> query = from vertrag in context.wt2_honorarkraft_vertrag
+                IEnumerable<wt2_honorarkraft_vertrag> query = from vertrag in Context.wt2_honorarkraft_vertrag
                                                           .Include("wt2_honorarkraft.wt2_honorarkraft_team")
                                                           .Include("wt2_honorarkraft.wt2_honorarkraft_cluster")
                                                           .Include("wt2_honorarkraft")
@@ -532,22 +467,20 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft_vertrag>(query);
-            //}
 
             return result;
         }
 
-        public ObservableCollection<wt2_honorarkraft_zahlungsanweisung> ZahlungsanweisungSuche(ZahlungsanweisungViewModel vm)
+        public ObservableCollection<wt2_honorarkraft_zahlungsanweisung> ZahlungsanweisungSuche(ZahlungsanweisungViewModel vm, string guid)
         {
             ObservableCollection<wt2_honorarkraft_zahlungsanweisung> result = null;
-            //CreateContext();
+
+            GetContext(guid);
 
             vm.HonorarListe = null;
 
-            //using (context)
-            //{
                 # region Standardabfrage
-                IEnumerable<wt2_honorarkraft_zahlungsanweisung> query = from zahlung in context.wt2_honorarkraft_zahlungsanweisung
+                IEnumerable<wt2_honorarkraft_zahlungsanweisung> query = from zahlung in Context.wt2_honorarkraft_zahlungsanweisung
                                                           .Include("wt2_honorarkraft")
                                                           .Include("wt2_honorarkraft_zahlungsanweisung_position.wt2_honorarkraft_vertrag_position")
                                                           select zahlung;  
@@ -616,21 +549,20 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft_zahlungsanweisung>(query);
-            //}
+   
             return result;
         }
 
-        public ObservableCollection<wt2_honorarkraft_bewertung> BewertungbogenSuche(BewertungsbogenViewModel vm)
+        public ObservableCollection<wt2_honorarkraft_bewertung> BewertungbogenSuche(BewertungsbogenViewModel vm, string guid)
         {
             ObservableCollection<wt2_honorarkraft_bewertung> result = null;
-            //CreateContext();
+ 
+            GetContext(guid);
 
             vm.HonorarListe = null;
 
-            //using (context)
-            //{
                 # region Standardabfrage
-                IEnumerable<wt2_honorarkraft_bewertung> query = from bewertung in context.wt2_honorarkraft_bewertung
+                IEnumerable<wt2_honorarkraft_bewertung> query = from bewertung in Context.wt2_honorarkraft_bewertung
                                                           .Include("wt2_honorarkraft")
                                                           select bewertung;
                 # endregion
@@ -694,30 +626,29 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                 # endregion
 
                 result = new ObservableCollection<wt2_honorarkraft_bewertung>(query);
-            //}
+
             return result;
         }
 
-        public ObservableCollection<wt2_honorarkraft> UeberpruefungsSuche(UeberpruefungsViewModel vm)
+        public ObservableCollection<wt2_honorarkraft> UeberpruefungsSuche(UeberpruefungsViewModel vm, string guid)
         {
             ObservableCollection<wt2_honorarkraft> result = null;
-            //CreateContext();
 
-            //using (context)
-            //{
+            GetContext(guid);
+
                 if (vm.SelectedItem_Pruefung_Jahr != 0)
                 {
                     int auswahlJahr = Convert.ToInt32(vm.Cbx_Pruefung_Jahr[vm.SelectedItem_Pruefung_Jahr]);
 
                     # region ID-Liste mit Honorarkräften die in dem angegebenen Jahr nicht bewertet wurden.
-                    IEnumerable<int> unbewertet = from row in context.wt2_honorarkraft
+                    IEnumerable<int> unbewertet = from row in Context.wt2_honorarkraft
                                                   .Include("wt2_honorarkraft_bewertung")
                                              where row.wt2_honorarkraft_bewertung.Any(a => a.hkb_datum.Value.Year.Equals(auswahlJahr)) == false
                                              select row.hk_ident;
                     # endregion
 
                     # region Honorarkräften im gewählten Jahr mit gültigen Vertrag mit Unterrichtsstunden >= 40
-                    var stunden = from row in context.wt2_honorarkraft_vertrag_position
+                    var stunden = from row in Context.wt2_honorarkraft_vertrag_position
                                               .Include("wt2_honorarkraft_vertrag")
                                   where unbewertet.Contains(row.wt2_honorarkraft_vertrag.hkv_hk_ident) && row.hkvp_datum_beginn.Value.Year <= auswahlJahr && row.hkvp_datum_ende.Value.Year >= auswahlJahr
                                   group row by row.wt2_honorarkraft_vertrag.hkv_hk_ident into g
@@ -725,7 +656,7 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     # endregion
 
                     # region Filtern der Honorarkraefte die 40 oder mehr Unterrichtsstunden im Vertragszeitrum hatten
-                    IEnumerable<wt2_honorarkraft> honorar = from row in context.wt2_honorarkraft
+                    IEnumerable<wt2_honorarkraft> honorar = from row in Context.wt2_honorarkraft
                                                             where stunden.Any(a => a.Id == row.hk_ident && a.Count >= 40)
                                                             select row;
                     # endregion
@@ -740,69 +671,38 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     # endregion
 
                     result = new ObservableCollection<wt2_honorarkraft>(honorar);
-                }           
-            //}
+                } 
+
             return result;
         }
         # endregion
 
         # region LinQ-Abfragen für die EditView
-        public wt2_honorarkraft FillEditView(string personId)
+        public wt2_honorarkraft FillEditView(string personId, string guid)
         {
             wt2_honorarkraft result = null;
-            Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+           
             int id = int.Parse(personId);
 
-            //CreateContext();
+            GetContext(guid);
 
-                var query = (from row in context.wt2_honorarkraft
+                var query = (from row in Context.wt2_honorarkraft
                                          where row.hk_ident.Equals(id)
                                          select row).SingleOrDefault();
 
                 result = (wt2_honorarkraft)query;
-                Debug.Print("Anzahl Änderungen:" + context.ChangeTracker.Entries().Count(c => c.State != System.Data.Entity.EntityState.Unchanged).ToString());
+              
                 return result;
         }
 
-        // Setzen der Checkboxharken-Einsatzgebiete in der EditView
-        public ObservableCollection<Einsatzgebiet_Check> CheckEinsatzgebiete(string personId, ObservableCollection<Einsatzgebiet_Check> checkList)
-        {
-            int id = int.Parse(personId);
-
-            //CreateContext();
-
-            //using (context)
-            //{
-
-                var query = (from row in context.wt2_honorarkraft
-                            where row.hk_ident.Equals(id)
-                            select row).SingleOrDefault();
- 
-                foreach (Einsatzgebiet_Check element in checkList)
-                {
-                    foreach (wt2_konst_honorarkraft_einsatzgebiet eg in query.wt2_konst_honorarkraft_einsatzgebiet) 
-                    {
-                        if (eg.khke_ident == element.Einsatzgebiet.khke_ident) 
-                            element.IsChecked = true;
-                    }
-
-
-                }
-            //}
-            return checkList;
-        }
-
         // Setzen der Checkboxharken-Teams in der EditView
-        public LookupCollectionBO CheckTeams(string personId, LookupCollectionBO checkList)
+        public CheckedLookupCollectionBO CheckTeams(string personId, CheckedLookupCollectionBO checkList, string guid)
         {
             int id = int.Parse(personId);
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
-
-                var query = (from row in context.wt2_honorarkraft
+                var query = (from row in Context.wt2_honorarkraft
                              where row.hk_ident.Equals(id)
                              select row).SingleOrDefault(); ;
 
@@ -814,24 +714,20 @@ namespace TIS3_WPF_TestMusterAddIn.Infrastructure
                     }
 
                 }
-            //}
             return checkList;
         }
 
-        public ObservableCollection<wt2_honorarkraft_vertrag_position> Hole_AZP_Vertragspositionen(DateTime datum, int hk_ident)
+        public ObservableCollection<wt2_honorarkraft_vertrag_position> Hole_AZP_Vertragspositionen(DateTime datum, int hk_ident, string guid)
         {
             ObservableCollection<wt2_honorarkraft_vertrag_position> result = null;
 
-            //CreateContext();
+            GetContext(guid);
 
-            //using (context)
-            //{
-                var query = from row in context.wt2_honorarkraft_vertrag_position
+                var query = from row in Context.wt2_honorarkraft_vertrag_position
                             where row.wt2_honorarkraft_vertrag.hkv_hk_ident.Equals(hk_ident)
                             && row.hkvp_datum_beginn <= datum && row.hkvp_datum_ende >= datum
                             select row;
                 result = new ObservableCollection<wt2_honorarkraft_vertrag_position>(query);
-            //}
 
             return result;
         }

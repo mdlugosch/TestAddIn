@@ -75,6 +75,7 @@ namespace TIS3_WPF_TestMusterAddIn.ViewModels
         # endregion
 
         # region Init() - Ausführung wenn Klasse Instanziiert wird
+        public AbfrageViewModel() : base() { }
         public override void Init()
         {
             Header.Title = "Suchmaske";                         // Header Attribut zum bestimmen des Tab-Namens

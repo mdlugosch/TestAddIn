@@ -9,6 +9,10 @@ using WinTIS30db_entwModel.Honorarkraefte;
 
 namespace TIS3_WPF_TestMusterAddIn.Events
 {
+    /*
+     * ZahlungsanweisungsPositionPostEvent das ein wt2_honorarkraft_zahlungsanweisung_position entgegenimmt.
+     * Events dienen zum austauch zwischen Views und werden in die EventAggregatorListe eingetragen.
+     */
     class ZahlungsanweisungsPositionPostEvent : PubSubEvent<Message<wt2_honorarkraft_zahlungsanweisung_position>>
     {
     }
